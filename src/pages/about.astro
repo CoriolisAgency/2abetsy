@@ -1,9 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CtaRow from "../components/CtaRow.astro";
-import { CANON_PATHS, LINKS } from "../lib/links";
+import { CANON_PATHS, LINKS, linkClass } from "../lib/links";
 import { withBase } from "../lib/base";
 import { SITE } from "../lib/site";
+
+const ext = { target: "_blank", rel: "noopener noreferrer" };
 ---
 
 <BaseLayout
@@ -32,34 +34,80 @@ import { SITE } from "../lib/site";
     </div>
     <div class="space-y-4 text-sm leading-relaxed text-zinc-400">
       <p>
-        Betsy is Coriolis Agency’s <strong class="text-zinc-200"
-          >2A demand intelligence</strong
-        > — a person-first brand for the tools that help dealers measure real shopper
-        intent and help shoppers find live inventory without Big Tech refusal theater.
+        Betsy is{" "}
+        <a href={LINKS.coriolis} class={linkClass} {...ext}>Coriolis Agency</a
+        >’s <strong class="text-zinc-200">2A demand intelligence</strong> — a
+        person-first brand for the tools that help{" "}
+        <a href={LINKS.gsaDealers} class={linkClass} {...ext}>dealers</a>{" "}
+        measure real shopper intent and help{" "}
+        <a href={LINKS.gse} class={linkClass} {...ext}>shoppers</a> find live
+        inventory without Big Tech refusal theater (
+        <a href={LINKS.gunFriendly} class={linkClass} {...ext}>gun-friendly AI</a
+        >,{" "}
+        <a href={LINKS.whyRefuses} class={linkClass} {...ext}
+          >why generic AI refuses</a
+        >).
       </p>
-      <p>{SITE.origin}</p>
+      <p>
+        Named for Betsy Ross and the frontier “Old Betsy” rifles — craft and
+        reliability when it counts. Built by{" "}
+        <a href={LINKS.coriolis} class={linkClass} {...ext}>Coriolis Agency</a
+        >{" "}
+        for lawful 2A commerce.
+      </p>
+
       <h2 class="pt-4 text-base font-semibold text-white">What she powers</h2>
-      <ul class="list-disc space-y-2 pl-5">
+      <ul class="list-disc space-y-2.5 pl-5">
         <li>
-          <a href={LINKS.gsa} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
-            >GunSearchAgent</a
-          > — free Google Analytics replacement for FFL and 2A websites
-        </li>
-        <li>
-          <a href={LINKS.gse} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
-            >GunSearchEngine</a
-          > — multi-dealer product search and network{" "}
-          <a href={LINKS.betsyLive} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
-            >Betsy Live</a
+          <a href={LINKS.gsa} class={linkClass} {...ext}>GunSearchAgent</a>
+          {" — "}
+          free{" "}
+          <a href={LINKS.gsaGa} class={linkClass} {...ext}
+            >Google Analytics replacement</a
           >{" "}
-          demand insights
+          for FFL and 2A websites
+          <span class="block text-xs text-zinc-500 mt-1 pl-0">
+            Also:{" "}
+            <a href={LINKS.gsaGunStoreAi} class={linkClass} {...ext}
+              >gun store AI</a
+            >
+            {" · "}
+            <a href={LINKS.gsaHowTo} class={linkClass} {...ext}>how to install</a>
+            {" · "}
+            <a href={LINKS.gsaDealers} class={linkClass} {...ext}
+              >AI for gun dealers</a
+            >
+          </span>
         </li>
         <li>
-          <a href={LINKS.brandIntel} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
+          <a href={LINKS.gse} class={linkClass} {...ext}>GunSearchEngine</a>
+          {" — "}
+          multi-dealer product search and network{" "}
+          <a href={LINKS.betsyLive} class={linkClass} {...ext}>Betsy Live</a>
+          {" "}
+          demand insights
+          <span class="block text-xs text-zinc-500 mt-1">
+            Also:{" "}
+            <a href={LINKS.superIntel} class={linkClass} {...ext}
+              >Super Intelligence for FFLs</a
+            >
+            {" · "}
+            <a href={LINKS.ontology} class={linkClass} {...ext}>Ontology</a>
+            {" · "}
+            <a href={LINKS.gseBetsy} class={linkClass} {...ext}
+              >Betsy on GSE</a
+            >
+          </span>
+        </li>
+        <li>
+          <a href={LINKS.brandIntel} class={linkClass} {...ext}
             >Brand Intelligence</a
-          > — OEM / platform demand
+          >
+          {" — "}
+          OEM / platform demand
         </li>
       </ul>
+
       <h2 class="pt-4 text-base font-semibold text-white">What she is not</h2>
       <ul class="list-disc space-y-2 pl-5">
         <li>Not ChatGPT with a gun sticker</li>
@@ -67,16 +115,18 @@ import { SITE } from "../lib/site";
         <li>Not 4473 / NICS / bound-book automation</li>
         <li>Not a chatbot that lectures lawful shoppers</li>
       </ul>
+
       <p>
         Follow her on{" "}
-        <a href={LINKS.x} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
-          >X @2ABetsy</a
-        >{" "}
+        <a href={LINKS.x} class={linkClass} {...ext}>X @2ABetsy</a>
+        {" "}
         and{" "}
-        <a href={LINKS.youtube} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
-          >YouTube @BetsyAI</a
-        >. Platform essays live on GunSearchEngine — including{" "}
-        <a href={LINKS.howTrains} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
+        <a href={LINKS.youtube} class={linkClass} {...ext}>YouTube @BetsyAI</a
+        >. Platform essays live on{" "}
+        <a href={LINKS.gse} class={linkClass} {...ext}>GunSearchEngine</a>
+        {" — "}
+        including{" "}
+        <a href={LINKS.howTrains} class={linkClass} {...ext}
           >how Betsy trains Betsy</a
         >.
       </p>

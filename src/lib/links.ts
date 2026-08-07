@@ -7,6 +7,10 @@ export const LINKS = {
   gsa: "https://gunsearchagent.com",
   gsaGa:
     "https://gunsearchagent.com/google-analytics-alternative-for-ffls",
+  gsaDealers: "https://gunsearchagent.com/ai-for-gun-dealers",
+  gsaGunStoreAi: "https://gunsearchagent.com/gun-store-ai",
+  gsaHowTo:
+    "https://gunsearchagent.com/how-to-add-ai-search-to-your-gun-store",
   gse: "https://www.gunsearchengine.com",
   /** Betsy Live — network demand viz (not rebuilt here) */
   betsyLive: "https://www.gunsearchengine.com/insights",
@@ -17,12 +21,18 @@ export const LINKS = {
   howTrains:
     "https://www.gunsearchengine.com/betsy/how-betsy-trains-betsy",
   ontology: "https://www.gunsearchengine.com/ontology",
+  gunFriendly: "https://www.gunsearchengine.com/gun-friendly-ai",
+  whyRefuses: "https://www.gunsearchengine.com/why-ai-refuses-firearms",
   x: "https://x.com/2ABetsy",
   youtube: "https://www.youtube.com/@BetsyAI",
   youtubeShorts: "https://www.youtube.com/@BetsyAI/shorts",
   coriolis: "https://coriolisagency.com",
   pressEmail: "mailto:betsy@coriolisagency.com",
 } as const;
+
+/** Shared sky link class for inline body copy */
+export const linkClass =
+  "font-medium text-sky-400 hover:underline underline-offset-2";
 
 /** Paths relative to site root (no leading slash). Use with withBase(). */
 export const CANON_PATHS = {
