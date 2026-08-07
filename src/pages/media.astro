@@ -1,13 +1,14 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { CANON, LINKS } from "../lib/links";
+import { CANON_PATHS, LINKS } from "../lib/links";
+import { withBase } from "../lib/base";
 ---
 
 <BaseLayout
   title="Media — Betsy AI Shorts & Social | 2aBetsy"
   description="Follow Betsy AI on X @2ABetsy and YouTube @BetsyAI. Shorts, demand culture, and 2A-native AI content."
   path="/media"
-  ogImage={CANON.headshot}
+  ogImagePath={CANON_PATHS.headshot}
 >
   <article class="mx-auto max-w-2xl px-4 py-12 sm:py-14">
     <p
@@ -54,7 +55,7 @@ import { CANON, LINKS } from "../lib/links";
       </a>
     </div>
     <img
-      src={CANON.cutout}
+      src={withBase(CANON_PATHS.cutout)}
       alt="Betsy AI"
       width="600"
       height="800"

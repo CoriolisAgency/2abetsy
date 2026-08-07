@@ -24,7 +24,15 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Project site URL until custom domain DNS is ready:
+      #   https://coriolisagency.github.io/2abetsy/
+      # When 2abetsy.com is verified on Pages, change to:
+      #   ASTRO_BASE: /
+      #   ASTRO_SITE: https://2abetsy.com
       - run: npm run build
+        env:
+          ASTRO_BASE: /2abetsy/
+          ASTRO_SITE: https://coriolisagency.github.io
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

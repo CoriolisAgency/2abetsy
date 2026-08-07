@@ -1,13 +1,14 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { CANON, LINKS } from "../lib/links";
+import { CANON_PATHS, LINKS } from "../lib/links";
+import { withBase } from "../lib/base";
 ---
 
 <BaseLayout
   title="For Brands & OEMs — Brand Intelligence | Betsy AI"
   description="Brand Intelligence for firearms OEMs and platforms — anonymized demand and search intent powered by Betsy AI on GunSearchEngine."
   path="/for-brands"
-  ogImage={CANON.tzu}
+  ogImagePath={CANON_PATHS.tzu}
 >
   <article class="mx-auto max-w-2xl px-4 py-12 sm:py-14">
     <p
@@ -24,7 +25,7 @@ import { CANON, LINKS } from "../lib/links";
       built for OEMs and platforms. Not a dump of shopper emails.
     </p>
     <img
-      src={CANON.tzu}
+      src={withBase(CANON_PATHS.tzu)}
       alt="Art of Demand"
       width="960"
       height="540"

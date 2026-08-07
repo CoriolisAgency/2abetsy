@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CtaRow from "../components/CtaRow.astro";
-import { CANON, LINKS } from "../lib/links";
+import { CANON_PATHS, LINKS } from "../lib/links";
+import { withBase } from "../lib/base";
 import { SITE } from "../lib/site";
 ---
 
@@ -9,7 +10,7 @@ import { SITE } from "../lib/site";
   title="About Betsy AI | 2aBetsy"
   description="Who Betsy AI is, who built her, and what she is not — demand intelligence for lawful 2A commerce by Coriolis Agency."
   path="/about"
-  ogImage={CANON.outside}
+  ogImagePath={CANON_PATHS.outside}
 >
   <article class="mx-auto max-w-2xl px-4 py-12 sm:py-14">
     <p
@@ -22,7 +23,7 @@ import { SITE } from "../lib/site";
     </h1>
     <div class="mb-8 overflow-hidden rounded-2xl ring-1 ring-zinc-700/80">
       <img
-        src={CANON.outside}
+        src={withBase(CANON_PATHS.outside)}
         alt="Betsy AI"
         width="960"
         height="640"

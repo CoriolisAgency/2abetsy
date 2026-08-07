@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CtaRow from "../components/CtaRow.astro";
-import { CANON, LINKS } from "../lib/links";
+import { CANON_PATHS, LINKS } from "../lib/links";
+import { withBase } from "../lib/base";
 import { SITE } from "../lib/site";
 ---
 
@@ -9,7 +10,7 @@ import { SITE } from "../lib/site";
   title="Betsy AI — Meet 2aBetsy | Demand Intelligence for the 2A Web"
   description={SITE.description}
   path="/"
-  ogImage={CANON.headshot}
+  ogImagePath={CANON_PATHS.headshot}
 >
   <section class="relative overflow-hidden border-b border-zinc-800/80">
     <div
@@ -77,7 +78,7 @@ import { SITE } from "../lib/site";
         >
         </div>
         <img
-          src={CANON.headshot}
+          src={withBase(CANON_PATHS.headshot)}
           alt="Betsy AI"
           width="640"
           height="640"
@@ -139,7 +140,7 @@ import { SITE } from "../lib/site";
       class="mx-auto grid max-w-5xl gap-8 px-4 py-12 sm:grid-cols-2 sm:items-center sm:py-14"
     >
       <img
-        src={CANON.range}
+        src={withBase(CANON_PATHS.range)}
         alt="Betsy at the range"
         width="800"
         height="600"
@@ -159,7 +160,7 @@ import { SITE } from "../lib/site";
           replacement.
         </p>
         <div class="flex flex-wrap gap-3 text-sm">
-          <a href="/about" class="font-medium text-sky-400 hover:underline"
+          <a href={withBase("about")} class="font-medium text-sky-400 hover:underline"
             >About Betsy →</a
           >
           <a

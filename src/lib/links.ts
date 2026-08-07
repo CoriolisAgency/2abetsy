@@ -24,11 +24,12 @@ export const LINKS = {
   pressEmail: "mailto:betsy@coriolisagency.com",
 } as const;
 
-export const CANON = {
-  headshot: "/betsy/images/betsy-headshot-work.png",
-  range: "/betsy/images/betsy-at-the-range.jpg",
-  outside: "/betsy/images/betsy-outside.jpg",
-  cutout: "/betsy/images/betsy-outside-cutout.png",
-  gaHero: "/betsy/images/betsy-ga-alternative-hero.jpg",
-  tzu: "/betsy/images/betsy-tzu-art-of-war.jpg",
+/** Paths relative to site root (no leading slash). Use with withBase(). */
+export const CANON_PATHS = {
+  headshot: "betsy/images/betsy-headshot-work.png",
+  range: "betsy/images/betsy-at-the-range.jpg",
+  outside: "betsy/images/betsy-outside.jpg",
+  cutout: "betsy/images/betsy-outside-cutout.png",
+  gaHero: "betsy/images/betsy-ga-alternative-hero.jpg",
+  tzu: "betsy/images/betsy-tzu-art-of-war.jpg",
 } as const;

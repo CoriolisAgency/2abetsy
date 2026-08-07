@@ -2,25 +2,28 @@
 import "../styles/global.css";
 import SiteChrome from "../components/SiteChrome.astro";
 import { SITE } from "../lib/site";
-import { LINKS } from "../lib/links";
-import { CANON } from "../lib/links";
+import { LINKS, CANON_PATHS } from "../lib/links";
+import { withBase } from "../lib/base";
 
 interface Props {
   title?: string;
   description?: string;
   path?: string;
-  ogImage?: string;
+  /** Path under public/, no leading slash — e.g. betsy/images/... */
+  ogImagePath?: string;
 }
 
 const {
   title = SITE.titleDefault,
   description = SITE.description,
   path = "/",
-  ogImage = CANON.headshot,
+  ogImagePath = CANON_PATHS.headshot,
 } = Astro.props;
 
-const canonical = new URL(path === "/" ? "/" : path, Astro.site).href;
-const ogAbs = new URL(ogImage, Astro.site).href;
+const siteOrigin = Astro.site ?? new URL("https://2abetsy.com");
+const pagePath = path === "/" ? withBase("/") : withBase(path);
+const canonical = new URL(pagePath, siteOrigin).href;
+const ogAbs = new URL(withBase(ogImagePath), siteOrigin).href;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -67,10 +70,20 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#0a1220" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href={withBase("favicon-32.png")}
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href={withBase("favicon-48.png")}
+    />
+    <link rel="apple-touch-icon" href={withBase("apple-touch-icon.png")} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
