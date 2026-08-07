@@ -3,16 +3,38 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import CtaRow from "../components/CtaRow.astro";
 import { CANON_PATHS, LINKS, linkClass } from "../lib/links";
 import { withBase } from "../lib/base";
-import { SITE } from "../lib/site";
 
 const ext = { target: "_blank", rel: "noopener noreferrer" };
+
+const gsaPillars = [
+  { href: LINKS.gsa, label: "GunSearchAgent" },
+  { href: LINKS.gsaGa, label: "GA alternative for FFLs" },
+  { href: LINKS.gsaDealers, label: "AI for gun dealers" },
+  { href: LINKS.gsaGunStoreAi, label: "Gun store AI" },
+  { href: LINKS.gsaHowTo, label: "How to install" },
+] as const;
+
+const gsePillars = [
+  { href: LINKS.gse, label: "GunSearchEngine" },
+  { href: LINKS.betsyLive, label: "Betsy Live" },
+  { href: LINKS.superIntel, label: "Super Intelligence" },
+  { href: LINKS.howTrains, label: "How Betsy trains Betsy" },
+  { href: LINKS.ontology, label: "Ontology" },
+  { href: LINKS.gseBetsy, label: "Betsy on GSE" },
+  { href: LINKS.gunFriendly, label: "Gun-friendly AI" },
+  { href: LINKS.whyRefuses, label: "Why AI refuses firearms" },
+  { href: LINKS.brandIntel, label: "Brand Intelligence" },
+] as const;
+
+const pill =
+  "inline-flex rounded-lg border border-zinc-700 bg-zinc-900/60 px-2.5 py-1.5 text-xs font-medium text-sky-300 transition hover:border-sky-500/50 hover:bg-sky-500/10 hover:text-sky-200";
 ---
 
 <BaseLayout
   title="About Betsy AI | 2aBetsy"
   description="Who Betsy AI is, who built her, and what she is not — demand intelligence for lawful 2A commerce by Coriolis Agency."
   path="/about"
-  ogImagePath={CANON_PATHS.outside}
+  ogImagePath={CANON_PATHS.headshot}
 >
   <article class="mx-auto max-w-2xl px-4 py-12 sm:py-14">
     <p
@@ -23,29 +45,37 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
     <h1 class="text-3xl font-semibold tracking-tight text-white mb-6">
       Who is Betsy?
     </h1>
-    <div class="mb-8 overflow-hidden rounded-2xl ring-1 ring-zinc-700/80">
+
+    <!-- Full portrait — no object-cover / max-height crop -->
+    <div class="mb-8 rounded-2xl ring-1 ring-zinc-700/80 bg-zinc-950/50 p-1 sm:p-2">
       <img
-        src={withBase(CANON_PATHS.outside)}
+        src={withBase(CANON_PATHS.headshot)}
         alt="Betsy AI"
-        width="960"
-        height="640"
-        class="w-full object-cover max-h-80"
+        width="640"
+        height="800"
+        class="mx-auto block h-auto w-full max-w-md rounded-xl"
       />
     </div>
+
     <div class="space-y-4 text-sm leading-relaxed text-zinc-400">
       <p>
         Betsy is{" "}
         <a href={LINKS.coriolis} class={linkClass} {...ext}>Coriolis Agency</a
         >’s <strong class="text-zinc-200">2A demand intelligence</strong> — a
         person-first brand for the tools that help{" "}
-        <a href={LINKS.gsaDealers} class={linkClass} {...ext}>dealers</a>{" "}
-        measure real shopper intent and help{" "}
+        <a href={LINKS.gsa} class={linkClass} {...ext}>dealers</a> measure real
+        shopper intent on{" "}
+        <a href={LINKS.gsa} class={linkClass} {...ext}>GunSearchAgent</a> and
+        help{" "}
         <a href={LINKS.gse} class={linkClass} {...ext}>shoppers</a> find live
-        inventory without Big Tech refusal theater (
+        inventory on{" "}
+        <a href={LINKS.gse} class={linkClass} {...ext}>GunSearchEngine</a>
+        {" "}
+        without Big Tech refusal theater (
         <a href={LINKS.gunFriendly} class={linkClass} {...ext}>gun-friendly AI</a
         >,{" "}
         <a href={LINKS.whyRefuses} class={linkClass} {...ext}
-          >why generic AI refuses</a
+          >why AI refuses firearms</a
         >).
       </p>
       <p>
@@ -57,7 +87,7 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
       </p>
 
       <h2 class="pt-4 text-base font-semibold text-white">What she powers</h2>
-      <ul class="list-disc space-y-2.5 pl-5">
+      <ul class="list-disc space-y-3 pl-5">
         <li>
           <a href={LINKS.gsa} class={linkClass} {...ext}>GunSearchAgent</a>
           {" — "}
@@ -65,19 +95,15 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
           <a href={LINKS.gsaGa} class={linkClass} {...ext}
             >Google Analytics replacement</a
           >{" "}
-          for FFL and 2A websites
-          <span class="block text-xs text-zinc-500 mt-1 pl-0">
-            Also:{" "}
-            <a href={LINKS.gsaGunStoreAi} class={linkClass} {...ext}
-              >gun store AI</a
-            >
-            {" · "}
-            <a href={LINKS.gsaHowTo} class={linkClass} {...ext}>how to install</a>
-            {" · "}
-            <a href={LINKS.gsaDealers} class={linkClass} {...ext}
-              >AI for gun dealers</a
-            >
-          </span>
+          for FFL and 2A websites (
+          <a href={LINKS.gsaDealers} class={linkClass} {...ext}
+            >AI for gun dealers</a
+          >,{" "}
+          <a href={LINKS.gsaGunStoreAi} class={linkClass} {...ext}
+            >gun store AI</a
+          >,{" "}
+          <a href={LINKS.gsaHowTo} class={linkClass} {...ext}>how to install</a
+          >)
         </li>
         <li>
           <a href={LINKS.gse} class={linkClass} {...ext}>GunSearchEngine</a>
@@ -85,19 +111,12 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
           multi-dealer product search and network{" "}
           <a href={LINKS.betsyLive} class={linkClass} {...ext}>Betsy Live</a>
           {" "}
-          demand insights
-          <span class="block text-xs text-zinc-500 mt-1">
-            Also:{" "}
-            <a href={LINKS.superIntel} class={linkClass} {...ext}
-              >Super Intelligence for FFLs</a
-            >
-            {" · "}
-            <a href={LINKS.ontology} class={linkClass} {...ext}>Ontology</a>
-            {" · "}
-            <a href={LINKS.gseBetsy} class={linkClass} {...ext}
-              >Betsy on GSE</a
-            >
-          </span>
+          demand insights (
+          <a href={LINKS.superIntel} class={linkClass} {...ext}
+            >Super Intelligence for FFLs</a
+          >,{" "}
+          <a href={LINKS.ontology} class={linkClass} {...ext}>Ontology</a>,{" "}
+          <a href={LINKS.gseBetsy} class={linkClass} {...ext}>Betsy on GSE</a>)
         </li>
         <li>
           <a href={LINKS.brandIntel} class={linkClass} {...ext}
@@ -107,6 +126,42 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
           OEM / platform demand
         </li>
       </ul>
+
+      <!-- Explicit pillar map (GSA / GSE) -->
+      <div class="pt-2 space-y-4 not-prose">
+        <div>
+          <p
+            class="text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-500 mb-2"
+          >
+            GunSearchAgent · dealer product
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            {
+              gsaPillars.map((p) => (
+                <a href={p.href} class={pill} {...ext}>
+                  {p.label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+        <div>
+          <p
+            class="text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-500 mb-2"
+          >
+            GunSearchEngine · platform & shoppers
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            {
+              gsePillars.map((p) => (
+                <a href={p.href} class={pill} {...ext}>
+                  {p.label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
 
       <h2 class="pt-4 text-base font-semibold text-white">What she is not</h2>
       <ul class="list-disc space-y-2 pl-5">
@@ -128,6 +183,10 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
         including{" "}
         <a href={LINKS.howTrains} class={linkClass} {...ext}
           >how Betsy trains Betsy</a
+        >{" "}
+        and{" "}
+        <a href={LINKS.superIntel} class={linkClass} {...ext}
+          >Super Intelligence for FFLs</a
         >.
       </p>
     </div>
