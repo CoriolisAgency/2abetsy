@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { CANON, LINKS } from "../lib/links";
+---
+
+<BaseLayout
+  title="Press Kit — Betsy AI | 2aBetsy"
+  description="Press boilerplate, brand assets, and contact for Betsy AI / 2aBetsy by Coriolis Agency."
+  path="/press"
+  ogImage={CANON.headshot}
+>
+  <article class="mx-auto max-w-2xl px-4 py-12 sm:py-14">
+    <p
+      class="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-400 mb-3"
+    >
+      Press
+    </p>
+    <h1 class="text-3xl font-semibold tracking-tight text-white mb-6">
+      Press kit
+    </h1>
+    <div class="space-y-6 text-sm leading-relaxed text-zinc-400">
+      <section>
+        <h2 class="text-base font-semibold text-white mb-2">Boilerplate</h2>
+        <p>
+          Betsy AI is Coriolis Agency’s demand intelligence for lawful firearms
+          commerce. She powers GunSearchAgent.com — free Google Analytics
+          replacement for FFL and 2A websites — multi-dealer search and live
+          network insights on GunSearchEngine.com, and Brand Intelligence for
+          OEMs. Official brand home: 2aBetsy.com. Social: @2ABetsy (X), @BetsyAI
+          (YouTube).
+        </p>
+      </section>
+      <section>
+        <h2 class="text-base font-semibold text-white mb-2">Contact</h2>
+        <p>
+          <a href={LINKS.pressEmail} class="text-sky-400 hover:underline"
+            >betsy@coriolisagency.com</a
+          >
+        </p>
+      </section>
+      <section>
+        <h2 class="text-base font-semibold text-white mb-2">Links</h2>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>
+            Brand:{" "}
+            <a href={LINKS.home} class="text-sky-400 hover:underline"
+              >2aBetsy.com</a
+            >
+          </li>
+          <li>
+            Dealers:{" "}
+            <a href={LINKS.gsa} class="text-sky-400 hover:underline"
+              >GunSearchAgent.com</a
+            >
+          </li>
+          <li>
+            Live demand:{" "}
+            <a href={LINKS.betsyLive} class="text-sky-400 hover:underline"
+              >Betsy Live (Insights)</a
+            >
+          </li>
+          <li>
+            Company:{" "}
+            <a href={LINKS.coriolis} class="text-sky-400 hover:underline"
+              >Coriolis Agency</a
+            >
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2 class="text-base font-semibold text-white mb-3">Headshot</h2>
+        <img
+          src={CANON.headshot}
+          alt="Betsy AI headshot"
+          width="320"
+          height="320"
+          class="w-40 rounded-2xl ring-1 ring-zinc-700"
+        />
+        <p class="mt-2 text-xs text-zinc-600">
+          Canon stills for editorial use with credit “Betsy AI / Coriolis
+          Agency.”
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

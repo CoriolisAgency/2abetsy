@@ -1,0 +1,191 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CtaRow from "../components/CtaRow.astro";
+import { CANON, LINKS } from "../lib/links";
+import { SITE } from "../lib/site";
+---
+
+<BaseLayout
+  title="Betsy AI — Meet 2aBetsy | Demand Intelligence for the 2A Web"
+  description={SITE.description}
+  path="/"
+  ogImage={CANON.headshot}
+>
+  <section class="relative overflow-hidden border-b border-zinc-800/80">
+    <div
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(14,165,233,0.12),transparent_50%)]"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="relative mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center"
+    >
+      <div class="space-y-6 min-w-0">
+        <p
+          class="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-400"
+        >
+          Coriolis Agency · {SITE.role}
+        </p>
+        <h1
+          class="text-3xl font-semibold tracking-tight text-white sm:text-4xl leading-[1.15]"
+        >
+          Meet Betsy.
+          <span
+            class="mt-2 block text-xl font-medium text-zinc-300 sm:text-2xl tracking-tight"
+          >
+            Demand intelligence for the modern 2A web — what people came for,
+            not bounce rate.
+          </span>
+        </h1>
+        <p class="max-w-xl text-sm leading-relaxed text-zinc-400 sm:text-[15px]">
+          She powers{" "}
+          <a
+            href={LINKS.gsa}
+            class="font-medium text-sky-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer">GunSearchAgent</a
+          >{" "}
+          for FFL and 2A websites (the Google Analytics replacement job),
+          multi-dealer discovery on{" "}
+          <a
+            href={LINKS.gse}
+            class="font-medium text-sky-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer">GunSearchEngine</a
+          >, and{" "}
+          <a
+            href={LINKS.brandIntel}
+            class="font-medium text-sky-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer">Brand Intelligence</a
+          >{" "}
+          for OEMs. Not a price scraper. Not a chatbot that lectures you.
+        </p>
+        <CtaRow primary="dealers" />
+        <ul
+          class="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-zinc-500"
+        >
+          <li>✓ Free forever core for dealers</li>
+          <li>✓ Live demand on GunSearchEngine</li>
+          <li>✓ @2ABetsy on X · @BetsyAI on YouTube</li>
+        </ul>
+      </div>
+      <div class="relative mx-auto w-full max-w-md lg:max-w-none">
+        <div
+          class="absolute -inset-4 rounded-[2rem] bg-sky-500/10 blur-2xl"
+          aria-hidden="true"
+        >
+        </div>
+        <img
+          src={CANON.headshot}
+          alt="Betsy AI"
+          width="640"
+          height="640"
+          class="relative z-[1] w-full rounded-3xl object-cover shadow-2xl shadow-sky-950/50 ring-1 ring-sky-500/30"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-12 sm:py-14">
+    <p
+      class="mb-6 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-400/90"
+    >
+      Where she works
+    </p>
+    <div class="grid gap-3 sm:grid-cols-3">
+      {
+        [
+          {
+            t: "Dealers · GunSearchAgent",
+            d: "Google Analytics for FFLs — what shoppers asked for, map, morning brief. Free forever core.",
+            href: LINKS.gsa,
+            cta: "Create free agent →",
+          },
+          {
+            t: "Betsy Live · Insights",
+            d: "Live, anonymized demand from the 2A web — map, intent cloud, pulse. See it on GunSearchEngine.",
+            href: LINKS.betsyLive,
+            cta: "Open Betsy Live →",
+          },
+          {
+            t: "Shoppers · GunSearchEngine",
+            d: "Plain-English search over live multi-dealer inventory. Email lists and restock alerts.",
+            href: LINKS.gse,
+            cta: "Search inventory →",
+          },
+        ].map((card) => (
+          <a
+            href={card.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5 transition hover:border-sky-500/40 hover:bg-zinc-900/60"
+          >
+            <h2 class="text-sm font-semibold text-white group-hover:text-sky-100">
+              {card.t}
+            </h2>
+            <p class="mt-2 text-xs leading-relaxed text-zinc-400 sm:text-sm">
+              {card.d}
+            </p>
+            <p class="mt-3 text-xs font-medium text-sky-400">{card.cta}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-zinc-800/80 bg-zinc-950/40">
+    <div
+      class="mx-auto grid max-w-5xl gap-8 px-4 py-12 sm:grid-cols-2 sm:items-center sm:py-14"
+    >
+      <img
+        src={CANON.range}
+        alt="Betsy at the range"
+        width="800"
+        height="600"
+        class="w-full rounded-2xl object-cover ring-1 ring-zinc-700/80 shadow-xl"
+      />
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold tracking-tight text-white">
+          Built for lawful 2A commerce
+        </h2>
+        <p class="text-sm leading-relaxed text-zinc-400">
+          {SITE.origin}
+        </p>
+        <p class="text-sm leading-relaxed text-zinc-400">
+          Generic AI refuses or moralizes. Betsy is purpose-built: demand
+          capture, grounded inventory when a feed is connected, and honesty
+          about what she is not — not 4473 software, not a bound-book
+          replacement.
+        </p>
+        <div class="flex flex-wrap gap-3 text-sm">
+          <a href="/about" class="font-medium text-sky-400 hover:underline"
+            >About Betsy →</a
+          >
+          <a
+            href={LINKS.howTrains}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-medium text-sky-400 hover:underline"
+            >How she gets smarter →</a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-12 sm:py-14">
+    <div
+      class="rounded-2xl border border-sky-500/25 bg-sky-950/20 px-5 py-6 sm:px-8 sm:py-8"
+    >
+      <h2 class="text-lg font-semibold text-sky-50">Ready when you are</h2>
+      <p class="mt-2 max-w-2xl text-sm text-zinc-400">
+        Run a store? Put free demand intelligence on your site. Curious about
+        the market? Watch Betsy Live. Shopping? Search participating dealers.
+      </p>
+      <div class="mt-5">
+        <CtaRow />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

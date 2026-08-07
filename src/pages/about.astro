@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CtaRow from "../components/CtaRow.astro";
+import { CANON, LINKS } from "../lib/links";
+import { SITE } from "../lib/site";
+---
+
+<BaseLayout
+  title="About Betsy AI | 2aBetsy"
+  description="Who Betsy AI is, who built her, and what she is not — demand intelligence for lawful 2A commerce by Coriolis Agency."
+  path="/about"
+  ogImage={CANON.outside}
+>
+  <article class="mx-auto max-w-2xl px-4 py-12 sm:py-14">
+    <p
+      class="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-400 mb-3"
+    >
+      About
+    </p>
+    <h1 class="text-3xl font-semibold tracking-tight text-white mb-6">
+      Who is Betsy?
+    </h1>
+    <div class="mb-8 overflow-hidden rounded-2xl ring-1 ring-zinc-700/80">
+      <img
+        src={CANON.outside}
+        alt="Betsy AI"
+        width="960"
+        height="640"
+        class="w-full object-cover max-h-80"
+      />
+    </div>
+    <div class="space-y-4 text-sm leading-relaxed text-zinc-400">
+      <p>
+        Betsy is Coriolis Agency’s <strong class="text-zinc-200"
+          >2A demand intelligence</strong
+        > — a person-first brand for the tools that help dealers measure real shopper
+        intent and help shoppers find live inventory without Big Tech refusal theater.
+      </p>
+      <p>{SITE.origin}</p>
+      <h2 class="pt-4 text-base font-semibold text-white">What she powers</h2>
+      <ul class="list-disc space-y-2 pl-5">
+        <li>
+          <a href={LINKS.gsa} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
+            >GunSearchAgent</a
+          > — free Google Analytics replacement for FFL and 2A websites
+        </li>
+        <li>
+          <a href={LINKS.gse} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
+            >GunSearchEngine</a
+          > — multi-dealer product search and network{" "}
+          <a href={LINKS.betsyLive} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
+            >Betsy Live</a
+          >{" "}
+          demand insights
+        </li>
+        <li>
+          <a href={LINKS.brandIntel} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
+            >Brand Intelligence</a
+          > — OEM / platform demand
+        </li>
+      </ul>
+      <h2 class="pt-4 text-base font-semibold text-white">What she is not</h2>
+      <ul class="list-disc space-y-2 pl-5">
+        <li>Not ChatGPT with a gun sticker</li>
+        <li>Not a price-scrape grid</li>
+        <li>Not 4473 / NICS / bound-book automation</li>
+        <li>Not a chatbot that lectures lawful shoppers</li>
+      </ul>
+      <p>
+        Follow her on{" "}
+        <a href={LINKS.x} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
+          >X @2ABetsy</a
+        >{" "}
+        and{" "}
+        <a href={LINKS.youtube} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
+          >YouTube @BetsyAI</a
+        >. Platform essays live on GunSearchEngine — including{" "}
+        <a href={LINKS.howTrains} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
+          >how Betsy trains Betsy</a
+        >.
+      </p>
+    </div>
+    <div class="mt-10">
+      <CtaRow />
+    </div>
+  </article>
+</BaseLayout>

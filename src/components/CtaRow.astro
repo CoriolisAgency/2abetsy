@@ -1,0 +1,43 @@
+---
+import { LINKS } from "../lib/links";
+
+interface Props {
+  primary?: "dealers" | "live" | "shoppers";
+}
+
+const { primary = "dealers" } = Astro.props;
+
+const btnPrimary =
+  "inline-flex items-center justify-center rounded-xl bg-sky-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-sky-900/30 transition hover:bg-sky-400";
+const btnSecondary =
+  "inline-flex items-center justify-center rounded-xl border border-zinc-600 bg-zinc-900/50 px-5 py-3 text-sm font-semibold text-zinc-100 transition hover:bg-zinc-800";
+const btnLive =
+  "inline-flex items-center justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-5 py-3 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-500/20";
+---
+
+<div class="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap">
+  <a
+    href={LINKS.gsa}
+    target="_blank"
+    rel="noopener noreferrer"
+    class={primary === "dealers" ? btnPrimary : btnSecondary}
+  >
+    Free for dealers
+  </a>
+  <a
+    href={LINKS.betsyLive}
+    target="_blank"
+    rel="noopener noreferrer"
+    class={primary === "live" ? btnPrimary : btnLive}
+  >
+    Betsy Live
+  </a>
+  <a
+    href={LINKS.gse}
+    target="_blank"
+    rel="noopener noreferrer"
+    class={primary === "shoppers" ? btnPrimary : btnSecondary}
+  >
+    Shop with Betsy
+  </a>
+</div>

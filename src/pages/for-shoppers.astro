@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { CANON, LINKS } from "../lib/links";
+---
+
+<BaseLayout
+  title="For Shoppers — Live Inventory Search | Betsy AI"
+  description="Search live guns, ammo, and reloading across participating dealers on GunSearchEngine — plain English, no filter gymnastics."
+  path="/for-shoppers"
+  ogImage={CANON.range}
+>
+  <article class="mx-auto max-w-2xl px-4 py-12 sm:py-14">
+    <p
+      class="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-400 mb-3"
+    >
+      For shoppers
+    </p>
+    <h1 class="text-3xl font-semibold tracking-tight text-white mb-4">
+      Talk shooter. Find stock.
+    </h1>
+    <p class="text-sm leading-relaxed text-zinc-400 mb-6">
+      On{" "}
+      <a href={LINKS.gse} class="text-sky-400 hover:underline" target="_blank" rel="noopener noreferrer"
+        >GunSearchEngine.com</a
+      >, Betsy helps you search participating retailers’ live catalogs — 300 BLK,
+      green tip, models, packs — then hands you off to licensed dealers to buy.
+    </p>
+    <img
+      src={CANON.range}
+      alt="Betsy at the range"
+      width="960"
+      height="640"
+      class="mb-8 w-full rounded-2xl object-cover max-h-72 ring-1 ring-zinc-700/80"
+    />
+    <ul class="mb-8 space-y-2 text-sm text-zinc-400 list-disc pl-5">
+      <li>Email the list when you want more than a few cards</li>
+      <li>Restock alerts via My Betsy</li>
+      <li>See anonymized market pulse on Betsy Live</li>
+    </ul>
+    <div class="flex flex-col gap-3 sm:flex-row">
+      <a
+        href={LINKS.gse}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex justify-center rounded-xl bg-sky-500 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-sky-400"
+      >
+        Search inventory →
+      </a>
+      <a
+        href={LINKS.betsyLive}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex justify-center rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-5 py-3 text-sm font-semibold text-emerald-100 hover:bg-emerald-500/20"
+      >
+        Betsy Live
+      </a>
+    </div>
+  </article>
+</BaseLayout>

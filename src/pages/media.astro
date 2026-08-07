@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { CANON, LINKS } from "../lib/links";
+---
+
+<BaseLayout
+  title="Media — Betsy AI Shorts & Social | 2aBetsy"
+  description="Follow Betsy AI on X @2ABetsy and YouTube @BetsyAI. Shorts, demand culture, and 2A-native AI content."
+  path="/media"
+  ogImage={CANON.headshot}
+>
+  <article class="mx-auto max-w-2xl px-4 py-12 sm:py-14">
+    <p
+      class="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-400 mb-3"
+    >
+      Media
+    </p>
+    <h1 class="text-3xl font-semibold tracking-tight text-white mb-4">
+      Follow Betsy
+    </h1>
+    <p class="text-sm leading-relaxed text-zinc-400 mb-8">
+      Demand-grounded posts and Shorts. Personality without the refusal theater.
+      Commercial deep-dives still land on GunSearchAgent and GunSearchEngine.
+    </p>
+    <div class="grid gap-3 sm:grid-cols-2 mb-10">
+      <a
+        href={LINKS.x}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5 hover:border-sky-500/40"
+      >
+        <p class="text-sm font-semibold text-white">X · @2ABetsy</p>
+        <p class="mt-1 text-xs text-zinc-500">Daily voice · demand culture</p>
+      </a>
+      <a
+        href={LINKS.youtube}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5 hover:border-sky-500/40"
+      >
+        <p class="text-sm font-semibold text-white">YouTube · @BetsyAI</p>
+        <p class="mt-1 text-xs text-zinc-500">Shorts · watch the channel</p>
+      </a>
+      <a
+        href={LINKS.youtubeShorts}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5 hover:border-sky-500/40 sm:col-span-2"
+      >
+        <p class="text-sm font-semibold text-white">YouTube Shorts</p>
+        <p class="mt-1 text-xs text-zinc-500">
+          Open the Shorts shelf on @BetsyAI
+        </p>
+      </a>
+    </div>
+    <img
+      src={CANON.cutout}
+      alt="Betsy AI"
+      width="600"
+      height="800"
+      class="mx-auto max-h-80 w-auto object-contain"
+    />
+  </article>
+</BaseLayout>

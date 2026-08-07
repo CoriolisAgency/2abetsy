@@ -1,0 +1,124 @@
+---
+import { LINKS } from "../lib/links";
+import { CANON } from "../lib/links";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+const nav = [
+  { href: "/about", label: "About" },
+  { href: "/for-dealers", label: "Dealers" },
+  { href: "/for-shoppers", label: "Shoppers" },
+  { href: "/for-brands", label: "Brands" },
+  { href: "/media", label: "Media" },
+  { href: "/start", label: "Start" },
+] as const;
+
+function active(href: string) {
+  return path === href || path.startsWith(href + "/");
+}
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-zinc-800/80 bg-[color-mix(in_srgb,#0a1220_92%,transparent)] backdrop-blur-md"
+>
+  <div
+    class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3"
+  >
+    <a href="/" class="flex items-center gap-2.5 min-w-0 group">
+      <img
+        src={CANON.headshot}
+        alt=""
+        width="36"
+        height="36"
+        class="h-9 w-9 rounded-xl object-cover ring-1 ring-sky-500/40 shadow-md shadow-sky-500/20"
+      />
+      <span class="min-w-0">
+        <span
+          class="block text-sm font-semibold tracking-wide text-white group-hover:text-sky-100"
+          >2aBetsy</span
+        >
+        <span class="block text-[10px] uppercase tracking-[0.14em] text-zinc-500"
+          >Betsy AI</span
+        >
+      </span>
+    </a>
+    <nav
+      class="flex flex-wrap items-center justify-end gap-1 sm:gap-1.5"
+      aria-label="Main"
+    >
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              "rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors",
+              active(item.href)
+                ? "border-sky-500/50 bg-sky-500/15 text-sky-200"
+                : "border-zinc-700 text-zinc-200 hover:bg-zinc-800",
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href={LINKS.betsyLive}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-lg border border-emerald-500/35 bg-emerald-500/10 px-2.5 py-1.5 text-xs font-medium text-emerald-200 hover:bg-emerald-500/20"
+      >
+        Betsy Live
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main class="flex-1">
+  <slot />
+</main>
+
+<footer class="border-t border-zinc-800/80 bg-[#0a1220]">
+  <div
+    class="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-8 text-sm text-zinc-400 sm:flex-row sm:items-start sm:justify-between"
+  >
+    <div class="space-y-1 max-w-sm">
+      <p class="font-medium text-zinc-200">Betsy AI · 2aBetsy.com</p>
+      <p class="text-xs leading-relaxed">
+        Demand intelligence for lawful 2A commerce. Built by{" "}
+        <a
+          href={LINKS.coriolis}
+          class="text-sky-400 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer">Coriolis Agency</a
+        >.
+      </p>
+    </div>
+    <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs">
+      <a href={LINKS.gsa} class="hover:text-sky-300" target="_blank" rel="noopener noreferrer"
+        >GunSearchAgent</a
+      >
+      <a href={LINKS.gse} class="hover:text-sky-300" target="_blank" rel="noopener noreferrer"
+        >GunSearchEngine</a
+      >
+      <a
+        href={LINKS.betsyLive}
+        class="hover:text-sky-300"
+        target="_blank"
+        rel="noopener noreferrer">Betsy Live</a
+      >
+      <a href={LINKS.x} class="hover:text-sky-300" target="_blank" rel="noopener noreferrer"
+        >X @2ABetsy</a
+      >
+      <a
+        href={LINKS.youtube}
+        class="hover:text-sky-300"
+        target="_blank"
+        rel="noopener noreferrer">YouTube</a
+      >
+      <a href="/press" class="hover:text-sky-300">Press</a>
+    </div>
+  </div>
+  <p class="pb-6 text-center text-[11px] text-zinc-600">
+    Not compliance software. Transfers stay with licensed retailers.
+  </p>
+</footer>

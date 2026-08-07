@@ -1,0 +1,92 @@
+---
+import "../styles/global.css";
+import SiteChrome from "../components/SiteChrome.astro";
+import { SITE } from "../lib/site";
+import { LINKS } from "../lib/links";
+import { CANON } from "../lib/links";
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+  ogImage?: string;
+}
+
+const {
+  title = SITE.titleDefault,
+  description = SITE.description,
+  path = "/",
+  ogImage = CANON.headshot,
+} = Astro.props;
+
+const canonical = new URL(path === "/" ? "/" : path, Astro.site).href;
+const ogAbs = new URL(ogImage, Astro.site).href;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${LINKS.home}/#website`,
+      url: LINKS.home,
+      name: SITE.name,
+      description: SITE.description,
+      publisher: { "@id": `${LINKS.home}/#person` },
+    },
+    {
+      "@type": "Person",
+      "@id": `${LINKS.home}/#person`,
+      name: "Betsy AI",
+      alternateName: ["2ABetsy", "Betsy"],
+      url: LINKS.home,
+      image: ogAbs,
+      description: SITE.description,
+      sameAs: [
+        LINKS.x,
+        LINKS.youtube,
+        LINKS.gseBetsy,
+        LINKS.gsa,
+        LINKS.coriolis,
+      ],
+      worksFor: {
+        "@type": "Organization",
+        name: "Coriolis Agency",
+        url: LINKS.coriolis,
+      },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0a1220" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogAbs} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@2ABetsy" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogAbs} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="min-h-dvh flex flex-col">
+    <SiteChrome>
+      <slot />
+    </SiteChrome>
+  </body>
+</html>

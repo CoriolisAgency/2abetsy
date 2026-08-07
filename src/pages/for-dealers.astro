@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { CANON, LINKS } from "../lib/links";
+---
+
+<BaseLayout
+  title="For Dealers — Free Demand Intelligence | Betsy AI"
+  description="Put Betsy on your FFL or 2A website: free demand dashboard powered by GunSearchAgent — Google Analytics replacement, not bounce rate."
+  path="/for-dealers"
+  ogImage={CANON.gaHero}
+>
+  <article class="mx-auto max-w-2xl px-4 py-12 sm:py-14">
+    <p
+      class="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-400 mb-3"
+    >
+      For dealers
+    </p>
+    <h1 class="text-3xl font-semibold tracking-tight text-white mb-4">
+      Google Analytics for your gun store
+    </h1>
+    <p class="text-sm leading-relaxed text-zinc-400 mb-6">
+      Early operators don’t ask for another chatbot. They ask what people came
+      to the site for.{" "}
+      <strong class="text-zinc-200"
+        >GunSearchAgent, powered by Betsy AI,</strong
+      >{" "}
+      shows demand on <em class="not-italic text-zinc-300">your</em> domain — free
+      forever for core intelligence.
+    </p>
+    <img
+      src={CANON.gaHero}
+      alt="Demand dashboard for FFL websites"
+      width="1200"
+      height="440"
+      class="mb-8 w-full rounded-2xl object-cover ring-1 ring-zinc-700/80"
+    />
+    <ul class="mb-8 space-y-3 text-sm text-zinc-400">
+      <li>
+        <strong class="text-zinc-200">What shoppers asked for</strong> — not vanity
+        sessions
+      </li>
+      <li>
+        <strong class="text-zinc-200">Map, funnel, morning brief</strong> — built
+        for owners, not analysts
+      </li>
+      <li>
+        <strong class="text-zinc-200">One script</strong> — observe mode needs no
+        product feed
+      </li>
+      <li>
+        <strong class="text-zinc-200">Optional inventory agent</strong> when you
+        connect a feed
+      </li>
+    </ul>
+    <div class="flex flex-col gap-3 sm:flex-row">
+      <a
+        href={LINKS.gsa}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex justify-center rounded-xl bg-sky-500 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-sky-400"
+      >
+        Create free agent →
+      </a>
+      <a
+        href={LINKS.gsaGa}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex justify-center rounded-xl border border-zinc-600 px-5 py-3 text-sm font-semibold text-zinc-100 hover:bg-zinc-800"
+      >
+        GA alternative for FFLs
+      </a>
+    </div>
+    <p class="mt-8 text-xs text-zinc-600">
+      Product install and commercial guides live on GunSearchAgent.com so we
+      don’t split SEO. This page is the brand door — the free agent is the
+      product.
+    </p>
+  </article>
+</BaseLayout>
