@@ -1,0 +1,438 @@
+---
+/**
+ * Betsy marketing email capture — same Madison Ave popup as GSE/GSA.
+ * Posts to GSE public /api/marketing/subscribe (CORS-enabled).
+ * Preview: ?capture=1
+ */
+import { CANON_PATHS } from "../lib/links";
+import { withBase } from "../lib/base";
+
+const headshotSrc = withBase(CANON_PATHS.headshot);
+const subscribeUrl = "https://www.gunsearchengine.com/api/marketing/subscribe";
+const marketingSource = "popup_2abetsy";
+---
+
+<div id="betsy-capture-root" hidden></div>
+
+<script
+  define:vars={{
+    headshotSrc,
+    subscribeUrl,
+    marketingSource,
+  }}
+>
+  (function () {
+    const CAPTURE = {
+      minDwellMs: 8000,
+      longDwellMs: 25000,
+      scrollDepth: 0.35,
+      minRoutes: 2,
+      dismissMs: 7 * 24 * 60 * 60 * 1000,
+    };
+    const STORAGE = {
+      subscribed: "2ab_mkt_subscribed",
+      dismiss: "2ab_mkt_dismiss",
+      shown: "2ab_mkt_shown",
+      sessionStart: "2ab_mkt_session_start",
+      routes: "2ab_mkt_routes",
+    };
+    const PATH_DENY = []; // brand site is all public marketing
+
+    function isCaptureFrequencyEnabled() {
+      const h = window.location.hostname;
+      if (h === "localhost" || h === "127.0.0.1" || h === "[::1]") return false;
+      return true;
+    }
+
+    function pathDenied(pathname) {
+      const p = pathname || "/";
+      return PATH_DENY.some(
+        (d) => p === d || p.startsWith(d + "/") || p.startsWith(d + "?")
+      );
+    }
+
+    function readLocal(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    }
+
+    function writeLocal(key, value) {
+      if (!isCaptureFrequencyEnabled()) return;
+      try {
+        localStorage.setItem(key, value);
+      } catch {
+        /* private mode */
+      }
+    }
+
+    function readSession(key) {
+      try {
+        return sessionStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    }
+
+    function writeSession(key, value) {
+      try {
+        sessionStorage.setItem(key, value);
+      } catch {
+        /* private mode */
+      }
+    }
+
+    function writeSessionShown() {
+      if (!isCaptureFrequencyEnabled()) return;
+      writeSession(STORAGE.shown, "1");
+    }
+
+    function isDismissCoolingDown() {
+      if (!isCaptureFrequencyEnabled()) return false;
+      const raw = readLocal(STORAGE.dismiss);
+      if (!raw) return false;
+      const t = parseInt(raw, 10);
+      if (!Number.isFinite(t)) return false;
+      return Date.now() - t < CAPTURE.dismissMs;
+    }
+
+    function frequencyBlocks() {
+      if (!isCaptureFrequencyEnabled()) return false;
+      if (readLocal(STORAGE.subscribed) === "1") return true;
+      if (isDismissCoolingDown()) return true;
+      if (readSession(STORAGE.shown) === "1") return true;
+      return false;
+    }
+
+    function ensureSessionStart() {
+      const existing = readSession(STORAGE.sessionStart);
+      if (existing) {
+        const t = parseInt(existing, 10);
+        if (Number.isFinite(t) && t > 0) return t;
+      }
+      const now = Date.now();
+      writeSession(STORAGE.sessionStart, String(now));
+      return now;
+    }
+
+    function trackRoute(pathname) {
+      let routes = [];
+      try {
+        const raw = sessionStorage.getItem(STORAGE.routes);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            routes = parsed.filter((x) => typeof x === "string");
+          }
+        }
+      } catch {
+        routes = [];
+      }
+      const p = pathname || "/";
+      if (!routes.includes(p)) {
+        routes.push(p);
+        writeSession(STORAGE.routes, JSON.stringify(routes));
+      }
+      return routes.length;
+    }
+
+    function measureScrollDepth() {
+      const el = document.documentElement;
+      const scrollable = el.scrollHeight - window.innerHeight;
+      if (scrollable <= 0) return 0;
+      return Math.min(1, Math.max(0, window.scrollY / scrollable));
+    }
+
+    function isDesktopViewport() {
+      const fine =
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(pointer: fine)").matches;
+      return fine && window.innerWidth >= 768;
+    }
+
+    function isComposeFocused() {
+      const el = document.activeElement;
+      if (!el || !(el instanceof HTMLElement)) return false;
+      if (el.classList.contains("betsy-capture__input")) return false;
+      const tag = el.tagName;
+      if (tag === "TEXTAREA") return true;
+      if (tag === "INPUT") {
+        const type = el.type || "text";
+        return !["button", "submit", "checkbox", "radio", "file", "hidden"].includes(
+          type
+        );
+      }
+      if (el.isContentEditable) return true;
+      return false;
+    }
+
+    function evaluateCapture(signals) {
+      if (signals.inputFocused) return { show: false, reason: null };
+      if (signals.dwellMs < CAPTURE.minDwellMs) return { show: false, reason: null };
+      if (signals.chatEngaged) return { show: true, reason: "chat" };
+      if (signals.scrollDepth >= CAPTURE.scrollDepth)
+        return { show: true, reason: "scroll" };
+      if (signals.routesInSession >= CAPTURE.minRoutes)
+        return { show: true, reason: "routes" };
+      if (signals.dwellMs >= CAPTURE.longDwellMs)
+        return { show: true, reason: "dwell" };
+      if (signals.isDesktop && signals.exitIntent)
+        return { show: true, reason: "exit" };
+      return { show: false, reason: null };
+    }
+
+    const pathname =
+      (window.location.pathname || "/").replace(/\/$/, "") || "/";
+    const forceCapture = new URLSearchParams(window.location.search).get(
+      "capture"
+    ) === "1";
+
+    let opened = false;
+    let maxScroll = 0;
+    let chatEngaged = false;
+    let exitIntent = false;
+    let sessionStart = ensureSessionStart();
+    let routesCount = trackRoute(pathname);
+    let openEl = null;
+    let prevOverflow = "";
+    let prevPad = "";
+
+    function dismiss() {
+      writeLocal(STORAGE.dismiss, String(Date.now()));
+      if (openEl) {
+        openEl.remove();
+        openEl = null;
+      }
+      document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPad;
+      window.removeEventListener("keydown", onKey);
+    }
+
+    function onKey(e) {
+      if (e.key === "Escape") dismiss();
+    }
+
+    function showDone(mode) {
+      if (!openEl) return;
+      const copy = openEl.querySelector(".betsy-capture__copy");
+      if (!copy) return;
+      const headline =
+        mode === "activation" ? "Check your inbox" : "You're on the list";
+      const lede =
+        mode === "activation"
+          ? "Activation link is on the way. After that, product updates and demand highlights land in your inbox."
+          : "Product updates and demand highlights. Unsubscribe anytime from the email footer.";
+      copy.innerHTML =
+        '<p class="betsy-capture__eyebrow">betsy@updates · subscribed</p>' +
+        '<h2 id="betsy-capture-title" class="betsy-capture__headline">' +
+        headline +
+        "</h2>" +
+        '<p class="betsy-capture__lede">' +
+        lede +
+        "</p>" +
+        '<button type="button" class="betsy-capture__cta" data-capture-done>Done</button>';
+      copy.querySelector("[data-capture-done]")?.addEventListener("click", dismiss);
+    }
+
+    function tryOpen(reason) {
+      if (opened) return;
+      if (pathDenied(pathname) && reason !== "force") return;
+      if (frequencyBlocks() && reason !== "force") return;
+      opened = true;
+      writeSessionShown();
+      if (reason !== "force") {
+        console.info("[betsy-capture] show", reason);
+      }
+
+      const root = document.createElement("div");
+      root.className = "betsy-capture";
+      root.setAttribute("role", "dialog");
+      root.setAttribute("aria-modal", "true");
+      root.setAttribute("aria-labelledby", "betsy-capture-title");
+      root.innerHTML =
+        '<button type="button" class="betsy-capture__scrim" aria-label="Dismiss" data-capture-dismiss></button>' +
+        '<div class="betsy-capture__stage">' +
+        '<article class="betsy-capture__card">' +
+        '<div class="betsy-capture__ribbon" aria-hidden="true">' +
+        '<span class="betsy-capture__ribbon-red"></span>' +
+        '<span class="betsy-capture__ribbon-white"></span>' +
+        '<span class="betsy-capture__ribbon-blue"></span>' +
+        "</div>" +
+        '<button type="button" class="betsy-capture__x" aria-label="Close" data-capture-dismiss><span aria-hidden="true">×</span></button>' +
+        '<div class="betsy-capture__portrait-wrap">' +
+        '<div class="betsy-capture__orbit" aria-hidden="true"></div>' +
+        '<div class="betsy-capture__orbit betsy-capture__orbit--2" aria-hidden="true"></div>' +
+        '<div class="betsy-capture__portrait">' +
+        '<img src="' +
+        headshotSrc +
+        '" alt="Betsy AI" width="200" height="200" class="betsy-capture__photo" decoding="async" />' +
+        "</div>" +
+        '<div class="betsy-capture__badge">Betsy</div>' +
+        "</div>" +
+        '<div class="betsy-capture__copy">' +
+        '<p class="betsy-capture__eyebrow">betsy@updates · live</p>' +
+        '<h2 id="betsy-capture-title" class="betsy-capture__headline">Want me to keep you updated?</h2>' +
+        '<p class="betsy-capture__lede">Restocks, inventory finds, and demand highlights — straight from me. No noise. Unsubscribe anytime.</p>' +
+        '<form class="betsy-capture__form" data-capture-form>' +
+        '<label class="sr-only" for="betsy-capture-email">Email address</label>' +
+        '<div class="betsy-capture__field">' +
+        '<input id="betsy-capture-email" type="email" name="email" autocomplete="email" required placeholder="your@email.com" class="betsy-capture__input" />' +
+        '<button type="submit" class="betsy-capture__cta betsy-capture__cta--inline" data-capture-submit>Keep me updated</button>' +
+        "</div>" +
+        '<p class="betsy-capture__error" role="alert" data-capture-error hidden></p>' +
+        "</form>" +
+        '<p class="betsy-capture__fine">Free account if you&apos;re new · Activation by email · ' +
+        '<button type="button" class="betsy-capture__skip" data-capture-dismiss>Not now</button></p>' +
+        "</div></article></div>";
+
+      document.body.appendChild(root);
+      openEl = root;
+
+      prevOverflow = document.body.style.overflow;
+      prevPad = document.body.style.paddingRight;
+      const sb = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = "hidden";
+      if (sb > 0) document.body.style.paddingRight = sb + "px";
+
+      requestAnimationFrame(function () {
+        root.classList.add("betsy-capture--in");
+      });
+
+      root.querySelectorAll("[data-capture-dismiss]").forEach(function (btn) {
+        btn.addEventListener("click", dismiss);
+      });
+      window.addEventListener("keydown", onKey);
+
+      const form = root.querySelector("[data-capture-form]");
+      const input = root.querySelector("#betsy-capture-email");
+      const submitBtn = root.querySelector("[data-capture-submit]");
+      const errEl = root.querySelector("[data-capture-error]");
+      if (input instanceof HTMLInputElement) {
+        setTimeout(function () {
+          input.focus();
+        }, 50);
+      }
+
+      form?.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        if (!(input instanceof HTMLInputElement)) return;
+        const email = input.value.trim();
+        if (errEl) {
+          errEl.hidden = true;
+          errEl.textContent = "";
+        }
+        if (submitBtn instanceof HTMLButtonElement) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "…";
+        }
+        try {
+          const res = await fetch(subscribeUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, source: marketingSource }),
+          });
+          const data = await res.json().catch(function () {
+            return {};
+          });
+          if (!res.ok) {
+            const msg =
+              data.error ||
+              (res.status === 429
+                ? "Too many attempts. Try again later."
+                : "Could not subscribe. Try again.");
+            if (errEl) {
+              errEl.hidden = false;
+              errEl.textContent = msg;
+            }
+            if (submitBtn instanceof HTMLButtonElement) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Keep me updated";
+            }
+            return;
+          }
+          writeLocal(STORAGE.subscribed, "1");
+          showDone(data.needs_activation ? "activation" : "ok");
+        } catch {
+          if (errEl) {
+            errEl.hidden = false;
+            errEl.textContent = "Network error. Try again.";
+          }
+          if (submitBtn instanceof HTMLButtonElement) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Keep me updated";
+          }
+        }
+      });
+    }
+
+    function evaluate() {
+      if (opened) return;
+      if (pathDenied(pathname)) return;
+      if (frequencyBlocks()) return;
+
+      const dwellMs = Date.now() - sessionStart;
+      const result = evaluateCapture({
+        dwellMs: dwellMs,
+        scrollDepth: maxScroll,
+        routesInSession: routesCount,
+        chatEngaged: chatEngaged,
+        exitIntent: exitIntent,
+        inputFocused: isComposeFocused(),
+        isDesktop: isDesktopViewport(),
+      });
+
+      if (!isCaptureFrequencyEnabled()) {
+        if (result.show && result.reason) {
+          tryOpen(result.reason);
+          return;
+        }
+        if (
+          dwellMs >= CAPTURE.longDwellMs &&
+          !isComposeFocused() &&
+          !pathDenied(pathname)
+        ) {
+          tryOpen("dwell");
+        }
+        return;
+      }
+
+      if (result.show && result.reason) tryOpen(result.reason);
+    }
+
+    if (forceCapture) {
+      tryOpen("force");
+      return;
+    }
+
+    maxScroll = Math.max(maxScroll, measureScrollDepth());
+
+    window.addEventListener(
+      "scroll",
+      function () {
+        const d = measureScrollDepth();
+        if (d > maxScroll) maxScroll = d;
+        evaluate();
+      },
+      { passive: true }
+    );
+
+    document.addEventListener("mouseout", function (e) {
+      if (!isDesktopViewport()) return;
+      if (e.clientY > 0) return;
+      exitIntent = true;
+      evaluate();
+    });
+
+    document.addEventListener("focusin", evaluate);
+    document.addEventListener("focusout", evaluate);
+    window.addEventListener("gse:chat-engaged", function () {
+      chatEngaged = true;
+      evaluate();
+    });
+
+    setInterval(evaluate, 500);
+    evaluate();
+  })();
+</script>

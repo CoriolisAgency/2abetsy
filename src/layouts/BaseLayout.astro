@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import SiteChrome from "../components/SiteChrome.astro";
+import BetsyEmailCapture from "../components/BetsyEmailCapture.astro";
 import { SITE } from "../lib/site";
 import { LINKS, CANON_PATHS } from "../lib/links";
 import { withBase } from "../lib/base";
@@ -101,6 +102,7 @@ const jsonLd = {
     <SiteChrome>
       <slot />
     </SiteChrome>
+    <BetsyEmailCapture />
     {/* GunSearchEngine embed — demand + Betsy on brand site (observe/intent via site_key) */}
     <script
       is:inline
