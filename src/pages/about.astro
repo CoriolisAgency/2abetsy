@@ -12,6 +12,8 @@ const gsaPillars = [
   { href: LINKS.gsaDealers, label: "AI for gun dealers" },
   { href: LINKS.gsaGunStoreAi, label: "Gun store AI" },
   { href: LINKS.gsaHowTo, label: "How to install" },
+  { href: LINKS.myBetsy, label: "My Betsy (hardware)" },
+  { href: LINKS.whyMyBetsy, label: "Why My Betsy?" },
 ] as const;
 
 const gsePillars = [
@@ -65,8 +67,9 @@ const pill =
         person-first brand for the tools that help{" "}
         <a href={LINKS.gsa} class={linkClass} {...ext}>dealers</a> measure real
         shopper intent on{" "}
-        <a href={LINKS.gsa} class={linkClass} {...ext}>GunSearchAgent</a> and
-        help{" "}
+        <a href={LINKS.gsa} class={linkClass} {...ext}>GunSearchAgent</a>, put{" "}
+        <a href={LINKS.myBetsy} class={linkClass} {...ext}>My Betsy</a> on the
+        sales floor, and help{" "}
         <a href={LINKS.gse} class={linkClass} {...ext}>shoppers</a> find live
         inventory on{" "}
         <a href={LINKS.gse} class={linkClass} {...ext}>GunSearchEngine</a>
@@ -104,6 +107,15 @@ const pill =
           >,{" "}
           <a href={LINKS.gsaHowTo} class={linkClass} {...ext}>how to install</a
           >)
+        </li>
+        <li>
+          <a href={LINKS.myBetsy} class={linkClass} {...ext}>My Betsy</a>
+          {" — "}
+          in-store hardware for the sales floor: walk-in phones, live stock,
+          Floor Specials, aisle demand (
+          <a href={LINKS.whyMyBetsy} class={linkClass} {...ext}
+            >why My Betsy</a
+          >). Early pilot — not a POS or 4473 system.
         </li>
         <li>
           <a href={LINKS.gse} class={linkClass} {...ext}>GunSearchEngine</a>

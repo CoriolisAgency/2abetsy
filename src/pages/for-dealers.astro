@@ -52,8 +52,13 @@ import { withBase } from "../lib/base";
         <strong class="text-zinc-200">Optional inventory agent</strong> when you
         connect a feed
       </li>
+      <li>
+        <strong class="text-zinc-200">My Betsy on the floor</strong> — in-store
+        hardware for walk-ins: live stock, Floor Specials, aisle demand next to
+        website demand. Early pilot.
+      </li>
     </ul>
-    <div class="flex flex-col gap-3 sm:flex-row">
+    <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
       <a
         href={LINKS.gsa}
         target="_blank"
@@ -61,6 +66,14 @@ import { withBase } from "../lib/base";
         class="inline-flex justify-center rounded-xl bg-sky-500 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-sky-400"
       >
         Create free agent →
+      </a>
+      <a
+        href={LINKS.myBetsy}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex justify-center rounded-xl border border-sky-500/40 bg-sky-500/10 px-5 py-3 text-sm font-semibold text-sky-100 hover:bg-sky-500/20"
+      >
+        Meet My Betsy
       </a>
       <a
         href={LINKS.gsaGa}
@@ -71,10 +84,22 @@ import { withBase } from "../lib/base";
         GA alternative for FFLs
       </a>
     </div>
+    <p class="mt-6 text-sm leading-relaxed text-zinc-400">
+      Online Betsy is for discovery at home.{" "}
+      <a
+        href={LINKS.whyMyBetsy}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-sky-400 hover:underline">My Betsy</a
+      >{" "}
+      is for the aisle — when staff is busy and phones are already out. Plug in
+      a counter unit; shoppers join store Wi‑Fi or scan a QR. No app. No POS
+      project.
+    </p>
     <p class="mt-8 text-xs text-zinc-600">
       Product install and commercial guides live on GunSearchAgent.com so we
-      don’t split SEO. This page is the brand door — the free agent is the
-      product.
+      don’t split SEO. This page is the brand door — free agent + My Betsy
+      hardware pages are the product.
     </p>
   </article>
 </BaseLayout>

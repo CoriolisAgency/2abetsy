@@ -5,10 +5,11 @@ Static brand site for **Betsy AI** (Astro → GitHub Pages).
 ## Product lattice
 
 - **This site:** character, culture, media, brand SEO
-- **GunSearchAgent.com:** dealer product (GA for FFLs)
+- **GunSearchAgent.com:** dealer product (GA for FFLs) + **My Betsy** in-store hardware (`/my-betsy`, `/why-my-betsy`)
 - **GunSearchEngine.com:** shoppers + **Betsy Live** (`/insights`) + platform + BI
+- **Naming:** My Betsy **hardware** = sales floor (GSA). Shopper account on GSE is `/mybetsy` — different surface; don’t conflate on brand pages.
 
-Do **not** rebuild demand dashboards or chat here. Link out.
+Do **not** rebuild demand dashboards, chat, or hardware product pages here. Link out.
 
 ## Canon
 

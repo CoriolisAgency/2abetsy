@@ -53,7 +53,14 @@ import { SITE } from "../lib/site";
             target="_blank"
             rel="noopener noreferrer">Google Analytics replacement</a
           >{" "}
-          job), multi-dealer discovery on{" "}
+          job),{" "}
+          <a
+            href={LINKS.myBetsy}
+            class="font-semibold text-blue-400 underline decoration-blue-400 underline-offset-2 hover:text-blue-300"
+            target="_blank"
+            rel="noopener noreferrer">My Betsy</a
+          >{" "}
+          on the sales floor (in-store hardware), multi-dealer discovery on{" "}
           <a
             href={LINKS.gse}
             class="font-semibold text-blue-400 underline decoration-blue-400 underline-offset-2 hover:text-blue-300"
@@ -73,6 +80,7 @@ import { SITE } from "../lib/site";
           class="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-zinc-500"
         >
           <li>✓ Free forever core for dealers</li>
+          <li>✓ My Betsy on the sales floor</li>
           <li>✓ Live demand on GunSearchEngine</li>
           <li>✓ @2ABetsy on X · @BetsyAI on YouTube</li>
         </ul>
@@ -100,7 +108,7 @@ import { SITE } from "../lib/site";
     >
       Where she works
     </p>
-    <div class="grid gap-3 sm:grid-cols-3">
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {
         [
           {
@@ -108,6 +116,12 @@ import { SITE } from "../lib/site";
             d: "Google Analytics for FFLs — what shoppers asked for, map, morning brief. Free forever core.",
             href: LINKS.gsa,
             cta: "Create free agent →",
+          },
+          {
+            t: "Floor · My Betsy",
+            d: "In-store hardware for walk-ins — live stock, Floor Specials, aisle demand. No app. No POS project.",
+            href: LINKS.myBetsy,
+            cta: "Meet My Betsy →",
           },
           {
             t: "Betsy Live · Insights",
@@ -187,8 +201,9 @@ import { SITE } from "../lib/site";
     >
       <h2 class="text-lg font-semibold text-sky-50">Ready when you are</h2>
       <p class="mt-2 max-w-2xl text-sm text-zinc-400">
-        Run a store? Put free demand intelligence on your site. Curious about
-        the market? Watch Betsy Live. Shopping? Search participating dealers.
+        Run a store? Put free demand intelligence on your site — and My Betsy on
+        the floor when you’re ready. Curious about the market? Watch Betsy Live.
+        Shopping? Search participating dealers.
       </p>
       <div class="mt-5">
         <CtaRow />

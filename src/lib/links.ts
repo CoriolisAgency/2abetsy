@@ -11,6 +11,9 @@ export const LINKS = {
   gsaGunStoreAi: "https://gunsearchagent.com/gun-store-ai",
   gsaHowTo:
     "https://gunsearchagent.com/how-to-add-ai-search-to-your-gun-store",
+  /** My Betsy — in-store hardware (sales floor). Commercial pages on GSA. */
+  myBetsy: "https://gunsearchagent.com/my-betsy",
+  whyMyBetsy: "https://gunsearchagent.com/why-my-betsy",
   gse: "https://www.gunsearchengine.com",
   /** Betsy Live — network demand viz (not rebuilt here) */
   betsyLive: "https://www.gunsearchengine.com/insights",
