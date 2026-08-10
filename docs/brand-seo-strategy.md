@@ -7,10 +7,8 @@
 | Site | Job |
 |------|-----|
 | **2aBetsy.com** | Meet Betsy, trust, media, brand search |
-| **GunSearchAgent.com** | Free dealer product — Google Analytics for FFLs |
-| **GunSearchEngine.com** | Shopper search, **Betsy Live** (`/insights`), ontology, Brand Intelligence |
-
-Live demand is **not** reimplemented here. CTAs send users to **Betsy Live** on GSE.
+| **GunSearchAgent.com** | Free forever **core** dealer product — Google Analytics **replacement** for FFLs + inventory sync |
+| **GunSearchEngine.com** | Shopper search, **Betsy Live**, **Betsy Alerts**, ontology, Brand Intelligence |
 
 ## Positioning
 
@@ -18,17 +16,24 @@ Live demand is **not** reimplemented here. CTAs send users to **Betsy Live** on 
 - Not a chatbot product home. Not a second dealer dashboard.
 - Voice: person at the counter; gun-friendly; no compliance theater.
 
+## Naming (do not blur)
+
+- **My Betsy** = in-store hardware (GSA) only  
+- **Betsy Alerts** = shopper watches on GSE  
+- **Betsy Live** = public demand map (`/betsy-live`)  
+- **Brand Intelligence** = OEM product on GSE  
+
 ## SEO rules
 
 1. Operator commercial SERPs rank on **GSA** (soft CTA only here).
 2. Brand entity SERPs (*Betsy AI*, *2A Betsy*) rank here.
-3. Platform / Insights / shopper search rank on **GSE**.
+3. Platform / Betsy Live / shopper search rank on **GSE**.
 4. No 4473 / ATF automation claims.
 5. `sameAs`: X @2ABetsy, YouTube @BetsyAI, GSE `/betsy`, GSA, Coriolis.
 
 ## Canon assets
 
-Still imagery copied from GSE `public/betsy/images/` (headshot, range, outside, cutout, GA hero, Art of Demand). Prefer professional canon for brand home.
+Still imagery from GSE `public/betsy/images/` (headshot, range, outside, cutout, GA hero, Art of Demand). Prefer professional canon for brand home.
 
 ## Hosting
 

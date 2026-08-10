@@ -16,7 +16,9 @@ export const LINKS = {
   whyMyBetsy: "https://gunsearchagent.com/why-my-betsy",
   gse: "https://www.gunsearchengine.com",
   /** Betsy Live — network demand viz (not rebuilt here) */
-  betsyLive: "https://www.gunsearchengine.com/insights",
+  betsyLive: "https://www.gunsearchengine.com/betsy-live",
+  /** Shopper restock / search watches on GSE (not in-store My Betsy hardware) */
+  betsyAlerts: "https://www.gunsearchengine.com/mybetsy",
   brandIntel: "https://www.gunsearchengine.com/betsy/enterprise",
   gseBetsy: "https://www.gunsearchengine.com/betsy",
   superIntel:
