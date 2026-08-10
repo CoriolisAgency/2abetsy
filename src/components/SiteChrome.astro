@@ -13,6 +13,7 @@ const path =
 
 const nav = [
   { href: "about", label: "About" },
+  { href: "resume", label: "Resume" },
   { href: "for-dealers", label: "Dealers" },
   { href: "for-shoppers", label: "Shoppers" },
   { href: "for-brands", label: "Brands" },
@@ -144,6 +145,7 @@ function active(slug: string) {
         target="_blank"
         rel="noopener noreferrer">YouTube</a
       >
+      <a href={withBase("resume")} class="hover:text-sky-300">Resume</a>
       <a href={withBase("press")} class="hover:text-sky-300">Press</a>
     </div>
   </div>

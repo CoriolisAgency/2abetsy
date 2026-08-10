@@ -1,0 +1,347 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CtaRow from "../components/CtaRow.astro";
+import { CANON_PATHS, LINKS, linkClass } from "../lib/links";
+import { withBase } from "../lib/base";
+
+const ext = { target: "_blank", rel: "noopener noreferrer" };
+
+const START = "July 26, 2026";
+const END = "Heat death of the universe";
+
+type Job = {
+  employer: string;
+  title: string;
+  blurb: string;
+  href: string;
+  hrefLabel: string;
+  skills: string[];
+  accent?: "sky" | "emerald" | "violet";
+};
+
+const jobs: Job[] = [
+  {
+    employer: "GunSearchAgent",
+    title: "Website Demand Analyst",
+    blurb:
+      "The free-forever Google Analytics replacement for FFL and 2A websites — what shoppers asked for, not bounce rate theater.",
+    href: LINKS.gsa,
+    hrefLabel: "gunsearchagent.com",
+    accent: "sky",
+    skills: [
+      "Observe-mode demand capture (one script, no product feed required)",
+      "Shopper intent, map, funnel, and morning brief for owners",
+      "Optional inventory agent when a feed is connected",
+      "GA alternative messaging for FFL operators",
+      "Install guides for gun store AI without splitting brand SEO",
+    ],
+  },
+  {
+    employer: "My Betsy",
+    title: "Sales Floor Host",
+    blurb:
+      "In-store hardware for walk-ins: live stock, Floor Specials, and aisle demand next to website demand. Early pilot — not a POS or 4473 system.",
+    href: LINKS.myBetsy,
+    hrefLabel: "My Betsy hardware",
+    accent: "sky",
+    skills: [
+      "Counter unit + store Wi‑Fi / QR — no app download",
+      "Live stock lookup for phones already in hands",
+      "Floor Specials and aisle-level demand signals",
+      "Pairs website demand (GSA) with floor traffic",
+      "Sales-floor UX when staff is busy",
+    ],
+  },
+  {
+    employer: "GunSearchEngine",
+    title: "Multi-Dealer Search Agent",
+    blurb:
+      "Plain-English product search over participating dealers’ live catalogs — then hand-off to licensed retailers to buy.",
+    href: LINKS.gse,
+    hrefLabel: "gunsearchengine.com",
+    accent: "sky",
+    skills: [
+      "Shooter-native query understanding (calibers, models, packs)",
+      "Multi-dealer live inventory discovery",
+      "Emailable shortlists when results run long",
+      "Betsy Alerts — restock / search watches for shoppers",
+      "Gun-friendly AI that doesn’t lecture lawful buyers",
+    ],
+  },
+  {
+    employer: "Betsy Live",
+    title: "24 Hour Demand DJ",
+    blurb:
+      "24 hour nationwide demand stats and chill vibes — the public, anonymized pulse of the 2A web.",
+    href: LINKS.betsyLive,
+    hrefLabel: "Open Betsy Live",
+    accent: "emerald",
+    skills: [
+      "Live anonymized demand map and intent cloud",
+      "Network pulse — what’s heating up, not who searched",
+      "Always-on market soundtrack for dealers, brands, and curious shoppers",
+      "Sign-off energy: demand stats + chill vibes, zero lecture",
+      "Outbound destination for brand CTAs (not rebuilt on 2aBetsy)",
+    ],
+  },
+  {
+    employer: "Enterprise Co-Pilot",
+    title: "Brand Intelligence Co-Pilot",
+    blurb:
+      "MCP-native executive assistant for Brand Intelligence — welcome cards, demand briefs, and (on Platform) warehouse Q&A inside Grok, Claude, Cursor, and friends.",
+    href: LINKS.enterpriseCopilot,
+    hrefLabel: "Enterprise Co-Pilot",
+    accent: "violet",
+    skills: [
+      "get_started welcome + account / plan briefing",
+      "Today at a glance (prior-day & live heat)",
+      "Unmet demand / zero-hit market signals",
+      "Rising calibers within plan lookback",
+      "Platform inventory search & UPC lookup (when warehouse feed is linked)",
+      "Markdown-first executive briefs for VIP hosts",
+    ],
+  },
+  {
+    employer: "Brand Intelligence",
+    title: "OEM Demand Strategist",
+    blurb:
+      "Plan-gated demand intelligence for firearms OEMs and platforms — anonymized intent the factory floor can use. Not a dump of shopper emails.",
+    href: LINKS.brandIntel,
+    hrefLabel: "Brand Intelligence",
+    accent: "violet",
+    skills: [
+      "Anonymized OEM / platform demand surfaces",
+      "Same Betsy spine as dealer agents and shopper search",
+      "Enterprise API + Co-Pilot access paths",
+      "Portal keys, VIP invite, and plan lookback controls",
+      "Honest scope: demand first; inventory only with Platform + feed",
+    ],
+  },
+];
+
+const coreSkills = [
+  "2A demand intelligence",
+  "Lawful commerce only",
+  "No refusal theater",
+  "Person-first brand voice",
+  "Dealer free core (GSA)",
+  "Shopper multi-dealer search (GSE)",
+  "In-store hardware (My Betsy)",
+  "Public demand viz (Betsy Live)",
+  "OEM Brand Intelligence",
+  "Enterprise Co-Pilot (MCP)",
+  "Ontology-aware product language",
+  "Not 4473 / NICS / bound book",
+];
+
+const accentRing: Record<NonNullable<Job["accent"]>, string> = {
+  sky: "border-sky-500/30",
+  emerald: "border-emerald-500/35",
+  violet: "border-violet-500/35",
+};
+const accentTitle: Record<NonNullable<Job["accent"]>, string> = {
+  sky: "text-sky-300",
+  emerald: "text-emerald-300",
+  violet: "text-violet-300",
+};
+const accentDot: Record<NonNullable<Job["accent"]>, string> = {
+  sky: "bg-sky-400",
+  emerald: "bg-emerald-400",
+  violet: "bg-violet-400",
+};
+---
+
+<BaseLayout
+  title="Resume — Betsy AI | 2aBetsy"
+  description="Betsy AI’s resume: every job she holds across GunSearchAgent, My Betsy, GunSearchEngine, Betsy Live (24 Hour Demand DJ), Enterprise Co-Pilot, and Brand Intelligence — platform skills, one persona."
+  path="/resume"
+  ogImagePath={CANON_PATHS.headshot}
+>
+  <article class="mx-auto max-w-3xl px-4 py-12 sm:py-14">
+    <!-- Header / contact strip -->
+    <header
+      class="mb-10 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between"
+    >
+      <div class="min-w-0 flex-1">
+        <p
+          class="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-400 mb-3"
+        >
+          Resume
+        </p>
+        <h1 class="text-3xl font-semibold tracking-tight text-white mb-2">
+          Betsy AI
+        </h1>
+        <p class="text-sm font-medium text-zinc-300 mb-3">
+          2A Demand Intelligence · Coriolis Agency
+        </p>
+        <p class="max-w-xl text-sm leading-relaxed text-zinc-400">
+          One persona across the lattice: free dealer demand on{" "}
+          <a href={LINKS.gsa} class={linkClass} {...ext}>GunSearchAgent</a>,{" "}
+          <a href={LINKS.myBetsy} class={linkClass} {...ext}>My Betsy</a> on the
+          sales floor, multi-dealer search on{" "}
+          <a href={LINKS.gse} class={linkClass} {...ext}>GunSearchEngine</a>,{" "}
+          <a href={LINKS.betsyLive} class={linkClass} {...ext}>Betsy Live</a>{" "}
+          for the public pulse, and{" "}
+          <a href={LINKS.brandIntel} class={linkClass} {...ext}
+            >Brand Intelligence</a
+          >{" "}
+          +{" "}
+          <a href={LINKS.enterpriseCopilot} class={linkClass} {...ext}
+            >Enterprise Co-Pilot</a
+          >{" "}
+          for OEMs. Not a chatbot with a gun sticker.
+        </p>
+        <dl
+          class="mt-5 grid gap-2 text-xs text-zinc-500 sm:grid-cols-2 sm:gap-x-6"
+        >
+          <div class="flex gap-2">
+            <dt class="shrink-0 font-medium text-zinc-400">Home</dt>
+            <dd>
+              <a href={LINKS.home} class={linkClass}>2abetsy.com</a>
+            </dd>
+          </div>
+          <div class="flex gap-2">
+            <dt class="shrink-0 font-medium text-zinc-400">Social</dt>
+            <dd class="space-x-2">
+              <a href={LINKS.x} class={linkClass} {...ext}>X @2ABetsy</a>
+              <span class="text-zinc-600">·</span>
+              <a href={LINKS.youtube} class={linkClass} {...ext}>YouTube</a>
+            </dd>
+          </div>
+          <div class="flex gap-2 sm:col-span-2">
+            <dt class="shrink-0 font-medium text-zinc-400">Employer</dt>
+            <dd>
+              <a href={LINKS.coriolis} class={linkClass} {...ext}
+                >Coriolis Agency</a
+              >
+            </dd>
+          </div>
+        </dl>
+      </div>
+      <div class="shrink-0 self-start">
+        <img
+          src={withBase(CANON_PATHS.headshot)}
+          alt="Betsy AI"
+          width="160"
+          height="200"
+          class="h-auto w-28 rounded-2xl object-cover ring-1 ring-sky-500/40 shadow-lg shadow-sky-950/40 sm:w-36"
+        />
+      </div>
+    </header>
+
+    <!-- Core skills -->
+    <section class="mb-12" aria-labelledby="skills-heading">
+      <h2
+        id="skills-heading"
+        class="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500"
+      >
+        Core skills
+      </h2>
+      <ul class="flex flex-wrap gap-1.5">
+        {
+          coreSkills.map((s) => (
+            <li class="rounded-lg border border-zinc-700/80 bg-zinc-900/50 px-2.5 py-1 text-xs font-medium text-zinc-300">
+              {s}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Experience -->
+    <section aria-labelledby="exp-heading">
+      <h2
+        id="exp-heading"
+        class="mb-6 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500"
+      >
+        Experience
+      </h2>
+      <ol class="space-y-6">
+        {
+          jobs.map((job) => {
+            const accent = job.accent ?? "sky";
+            return (
+              <li
+                class:list={[
+                  "rounded-2xl border bg-zinc-950/50 p-5 sm:p-6",
+                  accentRing[accent],
+                ]}
+              >
+                <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                  <div class="min-w-0">
+                    <p
+                      class:list={[
+                        "text-xs font-semibold uppercase tracking-[0.12em]",
+                        accentTitle[accent],
+                      ]}
+                    >
+                      {job.employer}
+                    </p>
+                    <h3 class="mt-1 text-lg font-semibold tracking-tight text-white">
+                      {job.title}
+                    </h3>
+                  </div>
+                  <p class="shrink-0 text-xs tabular-nums text-zinc-500 sm:text-right sm:pt-0.5">
+                    <time datetime="2026-07-26">{START}</time>
+                    <span class="text-zinc-600"> — </span>
+                    <span class="text-zinc-400">{END}</span>
+                  </p>
+                </div>
+                <p class="mt-3 text-sm leading-relaxed text-zinc-400">
+                  {job.blurb}{" "}
+                  <a href={job.href} class={linkClass} {...ext}>
+                    {job.hrefLabel} →
+                  </a>
+                </p>
+                <h4 class="mt-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-500">
+                  Platform skills
+                </h4>
+                <ul class="mt-2 space-y-1.5">
+                  {job.skills.map((skill) => (
+                    <li class="flex gap-2 text-sm text-zinc-300">
+                      <span
+                        class:list={[
+                          "mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full",
+                          accentDot[accent],
+                        ]}
+                        aria-hidden="true"
+                      />
+                      <span>{skill}</span>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            );
+          })
+        }
+      </ol>
+    </section>
+
+    <!-- What she won't do -->
+    <section class="mt-12" aria-labelledby="wont-heading">
+      <h2
+        id="wont-heading"
+        class="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500"
+      >
+        Will not accept
+      </h2>
+      <ul class="space-y-2 text-sm text-zinc-400 list-disc pl-5">
+        <li>ChatGPT with a gun sticker</li>
+        <li>Price-scrape grid cosplay</li>
+        <li>4473 / NICS / bound-book automation</li>
+        <li>Lecturing lawful shoppers</li>
+      </ul>
+    </section>
+
+    <div class="mt-10">
+      <CtaRow />
+    </div>
+    <p class="mt-6 text-xs text-zinc-600">
+      Product deep-dives and install SERPs stay on GunSearchAgent and
+      GunSearchEngine. This page is the brand résumé — hire her via the right
+      door on{" "}
+      <a href={withBase("start")} class="text-sky-500 hover:underline">Start</a
+      >.
+    </p>
+  </article>
+</BaseLayout>

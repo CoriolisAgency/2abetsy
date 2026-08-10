@@ -20,6 +20,9 @@ export const LINKS = {
   /** Shopper restock / search watches on GSE (not in-store My Betsy hardware) */
   betsyAlerts: "https://www.gunsearchengine.com/mybetsy",
   brandIntel: "https://www.gunsearchengine.com/betsy/enterprise",
+  /** Brand Intelligence Enterprise Co-Pilot (MCP) */
+  enterpriseCopilot:
+    "https://www.gunsearchengine.com/betsy/enterprise-copilot",
   gseBetsy: "https://www.gunsearchengine.com/betsy",
   superIntel:
     "https://www.gunsearchengine.com/betsy/super-intelligence-for-ffls",
