@@ -31,9 +31,17 @@ export type DemandStoreProduct = {
   badge: "hot" | "trending" | null;
 };
 
+/** Betsy Live–style board within a product-type section. */
+export type DemandStoreBoard = "leaders" | "trending";
+
 export type DemandStoreSection = {
   id: string;
   label: string;
+  leaders: DemandStoreProduct[];
+  trending: DemandStoreProduct[];
+  /** Board with more products (tie → leaders). */
+  defaultBoard: DemandStoreBoard;
+  /** products for the default board (compat). */
   products: DemandStoreProduct[];
 };
 

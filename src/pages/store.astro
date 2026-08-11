@@ -6,7 +6,7 @@ import { withBase } from "../lib/base";
 
 <BaseLayout
   title="Betsy AI Store — Prior 24h Demand | 2aBetsy"
-  description="Automated gun & ammo shelf ranked by previous 24-hour Betsy AI demand, refreshed nightly. One row per product type from real demand. Tap a card to open the dealer page."
+  description="Automated gun & ammo shelf ranked by Betsy AI demand — Leaders and Trending tabs per product type, like Betsy Live. Tap a card to open the dealer page."
   path="/store"
   ogImagePath={CANON_PATHS.headshot}
   chrome={false}
@@ -26,10 +26,11 @@ import { withBase } from "../lib/base";
           <p class="store-hero__kicker">Betsy AI · nightly · 100% automated</p>
           <h1 class="store-hero__title">Demand Store</h1>
           <p class="store-hero__sub">
-            Live demand ranks the shelf. Dealers close the sale. Prior 24 hours
-            of network demand, cut into product-type sections (one row each —
-            only types with real demand). Refreshes every night at midnight ET.
-            Tap a card → dealer site opens in a new tab. Not an FFL.
+            Live demand ranks the shelf. Dealers close the sale. Each product
+            type has <strong>Leaders</strong> and <strong>Trending</strong> tabs
+            (like Betsy Live) — we default to whichever board has more picks.
+            One row per section. Midnight ET refresh. Tap a card → dealer site.
+            Not an FFL.
           </p>
           <p class="store-hero__status" data-store-status>
             Loading nightly shelf…
@@ -93,7 +94,7 @@ import { withBase } from "../lib/base";
     </div>
 
     <div class="store-bottom">
-      <p>One row per type · real demand only · midnight ET refresh</p>
+      <p>Leaders + Trending · one row per type · midnight ET refresh</p>
     </div>
 
     <div class="store-sheet" data-store-sheet hidden>
@@ -261,11 +262,17 @@ import { withBase } from "../lib/base";
 
   .store-section__head {
     display: flex;
-    align-items: baseline;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
+    gap: 0.55rem 0.85rem;
     margin: 0 0 0.65rem;
     padding: 0 0.15rem;
+  }
+
+  .store-section__titles {
+    min-width: 0;
+    flex: 1 1 auto;
   }
 
   .store-section__title {
@@ -277,11 +284,72 @@ import { withBase } from "../lib/base";
   }
 
   .store-section__meta {
-    margin: 0;
+    margin: 0.15rem 0 0;
     font-size: 0.6875rem;
     font-weight: 600;
     color: rgb(113 113 122);
-    white-space: nowrap;
+  }
+
+  .store-section__empty {
+    margin: 0;
+    grid-column: 1 / -1;
+    padding: 0.75rem 0.25rem;
+    font-size: 0.8125rem;
+    color: rgb(113 113 122);
+  }
+
+  /* Betsy Live–style Leaders / Trending scope tabs */
+  .store-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    height: 1.85rem;
+    padding: 0.15rem;
+    border-radius: 0.55rem;
+    border: 1px solid rgb(39 39 42 / 0.95);
+    background: rgb(9 9 11 / 0.85);
+    flex: 0 0 auto;
+  }
+
+  .store-tab {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    border-radius: 0.4rem;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(113 113 122);
+    background: transparent;
+    transition:
+      color 0.12s ease,
+      background 0.12s ease,
+      box-shadow 0.12s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .store-tab:hover {
+    color: rgb(212 212 216);
+    background: rgb(39 39 42 / 0.65);
+  }
+
+  .store-tab--on {
+    color: rgb(254 243 199);
+    background: rgb(245 158 11 / 0.18);
+    box-shadow: inset 0 0 0 1px rgb(251 191 36 / 0.35);
+  }
+
+  .store-tab__n {
+    font-variant-numeric: tabular-nums;
+    opacity: 0.85;
+    margin-left: 0.15rem;
+  }
+
+  .store-tab:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 1px rgb(56 189 248 / 0.55);
   }
 
   /* One visual row: 4 columns desktop / 2 on small screens (max 4 cards). */
