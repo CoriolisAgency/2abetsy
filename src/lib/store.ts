@@ -6,8 +6,11 @@
 export const DEMAND_STORE_API =
   "https://www.gunsearchengine.com/api/public/demand-store";
 
-/** Soft re-poll (nightly data — check a few times per day for deploy/cron). */
-export const DEMAND_STORE_POLL_MS = 60 * 60_000;
+/**
+ * Soft re-poll for nightly data. API is edge-cached (s-maxage=1h);
+ * recheck a few times a day in case midnight cron landed.
+ */
+export const DEMAND_STORE_POLL_MS = 6 * 60 * 60_000;
 
 /** Two grid rows per section (4 columns × 2 on desktop). */
 export const SECTION_ROW_CAPACITY = 8;

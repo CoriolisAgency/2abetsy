@@ -289,9 +289,9 @@ if (root) {
       }
     }
     try {
+      // Respect CDN Cache-Control from nightly snapshot (fast loads).
       const res = await fetch(DEMAND_STORE_API, {
         headers: { Accept: "application/json" },
-        cache: "no-store",
       });
       const data = (await res.json()) as DemandStorePayload;
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
