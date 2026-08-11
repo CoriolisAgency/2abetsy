@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demand Store — Category Sponsor Strip Mock</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --line: #243047;
+        --text: #f4f7fb;
+        --muted: #94a3b8;
+        --sky: #38bdf8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #060a12;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Helvetica, Arial, sans-serif;
+        color: var(--text);
+      }
+      .wrap {
+        width: 1200px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .label {
+        color: var(--muted);
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .strip {
+        height: 200px;
+        border-radius: 20px;
+        border: 1px solid var(--line);
+        background: linear-gradient(90deg, #0f172a 0%, #111827 55%, #0b1220 100%);
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        align-items: center;
+        padding: 0 40px;
+        gap: 24px;
+      }
+      .copy h2 {
+        margin: 0 0 8px;
+        font-size: 28px;
+      }
+      .copy p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.45;
+        max-width: 42ch;
+      }
+      .slot {
+        justify-self: end;
+        width: 100%;
+        max-width: 360px;
+        height: 120px;
+        border-radius: 16px;
+        border: 1px dashed rgba(56, 189, 248, 0.45);
+        background: rgba(56, 189, 248, 0.06);
+        display: grid;
+        place-items: center;
+        text-align: center;
+        color: var(--sky);
+        font-weight: 650;
+        font-size: 18px;
+        padding: 12px;
+      }
+      .slot small {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 13px;
+      }
+      .note {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="label">Homepage / section strip mock · 1200×200</div>
+      <div class="strip">
+        <div class="copy">
+          <h2>Category sponsor</h2>
+          <p>
+            Your mark on a live demand section. Shoppers already mid-intent —
+            cards still open real dealers. Written partners only.
+          </p>
+        </div>
+        <div class="slot">
+          Your logo here
+          <small>PNG/SVG · transparent · min 512px</small>
+        </div>
+      </div>
+      <p class="note">
+        Mock for sales conversations. Does not imply any live sponsor. Contact
+        betsy@coriolisagency.com · 2abetsy.com/for-brands
+      </p>
+    </div>
+  </body>
+</html>

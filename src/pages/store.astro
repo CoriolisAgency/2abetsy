@@ -6,7 +6,7 @@ import { withBase } from "../lib/base";
 
 <BaseLayout
   title="Betsy AI Store — Prior 24h Demand | 2aBetsy"
-  description="Automated gun & ammo shelf ranked by previous 24-hour Betsy AI demand, refreshed nightly. Sections by ATF product type. Tap a card to open the dealer page."
+  description="Automated gun & ammo shelf ranked by previous 24-hour Betsy AI demand, refreshed nightly. One row per product type from real demand. Tap a card to open the dealer page."
   path="/store"
   ogImagePath={CANON_PATHS.headshot}
 >
@@ -24,9 +24,10 @@ import { withBase } from "../lib/base";
           <p class="store-hero__kicker">Betsy AI · nightly · 100% automated</p>
           <h1 class="store-hero__title">Demand Store</h1>
           <p class="store-hero__sub">
-            Prior 24 hours of network demand, cut into ATF-type sections (4×2
-            cards each). Refreshes every night at midnight ET. Tap a card →
-            dealer site opens in a new tab.
+            Live demand ranks the shelf. Dealers close the sale. Prior 24 hours
+            of network demand, cut into product-type sections (one row each —
+            only types with real demand). Refreshes every night at midnight ET.
+            Tap a card → dealer site opens in a new tab. Not an FFL.
           </p>
           <p class="store-hero__status" data-store-status>
             Loading nightly shelf…
@@ -44,15 +45,19 @@ import { withBase } from "../lib/base";
 
     <p class="store-disclaimer">
       Not a licensed FFL and not a cart. Purchases and transfers complete with
-      participating dealers. Powered by{" "}
+      participating dealers. We may earn a commission when you buy from a dealer.
+      Manufacturer names and images remain their owners’ property; ranking does
+      not imply endorsement. Powered by{" "}
       <a href={LINKS.gse} target="_blank" rel="noopener noreferrer"
         >GunSearchEngine</a
       >{" "}
       demand + live catalog. See also{" "}
       <a href={LINKS.betsyLive} target="_blank" rel="noopener noreferrer"
         >Betsy Live</a
-      >. GSE merch lives at gunsearchengine.com/store — this shelf is demand
-      link-outs only.
+      >. Brands:{" "}
+      <a href={withBase("for-brands")}>category sponsorships</a>. GSE merch lives
+      at
+      gunsearchengine.com/store — this shelf is demand link-outs only.
     </p>
 
     <div class="store-fab" role="group" aria-label="Store controls">
@@ -86,7 +91,7 @@ import { withBase } from "../lib/base";
     </div>
 
     <div class="store-bottom">
-      <p>4×2 per ATF type · prior 24h · midnight ET refresh</p>
+      <p>One row per type · real demand only · midnight ET refresh</p>
     </div>
 
     <div class="store-sheet" data-store-sheet hidden>
@@ -277,7 +282,7 @@ import { withBase } from "../lib/base";
     white-space: nowrap;
   }
 
-  /* 4 columns on desktop, 2 on tablet, 2 on mobile for readable cards */
+  /* One visual row: 4 columns desktop / 2 on small screens (max 4 cards). */
   .store-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -356,12 +361,7 @@ import { withBase } from "../lib/base";
   .store-card__media {
     position: relative;
     aspect-ratio: 1 / 1;
-    background:
-      radial-gradient(
-        ellipse 70% 60% at 50% 45%,
-        rgb(30 41 59 / 0.55),
-        rgb(9 12 20) 72%
-      );
+    background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -380,12 +380,14 @@ import { withBase } from "../lib/base";
     object-position: center;
     margin: 0 auto;
     border-radius: 0.35rem;
+    background: #ffffff;
   }
 
   .store-card__ph {
     font-size: 2rem;
     line-height: 1;
-    opacity: 0.75;
+    opacity: 0.55;
+    color: #71717a;
   }
 
   .store-badge {

@@ -5,8 +5,8 @@ import { withBase } from "../lib/base";
 ---
 
 <BaseLayout
-  title="For Brands & OEMs — Brand Intelligence | Betsy AI"
-  description="Brand Intelligence for firearms OEMs and platforms — anonymized demand and search intent powered by Betsy AI on GunSearchEngine."
+  title="For Brands & OEMs — Demand Store + Brand Intelligence | Betsy AI"
+  description="Category sponsorships on the Betsy Demand Store and Brand Intelligence for firearms OEMs — intent-ranked shelf plus anonymized demand."
   path="/for-brands"
   ogImagePath={CANON_PATHS.tzu}
 >
@@ -20,9 +20,12 @@ import { withBase } from "../lib/base";
       Demand that manufacturers can use
     </h1>
     <p class="text-sm leading-relaxed text-zinc-400 mb-6">
-      <strong class="text-zinc-200">Brand Intelligence</strong> sits on the same
-      Betsy spine as dealer demand and shopper search — anonymized, plan-gated,
-      built for OEMs and platforms. Not a dump of shopper emails.
+      Two doors: a public{" "}
+      <strong class="text-zinc-200">Demand Store</strong> shelf ranked by live
+      network intent (dealer link-outs, not your warehouse), and{" "}
+      <strong class="text-zinc-200">Brand Intelligence</strong> for anonymized
+      demand and search signal. Not a dump of shopper emails. Not a claim that
+      you endorse us until a written deal says so.
     </p>
     <img
       src={withBase(CANON_PATHS.tzu)}
@@ -31,21 +34,80 @@ import { withBase } from "../lib/base";
       height="540"
       class="mb-8 w-full rounded-2xl object-cover max-h-64 ring-1 ring-zinc-700/80"
     />
-    <a
-      href={LINKS.brandIntel}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex rounded-xl bg-sky-500 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-sky-400"
-    >
-      Brand Intelligence →
-    </a>
-    <p class="mt-6 text-xs text-zinc-600">
+
+    <h2 class="text-lg font-semibold text-white mb-3">
+      Demand Store placements
+    </h2>
+    <p class="text-sm leading-relaxed text-zinc-400 mb-4">
+      Public demo at{" "}
+      <a href={LINKS.store} class="text-sky-400 hover:underline"
+        >2abetsy.com/store</a
+      >. Not an FFL. Cards open participating dealers. Open slots:
+    </p>
+    <ul class="mb-8 space-y-2 text-sm text-zinc-300 list-disc pl-5">
+      <li>
+        <strong class="text-zinc-100">Category sponsor</strong> — badge/strip on
+        a demand section (30 days)
+      </li>
+      <li>
+        <strong class="text-zinc-100">Fuel of the Demo</strong> — homepage strip
+        on the store (30 days)
+      </li>
+      <li>
+        <strong class="text-zinc-100">Weekly report</strong> — logo on the public
+        demand thread
+      </li>
+      <li>
+        <strong class="text-zinc-100">Creator shelf week</strong> — co-branded
+        niche shelf + UTMs
+      </li>
+      <li>
+        <strong class="text-zinc-100">Dealer spotlight</strong> — featured when
+        inventory ranks
+      </li>
+    </ul>
+    <p class="text-sm leading-relaxed text-zinc-400 mb-8">
+      Pitch in one line: we put category presence in front of people already
+      mid-purchase intent — ranked by demand, closed by licensed dealers.
+    </p>
+
+    <div class="flex flex-wrap gap-3 mb-10">
+      <a
+        href={LINKS.store}
+        class="inline-flex rounded-xl bg-sky-500 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-sky-400"
+      >
+        Open Demand Store →
+      </a>
+      <a
+        href={LINKS.brandIntel}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex rounded-xl border border-zinc-600 px-5 py-3 text-sm font-semibold text-zinc-100 hover:border-sky-500/60 hover:text-sky-300"
+      >
+        Brand Intelligence →
+      </a>
+      <a
+        href={LINKS.pressEmail}
+        class="inline-flex rounded-xl border border-zinc-700 px-5 py-3 text-sm font-semibold text-zinc-300 hover:border-zinc-500"
+      >
+        Partnerships email
+      </a>
+    </div>
+
+    <h2 class="text-lg font-semibold text-white mb-3">Brand Intelligence</h2>
+    <p class="text-sm leading-relaxed text-zinc-400 mb-6">
+      Plan-gated demand and search intent for OEMs and platforms — same Betsy
+      spine as dealer tools and shopper search. Built for operators who need
+      signal, not theater.
+    </p>
+    <p class="text-xs text-zinc-600">
       Independent dealers start free on{" "}
       <a href={LINKS.gsa} class="text-sky-500 hover:underline">GunSearchAgent</a
       >. Network pulse:{" "}
       <a href={LINKS.betsyLive} class="text-sky-500 hover:underline"
         >Betsy Live</a
-      >.
+      >. X:{" "}
+      <a href={LINKS.x} class="text-sky-500 hover:underline">@2ABetsy</a>.
     </p>
   </article>
 </BaseLayout>

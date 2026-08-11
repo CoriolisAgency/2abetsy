@@ -9,6 +9,9 @@ export const DEMAND_STORE_API =
 /** Soft re-poll (nightly data — check a few times per day for deploy/cron). */
 export const DEMAND_STORE_POLL_MS = 60 * 60_000;
 
+/** One grid row per section (matches desktop 4-col layout). */
+export const SECTION_ROW_CAPACITY = 4;
+
 export type DemandStoreProduct = {
   rank: number;
   product_id: number;

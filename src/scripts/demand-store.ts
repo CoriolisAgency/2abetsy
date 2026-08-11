@@ -1,9 +1,10 @@
 /**
- * Client runtime — nightly demand store, ATF type sections (4×2 cards).
+ * Client runtime — nightly demand store, one row per ATF/type section.
  */
 import {
   DEMAND_STORE_API,
   DEMAND_STORE_POLL_MS,
+  SECTION_ROW_CAPACITY,
   type DemandStorePayload,
   type DemandStoreProduct,
   type DemandStoreSection,
@@ -178,18 +179,26 @@ if (root) {
   }
 
   function normalizeSections(data: DemandStorePayload): DemandStoreSection[] {
+    const cap =
+      typeof data.meta?.sectionCapacity === "number" &&
+      data.meta.sectionCapacity > 0
+        ? Math.min(data.meta.sectionCapacity, SECTION_ROW_CAPACITY)
+        : SECTION_ROW_CAPACITY;
+
     if (Array.isArray(data.sections) && data.sections.length) {
       return data.sections
         .map((s) => ({
           id: s.id,
           label: s.label,
-          products: (s.products || []).filter(
-            (p) => typeof p.url === "string" && /^https?:\/\//i.test(p.url)
-          ),
+          products: (s.products || [])
+            .filter(
+              (p) => typeof p.url === "string" && /^https?:\/\//i.test(p.url)
+            )
+            .slice(0, cap),
         }))
         .filter((s) => s.products.length > 0);
     }
-    // Legacy flat list fallback
+    // Legacy flat list fallback — still one row max
     const products = (data.products || []).filter(
       (p) => typeof p.url === "string" && /^https?:\/\//i.test(p.url)
     );
@@ -198,7 +207,7 @@ if (root) {
       {
         id: "all",
         label: "Demand picks",
-        products: products.slice(0, 8),
+        products: products.slice(0, cap),
       },
     ];
   }
@@ -213,7 +222,7 @@ if (root) {
         feed.innerHTML = `
           <section class="store-section">
             <div class="store-grid">
-              ${Array.from({ length: 8 })
+              ${Array.from({ length: SECTION_ROW_CAPACITY })
                 .map(
                   () =>
                     `<div class="store-card store-card--skeleton" aria-hidden="true"></div>`

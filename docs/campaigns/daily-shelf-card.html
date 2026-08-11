@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Betsy’s Shelf — Daily Card</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --card: #121a2b;
+        --line: #243047;
+        --text: #f4f7fb;
+        --muted: #94a3b8;
+        --sky: #38bdf8;
+        --sky-dim: rgba(56, 189, 248, 0.14);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #060a12;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Helvetica, Arial, sans-serif;
+        color: var(--text);
+      }
+      .frame {
+        width: 1080px;
+        height: 1350px;
+        background: radial-gradient(
+            1200px 600px at 20% 0%,
+            #15233a 0%,
+            transparent 55%
+          ),
+          var(--bg);
+        padding: 64px 56px;
+        display: flex;
+        flex-direction: column;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .mark {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        background: #000;
+        border: 1px solid var(--line);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 28px;
+        color: var(--sky);
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: 0.04em;
+      }
+      .brand p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .date {
+        text-align: right;
+        color: var(--muted);
+        font-size: 18px;
+      }
+      .date strong {
+        display: block;
+        color: var(--sky);
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+      .title {
+        margin: 48px 0 12px;
+        font-size: 56px;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+      }
+      .sub {
+        margin: 0 0 40px;
+        color: var(--muted);
+        font-size: 22px;
+        max-width: 40ch;
+      }
+      .list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        flex: 1;
+      }
+      .list li {
+        display: grid;
+        grid-template-columns: 72px 1fr auto;
+        gap: 18px;
+        align-items: center;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 20px 22px;
+      }
+      .rank {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: var(--sky-dim);
+        color: var(--sky);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 22px;
+      }
+      .meta .type {
+        color: var(--muted);
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 4px;
+      }
+      .meta .name {
+        font-size: 24px;
+        font-weight: 650;
+      }
+      .chip {
+        font-size: 14px;
+        color: var(--sky);
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        border-radius: 999px;
+        padding: 8px 12px;
+        white-space: nowrap;
+      }
+      .foot {
+        margin-top: 36px;
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 24px;
+        border-top: 1px solid var(--line);
+        padding-top: 28px;
+      }
+      .url {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--sky);
+      }
+      .fine {
+        color: var(--muted);
+        font-size: 16px;
+        text-align: right;
+        line-height: 1.4;
+      }
+      .edit-note {
+        position: fixed;
+        left: 12px;
+        bottom: 12px;
+        color: #64748b;
+        font-size: 12px;
+        max-width: 42ch;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      Screenshot at 1080×1350 (or full page).
+      Replace SAMPLE rows with real top shelf items before posting.
+    -->
+    <div class="frame" id="card">
+      <div class="top">
+        <div class="brand">
+          <div class="mark" aria-hidden="true">B</div>
+          <div>
+            <h1>BETSY</h1>
+            <p>Demand Store · #BettysShelf</p>
+          </div>
+        </div>
+        <div class="date">
+          <strong id="date-label">Prior 24h</strong>
+          <span id="date-value">Update date before export</span>
+        </div>
+      </div>
+
+      <h2 class="title">Tonight’s top shelf</h2>
+      <p class="sub">
+        Ranked by network demand. Not an FFL — tap through to dealers on the
+        live store.
+      </p>
+
+      <ol class="list" id="rows">
+        <li>
+          <div class="rank">1</div>
+          <div class="meta">
+            <div class="type">Sample type</div>
+            <div class="name">Replace with real #1 product</div>
+          </div>
+          <div class="chip">Demand</div>
+        </li>
+        <li>
+          <div class="rank">2</div>
+          <div class="meta">
+            <div class="type">Sample type</div>
+            <div class="name">Replace with real #2 product</div>
+          </div>
+          <div class="chip">Demand</div>
+        </li>
+        <li>
+          <div class="rank">3</div>
+          <div class="meta">
+            <div class="type">Sample type</div>
+            <div class="name">Replace with real #3 product</div>
+          </div>
+          <div class="chip">Demand</div>
+        </li>
+        <li>
+          <div class="rank">4</div>
+          <div class="meta">
+            <div class="type">Sample type</div>
+            <div class="name">Replace with real #4 product</div>
+          </div>
+          <div class="chip">Demand</div>
+        </li>
+        <li>
+          <div class="rank">5</div>
+          <div class="meta">
+            <div class="type">Sample type</div>
+            <div class="name">Replace with real #5 product</div>
+          </div>
+          <div class="chip">Demand</div>
+        </li>
+      </ol>
+
+      <div class="foot">
+        <div class="url">2abetsy.com/store</div>
+        <div class="fine">
+          Nightly · midnight ET<br />
+          Cards open dealer sites
+        </div>
+      </div>
+    </div>
+    <p class="edit-note">
+      Edit product names in this HTML, then screenshot the card for X. Optional:
+      set <code>?d=2026-08-11</code> in the URL to stamp the date.
+    </p>
+    <script>
+      const params = new URLSearchParams(location.search);
+      const d = params.get("d");
+      const el = document.getElementById("date-value");
+      if (d) {
+        el.textContent = d;
+      } else {
+        el.textContent = new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -52,4 +52,8 @@ export const CANON_PATHS = {
   cutout: "betsy/images/betsy-outside-cutout.png",
   gaHero: "betsy/images/betsy-ga-alternative-hero.jpg",
   tzu: "betsy/images/betsy-tzu-art-of-war.jpg",
+  /** Demand Store brand kit */
+  demandMark: "brand/demand-store/logo-mark.jpg",
+  demandAvatar: "brand/demand-store/logo-avatar.jpg",
+  demandWordmark: "brand/demand-store/logo-wordmark.jpg",
 } as const;
