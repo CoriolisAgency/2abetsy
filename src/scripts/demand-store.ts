@@ -75,7 +75,10 @@ if (root) {
       .map((x) => escapeHtml(String(x)))
       .join(" · ");
     const retailer = escapeHtml(p.retailer || "Dealer");
-    const img = `<img src="${escapeHtml(p.image_url)}" alt="" loading="lazy" decoding="async" class="store-card__img" data-store-img />`;
+    const img =
+      p.image_url && /^https?:\/\//i.test(p.image_url)
+        ? `<img src="${escapeHtml(p.image_url)}" alt="" loading="lazy" decoding="async" class="store-card__img" data-store-img />`
+        : `<div class="store-card__ph" aria-hidden="true">🎯</div>`;
 
     return `
       <a
@@ -126,8 +129,11 @@ if (root) {
   function wireImages(scope: ParentNode) {
     scope.querySelectorAll<HTMLImageElement>("[data-store-img]").forEach((img) => {
       img.addEventListener("error", () => {
-        const card = img.closest(".store-card");
-        if (card) card.remove();
+        const ph = document.createElement("div");
+        ph.className = "store-card__ph";
+        ph.setAttribute("aria-hidden", "true");
+        ph.textContent = "🎯";
+        img.replaceWith(ph);
       });
     });
   }
@@ -178,22 +184,14 @@ if (root) {
           id: s.id,
           label: s.label,
           products: (s.products || []).filter(
-            (p) =>
-              typeof p.image_url === "string" &&
-              /^https?:\/\//i.test(p.image_url) &&
-              typeof p.url === "string" &&
-              /^https?:\/\//i.test(p.url)
+            (p) => typeof p.url === "string" && /^https?:\/\//i.test(p.url)
           ),
         }))
         .filter((s) => s.products.length > 0);
     }
     // Legacy flat list fallback
     const products = (data.products || []).filter(
-      (p) =>
-        typeof p.image_url === "string" &&
-        /^https?:\/\//i.test(p.image_url) &&
-        typeof p.url === "string" &&
-        /^https?:\/\//i.test(p.url)
+      (p) => typeof p.url === "string" && /^https?:\/\//i.test(p.url)
     );
     if (!products.length) return [];
     return [

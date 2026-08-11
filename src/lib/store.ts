@@ -19,7 +19,7 @@ export type DemandStoreProduct = {
   type: string | null;
   type_key?: string | null;
   price: string | null;
-  image_url: string;
+  image_url: string | null;
   retailer: string;
   url: string;
   in_stock: boolean;
