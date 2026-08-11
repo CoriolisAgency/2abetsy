@@ -1,32 +1,34 @@
 /**
- * Client runtime for Betsy demand store — mobile / right-thumb first.
+ * Client runtime — nightly demand store, ATF type sections (4×2 cards).
  */
 import {
   DEMAND_STORE_API,
   DEMAND_STORE_POLL_MS,
   type DemandStorePayload,
   type DemandStoreProduct,
+  type DemandStoreSection,
 } from "../lib/store";
 
 const root = document.getElementById("betsy-demand-store");
-if (!root) {
-  /* page without store mount */
-} else {
-  const grid = root.querySelector<HTMLElement>("[data-store-grid]")!;
+if (root) {
+  const feed = root.querySelector<HTMLElement>("[data-store-feed]")!;
   const statusEl = root.querySelector<HTMLElement>("[data-store-status]")!;
   const chipsEl = root.querySelector<HTMLElement>("[data-store-chips]")!;
   const emptyEl = root.querySelector<HTMLElement>("[data-store-empty]")!;
-  const refreshBtn = root.querySelector<HTMLButtonElement>("[data-store-refresh]")!;
+  const refreshBtn =
+    root.querySelector<HTMLButtonElement>("[data-store-refresh]")!;
   const topBtn = root.querySelector<HTMLButtonElement>("[data-store-top]")!;
-  const filterBtn = root.querySelector<HTMLButtonElement>("[data-store-filter]")!;
+  const filterBtn =
+    root.querySelector<HTMLButtonElement>("[data-store-filter]")!;
   const sheet = root.querySelector<HTMLElement>("[data-store-sheet]")!;
-  const sheetClose = root.querySelector<HTMLButtonElement>("[data-store-sheet-close]")!;
-  const sheetList = root.querySelector<HTMLElement>("[data-store-sheet-list]")!;
+  const sheetClose =
+    root.querySelector<HTMLButtonElement>("[data-store-sheet-close]")!;
+  const sheetList =
+    root.querySelector<HTMLElement>("[data-store-sheet-list]")!;
 
-  let products: DemandStoreProduct[] = [];
-  let types: string[] = [];
-  let activeType: string | null = null;
+  let sections: DemandStoreSection[] = [];
   let generatedAt: string | null = null;
+  let windowLabel: string | null = null;
   let loading = false;
 
   function escapeHtml(s: string): string {
@@ -45,71 +47,17 @@ if (!root) {
   }
 
   function relativeTime(iso: string | null): string {
-    if (!iso) return "just now";
+    if (!iso) return "today";
     const t = Date.parse(iso);
-    if (!Number.isFinite(t)) return "just now";
+    if (!Number.isFinite(t)) return "today";
     const sec = Math.max(0, Math.round((Date.now() - t) / 1000));
-    if (sec < 45) return "just now";
-    if (sec < 3600) return `${Math.floor(sec / 60)}m ago`;
+    if (sec < 3600) return `${Math.max(1, Math.floor(sec / 60))}m ago`;
     if (sec < 86400) return `${Math.floor(sec / 3600)}h ago`;
     return `${Math.floor(sec / 86400)}d ago`;
   }
 
-  function filtered(): DemandStoreProduct[] {
-    if (!activeType) return products;
-    const key = activeType.toLowerCase();
-    return products.filter(
-      (p) => (p.type || "").toLowerCase() === key
-    );
-  }
-
   function setStatus(text: string) {
     statusEl.textContent = text;
-  }
-
-  function renderChips() {
-    const allActive = !activeType;
-    const bits: string[] = [
-      `<button type="button" class="store-chip${allActive ? " is-active" : ""}" data-type="">All</button>`,
-    ];
-    for (const t of types) {
-      const on = activeType === t;
-      bits.push(
-        `<button type="button" class="store-chip${on ? " is-active" : ""}" data-type="${escapeHtml(t)}">${escapeHtml(t)}</button>`
-      );
-    }
-    chipsEl.innerHTML = bits.join("");
-    chipsEl.querySelectorAll<HTMLButtonElement>("[data-type]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const v = btn.getAttribute("data-type") || "";
-        activeType = v || null;
-        renderChips();
-        renderSheetList();
-        renderGrid();
-      });
-    });
-  }
-
-  function renderSheetList() {
-    const bits: string[] = [
-      `<button type="button" class="store-sheet-item${activeType ? "" : " is-active"}" data-type="">All demand</button>`,
-    ];
-    for (const t of types) {
-      bits.push(
-        `<button type="button" class="store-sheet-item${activeType === t ? " is-active" : ""}" data-type="${escapeHtml(t)}">${escapeHtml(t)}</button>`
-      );
-    }
-    sheetList.innerHTML = bits.join("");
-    sheetList.querySelectorAll<HTMLButtonElement>("[data-type]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const v = btn.getAttribute("data-type") || "";
-        activeType = v || null;
-        closeSheet();
-        renderChips();
-        renderSheetList();
-        renderGrid();
-      });
-    });
   }
 
   function cardHtml(p: DemandStoreProduct): string {
@@ -118,15 +66,16 @@ if (!root) {
         ? `<span class="store-badge store-badge--hot">Hot</span>`
         : p.badge === "trending"
           ? `<span class="store-badge store-badge--trend">Trending</span>`
-          : `<span class="store-badge">#${p.rank}</span>`;
+          : "";
 
     const brand = p.brand ? escapeHtml(p.brand) : "";
     const title = escapeHtml(p.title);
-    const meta = [p.caliber, p.type].filter(Boolean).map((x) => escapeHtml(String(x))).join(" · ");
+    const meta = [p.caliber, p.type]
+      .filter(Boolean)
+      .map((x) => escapeHtml(String(x)))
+      .join(" · ");
     const retailer = escapeHtml(p.retailer || "Dealer");
-    const img = p.image_url
-      ? `<img src="${escapeHtml(p.image_url)}" alt="" loading="lazy" decoding="async" class="store-card__img" data-store-img />`
-      : `<div class="store-card__ph" aria-hidden="true">🎯</div>`;
+    const img = `<img src="${escapeHtml(p.image_url)}" alt="" loading="lazy" decoding="async" class="store-card__img" data-store-img />`;
 
     return `
       <a
@@ -140,7 +89,7 @@ if (!root) {
         <div class="store-card__media">${img}${badge}</div>
         <div class="store-card__body">
           ${brand ? `<p class="store-card__brand">${brand}</p>` : ""}
-          <h2 class="store-card__title">${title}</h2>
+          <h3 class="store-card__title">${title}</h3>
           ${meta ? `<p class="store-card__meta">${meta}</p>` : ""}
           <div class="store-card__foot">
             <span class="store-card__price">${formatPrice(p.price)}</span>
@@ -152,29 +101,62 @@ if (!root) {
     `;
   }
 
-  function renderGrid() {
-    const list = filtered();
-    if (!list.length) {
-      grid.innerHTML = "";
+  function renderChips() {
+    const bits = sections.map(
+      (s) =>
+        `<a class="store-chip" href="#section-${escapeHtml(s.id)}">${escapeHtml(s.label)} <span class="store-chip__n">${s.products.length}</span></a>`
+    );
+    chipsEl.innerHTML = bits.join("");
+  }
+
+  function renderSheetList() {
+    sheetList.innerHTML = sections
+      .map(
+        (s) =>
+          `<a class="store-sheet-item" href="#section-${escapeHtml(s.id)}" data-jump="${escapeHtml(s.id)}">${escapeHtml(s.label)} · ${s.products.length}</a>`
+      )
+      .join("");
+    sheetList
+      .querySelectorAll<HTMLAnchorElement>("[data-jump]")
+      .forEach((a) => {
+        a.addEventListener("click", () => closeSheet());
+      });
+  }
+
+  function wireImages(scope: ParentNode) {
+    scope.querySelectorAll<HTMLImageElement>("[data-store-img]").forEach((img) => {
+      img.addEventListener("error", () => {
+        const card = img.closest(".store-card");
+        if (card) card.remove();
+      });
+    });
+  }
+
+  function renderFeed() {
+    if (!sections.length) {
+      feed.innerHTML = "";
       emptyEl.hidden = false;
       emptyEl.textContent = loading
-        ? "Loading live demand shelf…"
-        : activeType
-          ? `No in-stock offers for ${activeType} right now.`
-          : "No shoppable demand picks yet — try refresh.";
+        ? "Loading nightly demand shelf…"
+        : "No shoppable demand picks with photos yet. Check back after the next midnight refresh.";
       return;
     }
     emptyEl.hidden = true;
-    grid.innerHTML = list.map(cardHtml).join("");
-    grid.querySelectorAll<HTMLImageElement>("[data-store-img]").forEach((img) => {
-      img.addEventListener("error", () => {
-        const ph = document.createElement("div");
-        ph.className = "store-card__ph";
-        ph.setAttribute("aria-hidden", "true");
-        ph.textContent = "🎯";
-        img.replaceWith(ph);
-      });
-    });
+    feed.innerHTML = sections
+      .map((s) => {
+        const cards = s.products.map(cardHtml).join("");
+        return `
+          <section class="store-section" id="section-${escapeHtml(s.id)}" aria-labelledby="heading-${escapeHtml(s.id)}">
+            <header class="store-section__head">
+              <h2 class="store-section__title" id="heading-${escapeHtml(s.id)}">${escapeHtml(s.label)}</h2>
+              <p class="store-section__meta">${s.products.length} picks · prior 24h demand</p>
+            </header>
+            <div class="store-grid">${cards}</div>
+          </section>
+        `;
+      })
+      .join("");
+    wireImages(feed);
   }
 
   function openSheet() {
@@ -189,16 +171,59 @@ if (!root) {
     document.body.style.overflow = "";
   }
 
+  function normalizeSections(data: DemandStorePayload): DemandStoreSection[] {
+    if (Array.isArray(data.sections) && data.sections.length) {
+      return data.sections
+        .map((s) => ({
+          id: s.id,
+          label: s.label,
+          products: (s.products || []).filter(
+            (p) =>
+              typeof p.image_url === "string" &&
+              /^https?:\/\//i.test(p.image_url) &&
+              typeof p.url === "string" &&
+              /^https?:\/\//i.test(p.url)
+          ),
+        }))
+        .filter((s) => s.products.length > 0);
+    }
+    // Legacy flat list fallback
+    const products = (data.products || []).filter(
+      (p) =>
+        typeof p.image_url === "string" &&
+        /^https?:\/\//i.test(p.image_url) &&
+        typeof p.url === "string" &&
+        /^https?:\/\//i.test(p.url)
+    );
+    if (!products.length) return [];
+    return [
+      {
+        id: "all",
+        label: "Demand picks",
+        products: products.slice(0, 8),
+      },
+    ];
+  }
+
   async function load(silent = false) {
     if (loading) return;
     loading = true;
     if (!silent) {
       refreshBtn.disabled = true;
       refreshBtn.setAttribute("aria-busy", "true");
-      if (!products.length) {
-        grid.innerHTML = Array.from({ length: 6 })
-          .map(() => `<div class="store-card store-card--skeleton" aria-hidden="true"></div>`)
-          .join("");
+      if (!sections.length) {
+        feed.innerHTML = `
+          <section class="store-section">
+            <div class="store-grid">
+              ${Array.from({ length: 8 })
+                .map(
+                  () =>
+                    `<div class="store-card store-card--skeleton" aria-hidden="true"></div>`
+                )
+                .join("")}
+            </div>
+          </section>
+        `;
         emptyEl.hidden = true;
       }
     }
@@ -209,25 +234,23 @@ if (!root) {
       });
       const data = (await res.json()) as DemandStorePayload;
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-      // Only show demand picks that still have a product photo.
-      products = (Array.isArray(data.products) ? data.products : []).filter(
-        (p) => typeof p.image_url === "string" && /^https?:\/\//i.test(p.image_url)
-      );
-      types = Array.isArray(data.types) ? data.types : [];
+      sections = normalizeSections(data);
       generatedAt = data.generatedAt || null;
+      windowLabel = data.windowLabel || "Previous 24 hours";
+      const n = sections.reduce((a, s) => a + s.products.length, 0);
       setStatus(
-        `${products.length} live picks · updated ${relativeTime(generatedAt)} · Betsy AI`
+        `${n} picks · ${windowLabel} · refreshed ${relativeTime(generatedAt)} · next update midnight ET`
       );
       renderChips();
       renderSheetList();
-      renderGrid();
+      renderFeed();
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Failed to load";
       setStatus(`Shelf offline · ${msg}`);
-      if (!products.length) {
+      if (!sections.length) {
         emptyEl.hidden = false;
         emptyEl.textContent = "Could not load demand shelf. Tap refresh.";
-        grid.innerHTML = "";
+        feed.innerHTML = "";
       }
     } finally {
       loading = false;
@@ -242,7 +265,9 @@ if (!root) {
   });
   filterBtn.addEventListener("click", () => openSheet());
   sheetClose.addEventListener("click", () => closeSheet());
-  sheet.querySelector("[data-store-sheet-scrim]")?.addEventListener("click", () => closeSheet());
+  sheet
+    .querySelector("[data-store-sheet-scrim]")
+    ?.addEventListener("click", () => closeSheet());
 
   void load(false);
   window.setInterval(() => {

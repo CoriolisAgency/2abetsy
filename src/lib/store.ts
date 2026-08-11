@@ -1,13 +1,13 @@
 /**
  * Betsy AI demand storefront config (2abetsy.com/store).
- * Shelf is 100% automated from GSE public demand API.
+ * Nightly prior-24h shelf from GSE public API · sections by ATF type.
  */
 
 export const DEMAND_STORE_API =
   "https://www.gunsearchengine.com/api/public/demand-store";
 
-/** Soft re-poll while the tab is visible */
-export const DEMAND_STORE_POLL_MS = 3 * 60_000;
+/** Soft re-poll (nightly data — check a few times per day for deploy/cron). */
+export const DEMAND_STORE_POLL_MS = 60 * 60_000;
 
 export type DemandStoreProduct = {
   rank: number;
@@ -17,20 +17,29 @@ export type DemandStoreProduct = {
   brand: string | null;
   caliber: string | null;
   type: string | null;
+  type_key?: string | null;
   price: string | null;
-  image_url: string | null;
+  image_url: string;
   retailer: string;
   url: string;
-  in_stock: true;
+  in_stock: boolean;
   demand_score: number;
   demand_weight: number;
   badge: "hot" | "trending" | null;
+};
+
+export type DemandStoreSection = {
+  id: string;
+  label: string;
+  products: DemandStoreProduct[];
 };
 
 export type DemandStorePayload = {
   generatedAt: string;
   hours: number;
   windowLabel: string | null;
+  refreshMode?: "nightly";
+  sections?: DemandStoreSection[];
   products: DemandStoreProduct[];
   types: string[];
   meta: {
@@ -38,6 +47,7 @@ export type DemandStorePayload = {
     curation: "betsy_ai";
     count: number;
     snapshotAgeMs: number | null;
+    sectionCapacity?: number;
   };
   error?: string;
 };

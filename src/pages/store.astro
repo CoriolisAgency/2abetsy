@@ -5,8 +5,8 @@ import { withBase } from "../lib/base";
 ---
 
 <BaseLayout
-  title="Betsy AI Store — Live Demand Picks | 2aBetsy"
-  description="Automated gun & ammo shelf ranked by live Betsy AI demand. Tap a card to open the dealer product page. Zero human merchandising."
+  title="Betsy AI Store — Prior 24h Demand | 2aBetsy"
+  description="Automated gun & ammo shelf ranked by previous 24-hour Betsy AI demand, refreshed nightly. Sections by ATF product type. Tap a card to open the dealer page."
   path="/store"
   ogImagePath={CANON_PATHS.headshot}
 >
@@ -21,25 +21,26 @@ import { withBase } from "../lib/base";
           class="store-hero__avatar"
         />
         <div class="store-hero__copy min-w-0">
-          <p class="store-hero__kicker">Betsy AI · 100% automated</p>
+          <p class="store-hero__kicker">Betsy AI · nightly · 100% automated</p>
           <h1 class="store-hero__title">Demand Store</h1>
           <p class="store-hero__sub">
-            Shelf ranked by live network demand — no human buyer. Tap a card →
+            Prior 24 hours of network demand, cut into ATF-type sections (4×2
+            cards each). Refreshes every night at midnight ET. Tap a card →
             dealer site opens in a new tab.
           </p>
-          <p class="store-hero__status" data-store-status>Loading live shelf…</p>
+          <p class="store-hero__status" data-store-status>
+            Loading nightly shelf…
+          </p>
         </div>
       </div>
     </section>
 
-    <div class="store-chips-wrap" aria-label="Filter by type">
+    <div class="store-chips-wrap" aria-label="Jump to ATF type">
       <div class="store-chips" data-store-chips></div>
     </div>
 
-    <section class="store-feed" aria-label="Demand products">
-      <div class="store-grid" data-store-grid></div>
-      <p class="store-empty" data-store-empty hidden></p>
-    </section>
+    <div class="store-feed" data-store-feed aria-label="Demand by ATF type"></div>
+    <p class="store-empty" data-store-empty hidden></p>
 
     <p class="store-disclaimer">
       Not a licensed FFL and not a cart. Purchases and transfers complete with
@@ -50,26 +51,26 @@ import { withBase } from "../lib/base";
       demand + live catalog. See also{" "}
       <a href={LINKS.betsyLive} target="_blank" rel="noopener noreferrer"
         >Betsy Live</a
-      >.
+      >. GSE merch lives at gunsearchengine.com/store — this shelf is demand
+      link-outs only.
     </p>
 
-    <!-- Right-thumb control cluster -->
     <div class="store-fab" role="group" aria-label="Store controls">
       <button
         type="button"
         class="store-fab__btn"
         data-store-filter
-        title="Filter types"
-        aria-label="Filter product types"
+        title="Jump to type"
+        aria-label="Jump to ATF type"
       >
-        Filter
+        Types
       </button>
       <button
         type="button"
         class="store-fab__btn store-fab__btn--primary"
         data-store-refresh
-        title="Refresh demand shelf"
-        aria-label="Refresh shelf"
+        title="Reload shelf"
+        aria-label="Reload shelf"
       >
         Refresh
       </button>
@@ -84,28 +85,25 @@ import { withBase } from "../lib/base";
       </button>
     </div>
 
-    <div class="store-bottom" aria-hidden="false">
-      <p>
-        Right thumb ready · cards open dealers · ranked by Betsy
-      </p>
+    <div class="store-bottom">
+      <p>4×2 per ATF type · prior 24h · midnight ET refresh</p>
     </div>
 
-    <!-- Filter sheet (thumb-friendly, opens from bottom) -->
     <div class="store-sheet" data-store-sheet hidden>
       <button
         type="button"
         class="store-sheet__scrim"
         data-store-sheet-scrim
-        aria-label="Close filters"
+        aria-label="Close"
       ></button>
       <div
         class="store-sheet__panel"
         role="dialog"
         aria-modal="true"
-        aria-label="Filter by product type"
+        aria-label="Jump to ATF type"
       >
         <div class="store-sheet__head">
-          <p class="store-sheet__title">Filter shelf</p>
+          <p class="store-sheet__title">ATF types</p>
           <button
             type="button"
             class="store-sheet__close"
@@ -126,18 +124,11 @@ import { withBase } from "../lib/base";
 </BaseLayout>
 
 <style is:global>
-  /* ── Demand store (mobile / right-thumb first) ───────────────────────── */
   .store {
     position: relative;
-    max-width: 42rem;
+    max-width: 72rem;
     margin: 0 auto;
     padding: 0 0 calc(5.5rem + env(safe-area-inset-bottom, 0px));
-  }
-
-  @media (min-width: 768px) {
-    .store {
-      max-width: 56rem;
-    }
   }
 
   .store-hero {
@@ -196,6 +187,7 @@ import { withBase } from "../lib/base";
     font-size: 0.8125rem;
     line-height: 1.45;
     color: rgb(161 161 170);
+    max-width: 40rem;
   }
 
   .store-hero__status {
@@ -206,7 +198,6 @@ import { withBase } from "../lib/base";
     color: rgb(125 211 252);
   }
 
-  /* Chips — scroll toward the right (thumb flicks near right edge) */
   .store-chips-wrap {
     position: sticky;
     top: 3.5rem;
@@ -225,7 +216,6 @@ import { withBase } from "../lib/base";
     overflow-x: auto;
     padding-right: 0.75rem;
     scrollbar-width: none;
-    -ms-overflow-style: none;
   }
 
   .store-chips::-webkit-scrollbar {
@@ -243,40 +233,68 @@ import { withBase } from "../lib/base";
     font-size: 0.75rem;
     font-weight: 600;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
   }
 
-  .store-chip.is-active {
-    border-color: rgba(16, 185, 129, 0.55);
-    background: rgba(16, 185, 129, 0.15);
-    color: rgb(167 243 208);
+  .store-chip__n {
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: rgb(52 211 153);
+    font-variant-numeric: tabular-nums;
   }
 
   .store-feed {
-    padding: 0.75rem 0.75rem 1rem;
+    padding: 0.5rem 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
+  .store-section__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0 0 0.65rem;
+    padding: 0 0.15rem;
+  }
+
+  .store-section__title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fafafa;
+  }
+
+  .store-section__meta {
+    margin: 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: rgb(113 113 122);
+    white-space: nowrap;
+  }
+
+  /* 4 columns on desktop, 2 on tablet, 2 on mobile for readable cards */
   .store-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
   }
 
   @media (min-width: 640px) {
     .store-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .store-grid {
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
     }
   }
 
   .store-card {
     display: flex;
     flex-direction: column;
-    min-height: 5.5rem;
+    min-width: 0;
     border-radius: 1rem;
     border: 1px solid rgb(63 63 70 / 0.9);
     background: linear-gradient(
@@ -347,16 +365,9 @@ import { withBase } from "../lib/base";
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 0.85rem;
     box-sizing: border-box;
     overflow: hidden;
-  }
-
-  @media (min-width: 640px) {
-    .store-card__media {
-      aspect-ratio: 5 / 4;
-      padding: 1.15rem 1.25rem;
-    }
   }
 
   .store-card__img {
@@ -371,18 +382,13 @@ import { withBase } from "../lib/base";
     border-radius: 0.35rem;
   }
 
-  .store-card__ph {
-    font-size: 2rem;
-    opacity: 0.7;
-  }
-
   .store-badge {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 0.45rem;
+    right: 0.45rem;
     padding: 0.2rem 0.45rem;
     border-radius: 0.4rem;
-    font-size: 0.625rem;
+    font-size: 0.5625rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -406,14 +412,15 @@ import { withBase } from "../lib/base";
   .store-card__body {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
-    padding: 0.7rem 0.8rem 0.85rem;
+    gap: 0.15rem;
+    padding: 0.55rem 0.65rem 0.7rem;
     flex: 1;
+    min-width: 0;
   }
 
   .store-card__brand {
     margin: 0;
-    font-size: 0.625rem;
+    font-size: 0.5625rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -422,7 +429,7 @@ import { withBase } from "../lib/base";
 
   .store-card__title {
     margin: 0;
-    font-size: 0.9375rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     line-height: 1.25;
     color: #fafafa;
@@ -434,7 +441,7 @@ import { withBase } from "../lib/base";
 
   .store-card__meta {
     margin: 0;
-    font-size: 0.6875rem;
+    font-size: 0.625rem;
     color: rgb(161 161 170);
   }
 
@@ -442,30 +449,30 @@ import { withBase } from "../lib/base";
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 0.5rem;
-    margin-top: 0.35rem;
+    gap: 0.35rem;
+    margin-top: 0.3rem;
   }
 
   .store-card__price {
-    font-size: 1.125rem;
+    font-size: 0.9375rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: rgb(52 211 153);
   }
 
   .store-card__retailer {
-    font-size: 0.625rem;
+    font-size: 0.5625rem;
     color: rgb(113 113 122);
     text-align: right;
-    max-width: 45%;
+    max-width: 48%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   .store-card__cta {
-    margin: 0.45rem 0 0;
-    font-size: 0.75rem;
+    margin: 0.3rem 0 0;
+    font-size: 0.6875rem;
     font-weight: 650;
     color: rgb(125 211 252);
     text-align: right;
@@ -491,7 +498,6 @@ import { withBase } from "../lib/base";
     text-underline-offset: 2px;
   }
 
-  /* Right-thumb FAB cluster */
   .store-fab {
     position: fixed;
     right: max(0.75rem, env(safe-area-inset-right));
@@ -549,7 +555,6 @@ import { withBase } from "../lib/base";
     color: rgb(113 113 122);
   }
 
-  /* Bottom sheet filters */
   .store-sheet {
     position: fixed;
     inset: 0;
@@ -614,12 +619,12 @@ import { withBase } from "../lib/base";
     gap: 0.35rem;
     overflow-y: auto;
     max-height: min(52dvh, 20rem);
-    padding-right: 0.15rem;
   }
 
   .store-sheet-item {
     min-height: 3rem;
-    text-align: left;
+    display: flex;
+    align-items: center;
     padding: 0.75rem 1rem;
     border-radius: 0.85rem;
     border: 1px solid rgb(63 63 70);
@@ -629,9 +634,13 @@ import { withBase } from "../lib/base";
     font-weight: 600;
   }
 
-  .store-sheet-item.is-active {
-    border-color: rgba(16, 185, 129, 0.5);
-    background: rgba(16, 185, 129, 0.12);
-    color: rgb(167 243 208);
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 </style>
