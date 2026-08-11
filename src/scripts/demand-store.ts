@@ -1,13 +1,12 @@
 /**
  * Client runtime — nightly demand store.
- * One row per type section · Leaders / Trending tabs (Betsy Live style).
+ * Combined Leaders+Trending per type section · two rows · Hot/Trending pills.
  */
 import {
   DEMAND_STORE_API,
   DEMAND_STORE_POLL_MS,
   SECTION_ROW_CAPACITY,
   gseUpcSearchUrl,
-  type DemandStoreBoard,
   type DemandStorePayload,
   type DemandStoreProduct,
   type DemandStoreSection,
@@ -31,8 +30,6 @@ if (root) {
     root.querySelector<HTMLElement>("[data-store-sheet-list]")!;
 
   let sections: DemandStoreSection[] = [];
-  /** Active board per section id (defaults from API). */
-  const boardBySection = new Map<string, DemandStoreBoard>();
   let generatedAt: string | null = null;
   let windowLabel: string | null = null;
   let loading = false;
@@ -66,22 +63,8 @@ if (root) {
     statusEl.textContent = text;
   }
 
-  function boardProducts(
-    s: DemandStoreSection,
-    board: DemandStoreBoard
-  ): DemandStoreProduct[] {
-    return board === "trending" ? s.trending : s.leaders;
-  }
-
-  function activeBoard(s: DemandStoreSection): DemandStoreBoard {
-    return boardBySection.get(s.id) || s.defaultBoard;
-  }
-
-  function sectionCount(s: DemandStoreSection): number {
-    return Math.max(s.leaders.length, s.trending.length);
-  }
-
   function cardHtml(p: DemandStoreProduct): string {
+    // Keep Hot / Trending pills — tabs are gone; badges stay cool.
     const badge =
       p.badge === "hot"
         ? `<span class="store-badge store-badge--hot">Hot</span>`
@@ -96,7 +79,6 @@ if (root) {
       .map((x) => escapeHtml(String(x)))
       .join(" · ");
     const gseUrl = gseUpcSearchUrl(p.upc);
-    // Prefer GSE UPC search; fall back to dealer only if UPC is unusable.
     const href = gseUrl || p.url;
     const cta = gseUrl ? "Search GSE →" : "Open →";
     const img =
@@ -133,7 +115,7 @@ if (root) {
   function renderChips() {
     const bits = sections.map(
       (s) =>
-        `<a class="store-chip" href="#section-${escapeHtml(s.id)}">${escapeHtml(s.label)} <span class="store-chip__n">${sectionCount(s)}</span></a>`
+        `<a class="store-chip" href="#section-${escapeHtml(s.id)}">${escapeHtml(s.label)} <span class="store-chip__n">${s.products.length}</span></a>`
     );
     chipsEl.innerHTML = bits.join("");
   }
@@ -142,7 +124,7 @@ if (root) {
     sheetList.innerHTML = sections
       .map(
         (s) =>
-          `<a class="store-sheet-item" href="#section-${escapeHtml(s.id)}" data-jump="${escapeHtml(s.id)}">${escapeHtml(s.label)} · ${sectionCount(s)}</a>`
+          `<a class="store-sheet-item" href="#section-${escapeHtml(s.id)}" data-jump="${escapeHtml(s.id)}">${escapeHtml(s.label)} · ${s.products.length}</a>`
       )
       .join("");
     sheetList
@@ -164,95 +146,20 @@ if (root) {
     });
   }
 
-  function boardMetaLabel(board: DemandStoreBoard): string {
-    return board === "trending"
-      ? "Trending now · short window"
-      : "Leaders · multi-day demand";
-  }
-
-  function tabsHtml(s: DemandStoreSection, active: DemandStoreBoard): string {
-    const nL = s.leaders.length;
-    const nT = s.trending.length;
-    // Hide strip when only one board has products
-    if (nL === 0 || nT === 0) return "";
-
-    const tab = (id: DemandStoreBoard, label: string, n: number) => {
-      const on = active === id;
-      return `<button
-        type="button"
-        class="store-tab${on ? " store-tab--on" : ""}"
-        role="tab"
-        aria-selected="${on ? "true" : "false"}"
-        data-store-tab="${id}"
-        data-section="${escapeHtml(s.id)}"
-        title="${id === "leaders" ? "Full prior window — stabler leaders" : "Short-window spikes — Trending now"}"
-      >${label} <span class="store-tab__n">${n}</span></button>`;
-    };
-
-    return `
-      <div class="store-tabs" role="tablist" aria-label="${escapeHtml(s.label)} demand board">
-        ${tab("leaders", "Leaders", nL)}
-        ${tab("trending", "Trending", nT)}
-      </div>
-    `;
-  }
-
   function renderSection(s: DemandStoreSection): string {
-    const board = activeBoard(s);
-    const list = boardProducts(s, board);
+    const list = s.products;
     const cards = list.map(cardHtml).join("");
     return `
       <section class="store-section" id="section-${escapeHtml(s.id)}" aria-labelledby="heading-${escapeHtml(s.id)}" data-section-id="${escapeHtml(s.id)}">
         <header class="store-section__head">
           <div class="store-section__titles">
             <h2 class="store-section__title" id="heading-${escapeHtml(s.id)}">${escapeHtml(s.label)}</h2>
-            <p class="store-section__meta" data-section-meta>${list.length} picks · ${boardMetaLabel(board)}</p>
+            <p class="store-section__meta">${list.length} picks · Leaders + Trending</p>
           </div>
-          ${tabsHtml(s, board)}
         </header>
-        <div class="store-grid" data-section-grid>${cards || `<p class="store-section__empty">No picks on this board yet.</p>`}</div>
+        <div class="store-grid" data-section-grid>${cards || `<p class="store-section__empty">No picks yet.</p>`}</div>
       </section>
     `;
-  }
-
-  function paintSectionGrid(sectionId: string) {
-    const s = sections.find((x) => x.id === sectionId);
-    if (!s) return;
-    const el = feed.querySelector<HTMLElement>(
-      `[data-section-id="${CSS.escape(sectionId)}"]`
-    );
-    if (!el) return;
-    const board = activeBoard(s);
-    const list = boardProducts(s, board);
-    const grid = el.querySelector<HTMLElement>("[data-section-grid]");
-    const meta = el.querySelector<HTMLElement>("[data-section-meta]");
-    if (grid) {
-      grid.innerHTML =
-        list.map(cardHtml).join("") ||
-        `<p class="store-section__empty">No picks on this board yet.</p>`;
-      wireImages(grid);
-    }
-    if (meta) {
-      meta.textContent = `${list.length} picks · ${boardMetaLabel(board)}`;
-    }
-    el.querySelectorAll<HTMLButtonElement>("[data-store-tab]").forEach((btn) => {
-      const id = btn.getAttribute("data-store-tab") as DemandStoreBoard;
-      const on = id === board;
-      btn.classList.toggle("store-tab--on", on);
-      btn.setAttribute("aria-selected", on ? "true" : "false");
-    });
-  }
-
-  function wireTabs(scope: ParentNode) {
-    scope.querySelectorAll<HTMLButtonElement>("[data-store-tab]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const sectionId = btn.getAttribute("data-section");
-        const board = btn.getAttribute("data-store-tab") as DemandStoreBoard;
-        if (!sectionId || (board !== "leaders" && board !== "trending")) return;
-        boardBySection.set(sectionId, board);
-        paintSectionGrid(sectionId);
-      });
-    });
   }
 
   function renderFeed() {
@@ -267,7 +174,6 @@ if (root) {
     emptyEl.hidden = true;
     feed.innerHTML = sections.map(renderSection).join("");
     wireImages(feed);
-    wireTabs(feed);
   }
 
   function openSheet() {
@@ -285,11 +191,42 @@ if (root) {
   function filterProducts(list: DemandStoreProduct[] | undefined, cap: number) {
     return (list || [])
       .filter((p) => {
-        // Keep if we can open GSE by UPC or still have a dealer URL fallback.
         if (gseUpcSearchUrl(p.upc)) return true;
         return typeof p.url === "string" && /^https?:\/\//i.test(p.url);
       })
       .slice(0, cap);
+  }
+
+  /** Merge legacy leaders+trending payloads into one list (API v8 sends products). */
+  function mergeBoards(
+    products: DemandStoreProduct[] | undefined,
+    leaders: DemandStoreProduct[] | undefined,
+    trending: DemandStoreProduct[] | undefined,
+    cap: number
+  ): DemandStoreProduct[] {
+    if (products?.length) return filterProducts(products, cap);
+
+    const byUpc = new Map<string, DemandStoreProduct>();
+    for (const p of filterProducts(leaders, cap * 2)) {
+      byUpc.set(p.upc, p);
+    }
+    for (const p of filterProducts(trending, cap * 2)) {
+      const prev = byUpc.get(p.upc);
+      if (!prev) {
+        byUpc.set(p.upc, p);
+        continue;
+      }
+      byUpc.set(p.upc, {
+        ...prev,
+        badge:
+          p.badge === "trending" || prev.badge === "trending"
+            ? "trending"
+            : prev.badge,
+        demand_score: Math.max(prev.demand_score || 0, p.demand_score || 0),
+        image_url: prev.image_url || p.image_url,
+      });
+    }
+    return [...byUpc.values()].slice(0, cap);
   }
 
   function normalizeSections(data: DemandStorePayload): DemandStoreSection[] {
@@ -302,42 +239,28 @@ if (root) {
     if (Array.isArray(data.sections) && data.sections.length) {
       return data.sections
         .map((s) => {
-          // v6+: leaders + trending. Legacy: only products (treat as leaders).
-          const leaders = filterProducts(
-            s.leaders?.length ? s.leaders : s.products,
+          const products = mergeBoards(
+            s.products,
+            s.leaders,
+            s.trending,
             cap
           );
-          const trending = filterProducts(s.trending, cap);
-          if (!leaders.length && !trending.length) {
-            return null;
-          }
-          // Default = board with more products (tie → leaders). Maximize first paint.
-          const finalBoard: DemandStoreBoard =
-            trending.length > leaders.length ? "trending" : "leaders";
-          const products = finalBoard === "trending" ? trending : leaders;
-
+          if (!products.length) return null;
           return {
             id: s.id,
             label: s.label,
-            leaders,
-            trending,
-            defaultBoard: finalBoard,
             products,
           } satisfies DemandStoreSection;
         })
         .filter((s): s is DemandStoreSection => s != null);
     }
 
-    // Legacy flat list fallback — leaders only
     const products = filterProducts(data.products, cap);
     if (!products.length) return [];
     return [
       {
         id: "all",
         label: "Demand picks",
-        leaders: products,
-        trending: [],
-        defaultBoard: "leaders",
         products,
       },
     ];
@@ -373,18 +296,11 @@ if (root) {
       const data = (await res.json()) as DemandStorePayload;
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
       sections = normalizeSections(data);
-      boardBySection.clear();
-      for (const s of sections) {
-        boardBySection.set(s.id, s.defaultBoard);
-      }
       generatedAt = data.generatedAt || null;
       windowLabel = data.windowLabel || "Previous 24 hours";
-      const n = sections.reduce(
-        (a, s) => a + boardProducts(s, activeBoard(s)).length,
-        0
-      );
+      const n = sections.reduce((a, s) => a + s.products.length, 0);
       setStatus(
-        `${n} picks · ${windowLabel} · Leaders + Trending · cards open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
+        `${n} picks · ${windowLabel} · two rows per type · cards open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
       );
       renderChips();
       renderSheetList();

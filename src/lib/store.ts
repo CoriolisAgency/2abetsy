@@ -1,6 +1,6 @@
 /**
  * Betsy AI demand storefront config (2abetsy.com/store).
- * Nightly prior-24h shelf from GSE public API · sections by ATF type.
+ * Nightly shelf from GSE · sections by ATF type · combined Leaders+Trending.
  */
 
 export const DEMAND_STORE_API =
@@ -9,8 +9,8 @@ export const DEMAND_STORE_API =
 /** Soft re-poll (nightly data — check a few times per day for deploy/cron). */
 export const DEMAND_STORE_POLL_MS = 60 * 60_000;
 
-/** One grid row per section (matches desktop 4-col layout). */
-export const SECTION_ROW_CAPACITY = 4;
+/** Two grid rows per section (4 columns × 2 on desktop). */
+export const SECTION_ROW_CAPACITY = 8;
 
 /** GSE homepage UPC search (matches Betsy Live openBetsyUpcSearch). */
 export const GSE_ORIGIN = "https://www.gunsearchengine.com";
@@ -40,21 +40,19 @@ export type DemandStoreProduct = {
   in_stock: boolean;
   demand_score: number;
   demand_weight: number;
+  /** Hot / Trending pills on cards (no board tabs). */
   badge: "hot" | "trending" | null;
 };
-
-/** Betsy Live–style board within a product-type section. */
-export type DemandStoreBoard = "leaders" | "trending";
 
 export type DemandStoreSection = {
   id: string;
   label: string;
-  leaders: DemandStoreProduct[];
-  trending: DemandStoreProduct[];
-  /** Board with more products (tie → leaders). */
-  defaultBoard: DemandStoreBoard;
-  /** products for the default board (compat). */
+  /** Combined Leaders + Trending collection. */
   products: DemandStoreProduct[];
+  /** Optional legacy fields from older API payloads. */
+  leaders?: DemandStoreProduct[];
+  trending?: DemandStoreProduct[];
+  defaultBoard?: "leaders" | "trending";
 };
 
 export type DemandStorePayload = {
