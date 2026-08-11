@@ -209,7 +209,10 @@ if (!root) {
       });
       const data = (await res.json()) as DemandStorePayload;
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-      products = Array.isArray(data.products) ? data.products : [];
+      // Only show demand picks that still have a product photo.
+      products = (Array.isArray(data.products) ? data.products : []).filter(
+        (p) => typeof p.image_url === "string" && /^https?:\/\//i.test(p.image_url)
+      );
       types = Array.isArray(data.types) ? data.types : [];
       generatedAt = data.generatedAt || null;
       setStatus(
