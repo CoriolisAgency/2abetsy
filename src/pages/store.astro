@@ -15,11 +15,14 @@ import {
 const bootstrap = await fetchDemandStoreBootstrap();
 const sections = normalizeDemandStoreSections(bootstrap);
 const totalPicks = sections.reduce((a, s) => a + s.products.length, 0);
-const windowLabel = bootstrap?.windowLabel || "Previous 24 hours";
+const windowLabel =
+  bootstrap?.windowLabel && /24\s*hour/i.test(bootstrap.windowLabel)
+    ? bootstrap.windowLabel
+    : "Last 24 hours";
 const statusLine =
   totalPicks > 0
     ? `${totalPicks} picks · ${windowLabel} · two rows per type · cards open GSE by UPC`
-    : "Loading nightly shelf…";
+    : "Loading live shelf…";
 
 const bootstrapJson = JSON.stringify(bootstrap ?? null).replace(
   /</g,
@@ -32,7 +35,7 @@ function cardHref(p: DemandStoreProduct): string {
 ---
 
 <BaseLayout
-  title="Betsy AI Store — Prior 24h Demand | 2aBetsy"
+  title="Betsy AI Store — Last 24h Demand | 2aBetsy"
   description="Automated gun & ammo shelf ranked by Betsy AI demand — Leaders and Trending merged per product type. Tap a card to open GunSearchEngine by UPC."
   path="/store"
   ogImagePath={CANON_PATHS.headshot}

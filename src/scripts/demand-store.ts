@@ -161,7 +161,10 @@ if (root) {
   function applyPayload(data: DemandStorePayload, opts?: { silent?: boolean }) {
     sections = normalizeDemandStoreSections(data, SECTION_ROW_CAPACITY);
     generatedAt = data.generatedAt || null;
-    windowLabel = data.windowLabel || "Previous 24 hours";
+    windowLabel =
+      data.windowLabel && /24\s*hour/i.test(data.windowLabel)
+        ? data.windowLabel
+        : "Last 24 hours";
     const n = sections.reduce((a, s) => a + s.products.length, 0);
     if (n > 0) {
       setStatus(
@@ -251,11 +254,14 @@ if (root) {
   if (boot) {
     sections = normalizeDemandStoreSections(boot);
     generatedAt = boot.generatedAt || null;
-    windowLabel = boot.windowLabel || null;
+    windowLabel =
+      boot.windowLabel && /24\s*hour/i.test(boot.windowLabel)
+        ? boot.windowLabel
+        : "Last 24 hours";
     const n = sections.reduce((a, s) => a + s.products.length, 0);
     if (n > 0) {
       setStatus(
-        `${n} picks · ${windowLabel || "demand"} · two rows per type · cards open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
+        `${n} picks · ${windowLabel} · two rows per type · cards open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
       );
       try {
         localStorage.setItem(DEMAND_STORE_LS_KEY, JSON.stringify(boot));
