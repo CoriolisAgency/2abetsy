@@ -6,6 +6,7 @@ import {
   DEMAND_STORE_API,
   DEMAND_STORE_POLL_MS,
   SECTION_ROW_CAPACITY,
+  gseUpcSearchUrl,
   type DemandStoreBoard,
   type DemandStorePayload,
   type DemandStoreProduct,
@@ -95,6 +96,10 @@ if (root) {
       .map((x) => escapeHtml(String(x)))
       .join(" · ");
     const retailer = escapeHtml(p.retailer || "Dealer");
+    const gseUrl = gseUpcSearchUrl(p.upc);
+    // Prefer GSE UPC search; fall back to dealer only if UPC is unusable.
+    const href = gseUrl || p.url;
+    const cta = gseUrl ? "Search on GSE →" : "Open dealer →";
     const img =
       p.image_url && /^https?:\/\//i.test(p.image_url)
         ? `<img src="${escapeHtml(p.image_url)}" alt="" loading="lazy" decoding="async" class="store-card__img" data-store-img />`
@@ -103,7 +108,7 @@ if (root) {
     return `
       <a
         class="store-card"
-        href="${escapeHtml(p.url)}"
+        href="${escapeHtml(href)}"
         target="_blank"
         rel="noopener noreferrer"
         data-product-id="${p.product_id}"
@@ -116,9 +121,9 @@ if (root) {
           ${meta ? `<p class="store-card__meta">${meta}</p>` : ""}
           <div class="store-card__foot">
             <span class="store-card__price">${formatPrice(p.price)}</span>
-            <span class="store-card__retailer">at ${retailer}</span>
+            <span class="store-card__retailer">via ${retailer}</span>
           </div>
-          <p class="store-card__cta">Open dealer →</p>
+          <p class="store-card__cta">${cta}</p>
         </div>
       </a>
     `;
@@ -161,7 +166,7 @@ if (root) {
   function boardMetaLabel(board: DemandStoreBoard): string {
     return board === "trending"
       ? "Trending now · short window"
-      : "Leaders · prior 24h demand";
+      : "Leaders · multi-day demand";
   }
 
   function tabsHtml(s: DemandStoreSection, active: DemandStoreBoard): string {
@@ -276,9 +281,13 @@ if (root) {
     document.body.style.overflow = "";
   }
 
-  function filterUrls(list: DemandStoreProduct[] | undefined, cap: number) {
+  function filterProducts(list: DemandStoreProduct[] | undefined, cap: number) {
     return (list || [])
-      .filter((p) => typeof p.url === "string" && /^https?:\/\//i.test(p.url))
+      .filter((p) => {
+        // Keep if we can open GSE by UPC or still have a dealer URL fallback.
+        if (gseUpcSearchUrl(p.upc)) return true;
+        return typeof p.url === "string" && /^https?:\/\//i.test(p.url);
+      })
       .slice(0, cap);
   }
 
@@ -293,11 +302,11 @@ if (root) {
       return data.sections
         .map((s) => {
           // v6+: leaders + trending. Legacy: only products (treat as leaders).
-          const leaders = filterUrls(
+          const leaders = filterProducts(
             s.leaders?.length ? s.leaders : s.products,
             cap
           );
-          const trending = filterUrls(s.trending, cap);
+          const trending = filterProducts(s.trending, cap);
           if (!leaders.length && !trending.length) {
             return null;
           }
@@ -319,7 +328,7 @@ if (root) {
     }
 
     // Legacy flat list fallback — leaders only
-    const products = filterUrls(data.products, cap);
+    const products = filterProducts(data.products, cap);
     if (!products.length) return [];
     return [
       {
@@ -374,7 +383,7 @@ if (root) {
         0
       );
       setStatus(
-        `${n} picks · ${windowLabel} · Leaders + Trending · refreshed ${relativeTime(generatedAt)} · next update midnight ET`
+        `${n} picks · ${windowLabel} · Leaders + Trending · cards open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
       );
       renderChips();
       renderSheetList();

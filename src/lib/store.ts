@@ -12,6 +12,18 @@ export const DEMAND_STORE_POLL_MS = 60 * 60_000;
 /** One grid row per section (matches desktop 4-col layout). */
 export const SECTION_ROW_CAPACITY = 4;
 
+/** GSE homepage UPC search (matches Betsy Live openBetsyUpcSearch). */
+export const GSE_ORIGIN = "https://www.gunsearchengine.com";
+
+/** Build GSE `/?upc=` URL for a product barcode. */
+export function gseUpcSearchUrl(upc: string | null | undefined): string | null {
+  if (!upc) return null;
+  const digits = String(upc).replace(/\D/g, "");
+  // Homepage extractUpc accepts a range of barcode lengths; allow 8–14 for store.
+  if (digits.length < 8 || digits.length > 14) return null;
+  return `${GSE_ORIGIN}/?upc=${encodeURIComponent(digits)}`;
+}
+
 export type DemandStoreProduct = {
   rank: number;
   product_id: number;

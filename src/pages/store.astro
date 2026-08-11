@@ -26,11 +26,10 @@ import { withBase } from "../lib/base";
           <p class="store-hero__kicker">Betsy AI · nightly · 100% automated</p>
           <h1 class="store-hero__title">Demand Store</h1>
           <p class="store-hero__sub">
-            Live demand ranks the shelf. Dealers close the sale. Each product
-            type has <strong>Leaders</strong> and <strong>Trending</strong> tabs
-            (like Betsy Live) — we default to whichever board has more picks.
-            One row per section. Midnight ET refresh. Tap a card → dealer site.
-            Not an FFL.
+            Live demand ranks the shelf. Each product type has
+            <strong>Leaders</strong> and <strong>Trending</strong> tabs (like
+            Betsy Live) — we default to whichever board has more picks. One row
+            per section. Tap a card → GunSearchEngine search by UPC. Not an FFL.
           </p>
           <p class="store-hero__status" data-store-status>
             Loading nightly shelf…
@@ -47,10 +46,10 @@ import { withBase } from "../lib/base";
     <p class="store-empty" data-store-empty hidden></p>
 
     <p class="store-disclaimer">
-      Not a licensed FFL and not a cart. Purchases and transfers complete with
-      participating dealers. We may earn a commission when you buy from a dealer.
-      Manufacturer names and images remain their owners’ property; ranking does
-      not imply endorsement. Powered by{" "}
+      Not a licensed FFL and not a cart. Cards open GunSearchEngine search by
+      UPC (new tab). Purchases and transfers complete with licensed dealers on
+      GSE or at the counter. Manufacturer names and images remain their owners’
+      property; ranking does not imply endorsement. Powered by{" "}
       <a href={LINKS.gse} target="_blank" rel="noopener noreferrer"
         >GunSearchEngine</a
       >{" "}
@@ -58,9 +57,7 @@ import { withBase } from "../lib/base";
       <a href={LINKS.betsyLive} target="_blank" rel="noopener noreferrer"
         >Betsy Live</a
       >. Brands:{" "}
-      <a href={withBase("for-brands")}>category sponsorships</a>. GSE merch lives
-      at
-      gunsearchengine.com/store — this shelf is demand link-outs only.
+      <a href={withBase("for-brands")}>category sponsorships</a>.
     </p>
 
     <div class="store-fab" role="group" aria-label="Store controls">
