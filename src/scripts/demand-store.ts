@@ -95,11 +95,10 @@ if (root) {
       .filter(Boolean)
       .map((x) => escapeHtml(String(x)))
       .join(" · ");
-    const retailer = escapeHtml(p.retailer || "Dealer");
     const gseUrl = gseUpcSearchUrl(p.upc);
     // Prefer GSE UPC search; fall back to dealer only if UPC is unusable.
     const href = gseUrl || p.url;
-    const cta = gseUrl ? "Search on GSE →" : "Open dealer →";
+    const cta = gseUrl ? "Search GSE →" : "Open →";
     const img =
       p.image_url && /^https?:\/\//i.test(p.image_url)
         ? `<img src="${escapeHtml(p.image_url)}" alt="" loading="lazy" decoding="async" class="store-card__img" data-store-img />`
@@ -120,10 +119,12 @@ if (root) {
           <h3 class="store-card__title">${title}</h3>
           ${meta ? `<p class="store-card__meta">${meta}</p>` : ""}
           <div class="store-card__foot">
-            <span class="store-card__price">${formatPrice(p.price)}</span>
-            <span class="store-card__retailer">via ${retailer}</span>
+            <div class="store-card__price-block">
+              <span class="store-card__from">from</span>
+              <span class="store-card__price">${formatPrice(p.price)}</span>
+            </div>
+            <span class="store-card__cta">${cta}</span>
           </div>
-          <p class="store-card__cta">${cta}</p>
         </div>
       </a>
     `;
