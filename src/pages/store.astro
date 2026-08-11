@@ -9,6 +9,8 @@ import { withBase } from "../lib/base";
   description="Automated gun & ammo shelf ranked by previous 24-hour Betsy AI demand, refreshed nightly. One row per product type from real demand. Tap a card to open the dealer page."
   path="/store"
   ogImagePath={CANON_PATHS.headshot}
+  chrome={false}
+  emailCapture={false}
 >
   <div id="betsy-demand-store" class="store">
     <section class="store-hero">
@@ -205,7 +207,7 @@ import { withBase } from "../lib/base";
 
   .store-chips-wrap {
     position: sticky;
-    top: 3.5rem;
+    top: 0;
     z-index: 20;
     padding: 0.5rem 0 0.5rem 0.75rem;
     background: color-mix(in srgb, #0a1220 92%, transparent);

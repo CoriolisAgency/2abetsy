@@ -12,6 +12,13 @@ interface Props {
   path?: string;
   /** Path under public/, no leading slash — e.g. betsy/images/... */
   ogImagePath?: string;
+  /**
+   * Site header + footer. Demand Store opens chrome-free (app shell).
+   * @default true
+   */
+  chrome?: boolean;
+  /** Betsy email capture modal. Off for app-like surfaces. @default true */
+  emailCapture?: boolean;
 }
 
 const {
@@ -19,6 +26,8 @@ const {
   description = SITE.description,
   path = "/",
   ogImagePath = CANON_PATHS.headshot,
+  chrome = true,
+  emailCapture = true,
 } = Astro.props;
 
 const siteOrigin = Astro.site ?? new URL("https://2abetsy.com");
@@ -99,10 +108,18 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="min-h-dvh flex flex-col">
-    <SiteChrome>
-      <slot />
-    </SiteChrome>
-    <BetsyEmailCapture />
+    {
+      chrome ? (
+        <SiteChrome>
+          <slot />
+        </SiteChrome>
+      ) : (
+        <main class="flex-1 min-h-dvh">
+          <slot />
+        </main>
+      )
+    }
+    {emailCapture ? <BetsyEmailCapture /> : null}
     {/* GunSearchEngine embed — demand + Betsy on brand site (observe/intent via site_key) */}
     <script
       is:inline

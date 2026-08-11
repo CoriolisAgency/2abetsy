@@ -57,23 +57,30 @@ function active(slug: string) {
       aria-label="Main"
     >
       {
-        nav.map((item) => (
-          <a
-            href={withBase(item.href)}
-            class:list={[
-              "rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors",
-              item.href === "store"
-                ? active(item.href)
-                  ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-100"
-                  : "border-emerald-500/35 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20"
-                : active(item.href)
+        nav.map((item) =>
+          item.href === "store" ? (
+            <a
+              href={LINKS.store}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="rounded-lg border border-emerald-500/35 bg-emerald-500/10 px-2.5 py-1.5 text-xs font-medium text-emerald-200 hover:bg-emerald-500/20"
+            >
+              {item.label}
+            </a>
+          ) : (
+            <a
+              href={withBase(item.href)}
+              class:list={[
+                "rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors",
+                active(item.href)
                   ? "border-sky-500/50 bg-sky-500/15 text-sky-200"
                   : "border-zinc-700 text-zinc-200 hover:bg-zinc-800",
-            ]}
-          >
-            {item.label}
-          </a>
-        ))
+              ]}
+            >
+              {item.label}
+            </a>
+          )
+        )
       }
       <a
         href={LINKS.betsyLive}
@@ -126,7 +133,12 @@ function active(slug: string) {
       </p>
     </div>
     <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs">
-      <a href={withBase("store")} class="hover:text-emerald-300">Store</a>
+      <a
+        href={LINKS.store}
+        class="hover:text-emerald-300"
+        target="_blank"
+        rel="noopener noreferrer">Store</a
+      >
       <a href={LINKS.gsa} class="hover:text-sky-300" target="_blank" rel="noopener noreferrer"
         >GunSearchAgent</a
       >
