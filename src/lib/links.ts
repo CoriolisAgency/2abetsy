@@ -4,6 +4,8 @@
  */
 export const LINKS = {
   home: "https://2abetsy.com",
+  /** Automated demand store (this site) */
+  store: "https://2abetsy.com/store",
   gsa: "https://gunsearchagent.com",
   gsaGa:
     "https://gunsearchagent.com/google-analytics-alternative-for-ffls",

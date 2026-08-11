@@ -1,0 +1,617 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { CANON_PATHS, LINKS } from "../lib/links";
+import { withBase } from "../lib/base";
+---
+
+<BaseLayout
+  title="Betsy AI Store — Live Demand Picks | 2aBetsy"
+  description="Automated gun & ammo shelf ranked by live Betsy AI demand. Tap a card to open the dealer product page. Zero human merchandising."
+  path="/store"
+  ogImagePath={CANON_PATHS.headshot}
+>
+  <div id="betsy-demand-store" class="store">
+    <section class="store-hero">
+      <div class="store-hero__inner">
+        <img
+          src={withBase(CANON_PATHS.headshot)}
+          alt=""
+          width="56"
+          height="56"
+          class="store-hero__avatar"
+        />
+        <div class="store-hero__copy min-w-0">
+          <p class="store-hero__kicker">Betsy AI · 100% automated</p>
+          <h1 class="store-hero__title">Demand Store</h1>
+          <p class="store-hero__sub">
+            Shelf ranked by live network demand — no human buyer. Tap a card →
+            dealer site opens in a new tab.
+          </p>
+          <p class="store-hero__status" data-store-status>Loading live shelf…</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="store-chips-wrap" aria-label="Filter by type">
+      <div class="store-chips" data-store-chips></div>
+    </div>
+
+    <section class="store-feed" aria-label="Demand products">
+      <div class="store-grid" data-store-grid></div>
+      <p class="store-empty" data-store-empty hidden></p>
+    </section>
+
+    <p class="store-disclaimer">
+      Not a licensed FFL and not a cart. Purchases and transfers complete with
+      participating dealers. Powered by{" "}
+      <a href={LINKS.gse} target="_blank" rel="noopener noreferrer"
+        >GunSearchEngine</a
+      >{" "}
+      demand + live catalog. See also{" "}
+      <a href={LINKS.betsyLive} target="_blank" rel="noopener noreferrer"
+        >Betsy Live</a
+      >.
+    </p>
+
+    <!-- Right-thumb control cluster -->
+    <div class="store-fab" role="group" aria-label="Store controls">
+      <button
+        type="button"
+        class="store-fab__btn"
+        data-store-filter
+        title="Filter types"
+        aria-label="Filter product types"
+      >
+        Filter
+      </button>
+      <button
+        type="button"
+        class="store-fab__btn store-fab__btn--primary"
+        data-store-refresh
+        title="Refresh demand shelf"
+        aria-label="Refresh shelf"
+      >
+        Refresh
+      </button>
+      <button
+        type="button"
+        class="store-fab__btn"
+        data-store-top
+        title="Back to top"
+        aria-label="Back to top"
+      >
+        Top
+      </button>
+    </div>
+
+    <div class="store-bottom" aria-hidden="false">
+      <p>
+        Right thumb ready · cards open dealers · ranked by Betsy
+      </p>
+    </div>
+
+    <!-- Filter sheet (thumb-friendly, opens from bottom) -->
+    <div class="store-sheet" data-store-sheet hidden>
+      <button
+        type="button"
+        class="store-sheet__scrim"
+        data-store-sheet-scrim
+        aria-label="Close filters"
+      ></button>
+      <div
+        class="store-sheet__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Filter by product type"
+      >
+        <div class="store-sheet__head">
+          <p class="store-sheet__title">Filter shelf</p>
+          <button
+            type="button"
+            class="store-sheet__close"
+            data-store-sheet-close
+            aria-label="Close"
+          >
+            Done
+          </button>
+        </div>
+        <div class="store-sheet__list" data-store-sheet-list></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import "../scripts/demand-store.ts";
+  </script>
+</BaseLayout>
+
+<style is:global>
+  /* ── Demand store (mobile / right-thumb first) ───────────────────────── */
+  .store {
+    position: relative;
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 0 0 calc(5.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  @media (min-width: 768px) {
+    .store {
+      max-width: 56rem;
+    }
+  }
+
+  .store-hero {
+    padding: 1rem 1rem 0.75rem;
+    border-bottom: 1px solid rgb(39 39 42 / 0.8);
+    background:
+      radial-gradient(
+        ellipse 80% 70% at 100% 0%,
+        rgba(16, 185, 129, 0.12),
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse 60% 50% at 0% 0%,
+        rgba(14, 165, 233, 0.1),
+        transparent 50%
+      );
+  }
+
+  .store-hero__inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+  }
+
+  .store-hero__avatar {
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 0.875rem;
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow:
+      0 0 0 1px rgba(16, 185, 129, 0.35),
+      0 8px 24px rgba(14, 165, 233, 0.15);
+  }
+
+  .store-hero__kicker {
+    margin: 0;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgb(52 211 153);
+  }
+
+  .store-hero__title {
+    margin: 0.2rem 0 0;
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    color: #fff;
+    line-height: 1.15;
+  }
+
+  .store-hero__sub {
+    margin: 0.4rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: rgb(161 161 170);
+  }
+
+  .store-hero__status {
+    margin: 0.5rem 0 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: rgb(125 211 252);
+  }
+
+  /* Chips — scroll toward the right (thumb flicks near right edge) */
+  .store-chips-wrap {
+    position: sticky;
+    top: 3.5rem;
+    z-index: 20;
+    padding: 0.5rem 0 0.5rem 0.75rem;
+    background: color-mix(in srgb, #0a1220 92%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgb(39 39 42 / 0.7);
+  }
+
+  .store-chips {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding-right: 0.75rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .store-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .store-chip {
+    flex: 0 0 auto;
+    min-height: 2.25rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgb(63 63 70);
+    background: rgb(24 24 27 / 0.9);
+    color: rgb(228 228 231);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .store-chip.is-active {
+    border-color: rgba(16, 185, 129, 0.55);
+    background: rgba(16, 185, 129, 0.15);
+    color: rgb(167 243 208);
+  }
+
+  .store-feed {
+    padding: 0.75rem 0.75rem 1rem;
+  }
+
+  .store-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .store-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .store-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .store-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 5.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgb(63 63 70 / 0.9);
+    background: linear-gradient(
+      165deg,
+      rgb(24 32 48 / 0.98),
+      rgb(12 18 32 / 0.98)
+    );
+    overflow: hidden;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 8px 24px rgba(0, 0, 0, 0.28);
+    transition:
+      border-color 0.15s ease,
+      transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (hover: hover) {
+    .store-card:hover {
+      border-color: rgba(14, 165, 233, 0.45);
+      transform: translateY(-1px);
+    }
+  }
+
+  .store-card:active {
+    transform: scale(0.99);
+  }
+
+  .store-card--skeleton {
+    min-height: 14rem;
+    background: linear-gradient(
+      90deg,
+      rgb(24 24 27) 0%,
+      rgb(39 39 42) 50%,
+      rgb(24 24 27) 100%
+    );
+    background-size: 200% 100%;
+    animation: store-shimmer 1.2s ease-in-out infinite;
+  }
+
+  @keyframes store-shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .store-card--skeleton {
+      animation: none;
+    }
+    .store-card {
+      transition: none;
+    }
+  }
+
+  .store-card__media {
+    position: relative;
+    aspect-ratio: 16 / 11;
+    background: rgb(9 12 20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .store-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0.5rem;
+  }
+
+  .store-card__ph {
+    font-size: 2rem;
+    opacity: 0.7;
+  }
+
+  .store-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.2rem 0.45rem;
+    border-radius: 0.4rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: rgb(24 24 27 / 0.9);
+    border: 1px solid rgb(63 63 70);
+    color: rgb(212 212 216);
+  }
+
+  .store-badge--hot {
+    border-color: rgba(251, 113, 133, 0.5);
+    background: rgba(136, 19, 55, 0.75);
+    color: rgb(254 205 211);
+  }
+
+  .store-badge--trend {
+    border-color: rgba(52, 211, 153, 0.5);
+    background: rgba(6, 78, 59, 0.8);
+    color: rgb(167 243 208);
+  }
+
+  .store-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.7rem 0.8rem 0.85rem;
+    flex: 1;
+  }
+
+  .store-card__brand {
+    margin: 0;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(125 211 252);
+  }
+
+  .store-card__title {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #fafafa;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .store-card__meta {
+    margin: 0;
+    font-size: 0.6875rem;
+    color: rgb(161 161 170);
+  }
+
+  .store-card__foot {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+  }
+
+  .store-card__price {
+    font-size: 1.125rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: rgb(52 211 153);
+  }
+
+  .store-card__retailer {
+    font-size: 0.625rem;
+    color: rgb(113 113 122);
+    text-align: right;
+    max-width: 45%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .store-card__cta {
+    margin: 0.45rem 0 0;
+    font-size: 0.75rem;
+    font-weight: 650;
+    color: rgb(125 211 252);
+    text-align: right;
+  }
+
+  .store-empty {
+    margin: 1.5rem 0.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: rgb(161 161 170);
+  }
+
+  .store-disclaimer {
+    margin: 0.5rem 1rem 1rem;
+    font-size: 0.6875rem;
+    line-height: 1.45;
+    color: rgb(82 82 91);
+  }
+
+  .store-disclaimer a {
+    color: rgb(56 189 248);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Right-thumb FAB cluster */
+  .store-fab {
+    position: fixed;
+    right: max(0.75rem, env(safe-area-inset-right));
+    bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+  }
+
+  .store-fab__btn {
+    min-width: 4.5rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.9rem;
+    border: 1px solid rgb(63 63 70);
+    background: rgb(24 24 27 / 0.94);
+    color: #f4f4f5;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+  }
+
+  .store-fab__btn--primary {
+    border-color: rgba(16, 185, 129, 0.5);
+    background: rgba(6, 78, 59, 0.92);
+    color: rgb(167 243 208);
+  }
+
+  .store-fab__btn:disabled {
+    opacity: 0.55;
+  }
+
+  .store-bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    padding: 0.45rem 5.5rem 0.45rem 0.85rem;
+    padding-bottom: calc(0.45rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid rgb(39 39 42 / 0.9);
+    background: color-mix(in srgb, #0a1220 94%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .store-bottom p {
+    margin: 0;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgb(113 113 122);
+  }
+
+  /* Bottom sheet filters */
+  .store-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+  }
+
+  .store-sheet__scrim {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.55);
+    cursor: pointer;
+  }
+
+  .store-sheet__panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: min(70dvh, 28rem);
+    border-radius: 1.1rem 1.1rem 0 0;
+    border: 1px solid rgb(63 63 70);
+    border-bottom: 0;
+    background: #0c1220;
+    padding: 0.75rem 0.75rem
+      calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.45);
+  }
+
+  .store-sheet__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    padding: 0 0.25rem;
+  }
+
+  .store-sheet__title {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 650;
+    color: #fff;
+  }
+
+  .store-sheet__close {
+    min-height: 2.5rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(16, 185, 129, 0.45);
+    background: rgba(16, 185, 129, 0.12);
+    color: rgb(167 243 208);
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+
+  .store-sheet__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    overflow-y: auto;
+    max-height: min(52dvh, 20rem);
+    padding-right: 0.15rem;
+  }
+
+  .store-sheet-item {
+    min-height: 3rem;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-radius: 0.85rem;
+    border: 1px solid rgb(63 63 70);
+    background: rgb(24 24 27 / 0.85);
+    color: #e4e4e7;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .store-sheet-item.is-active {
+    border-color: rgba(16, 185, 129, 0.5);
+    background: rgba(16, 185, 129, 0.12);
+    color: rgb(167 243 208);
+  }
+</style>
