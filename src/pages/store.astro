@@ -2,6 +2,33 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { CANON_PATHS, LINKS } from "../lib/links";
 import { withBase } from "../lib/base";
+import {
+  fetchDemandStoreBootstrap,
+  formatStorePrice,
+  gseUpcSearchUrl,
+  normalizeDemandStoreSections,
+  type DemandStorePayload,
+  type DemandStoreProduct,
+} from "../lib/store";
+
+/** Nightly snapshot baked into HTML at build — first paint has products. */
+const bootstrap = await fetchDemandStoreBootstrap();
+const sections = normalizeDemandStoreSections(bootstrap);
+const totalPicks = sections.reduce((a, s) => a + s.products.length, 0);
+const windowLabel = bootstrap?.windowLabel || "Previous 24 hours";
+const statusLine =
+  totalPicks > 0
+    ? `${totalPicks} picks · ${windowLabel} · two rows per type · cards open GSE by UPC`
+    : "Loading nightly shelf…";
+
+const bootstrapJson = JSON.stringify(bootstrap ?? null).replace(
+  /</g,
+  "\\u003c"
+);
+
+function cardHref(p: DemandStoreProduct): string {
+  return gseUpcSearchUrl(p.upc) || p.url;
+}
 ---
 
 <BaseLayout
@@ -12,6 +39,11 @@ import { withBase } from "../lib/base";
   chrome={false}
   emailCapture={false}
 >
+  <script
+    type="application/json"
+    id="demand-store-bootstrap"
+    set:html={bootstrapJson}
+  />
   <div id="betsy-demand-store" class="store">
     <section class="store-hero">
       <div class="store-hero__inner">
@@ -32,18 +64,127 @@ import { withBase } from "../lib/base";
             GunSearchEngine search by UPC. Not an FFL.
           </p>
           <p class="store-hero__status" data-store-status>
-            Loading nightly shelf…
+            {statusLine}
           </p>
         </div>
       </div>
     </section>
 
     <div class="store-chips-wrap" aria-label="Jump to ATF type">
-      <div class="store-chips" data-store-chips></div>
+      <div class="store-chips" data-store-chips>
+        {
+          sections.map((s) => (
+            <a class="store-chip" href={`#section-${s.id}`}>
+              {s.label}{" "}
+              <span class="store-chip__n">{s.products.length}</span>
+            </a>
+          ))
+        }
+      </div>
     </div>
 
-    <div class="store-feed" data-store-feed aria-label="Demand by ATF type"></div>
-    <p class="store-empty" data-store-empty hidden></p>
+    <div class="store-feed" data-store-feed aria-label="Demand by ATF type">
+      {
+        sections.map((s) => (
+          <section
+            class="store-section"
+            id={`section-${s.id}`}
+            aria-labelledby={`heading-${s.id}`}
+            data-section-id={s.id}
+          >
+            <header class="store-section__head">
+              <div class="store-section__titles">
+                <h2 class="store-section__title" id={`heading-${s.id}`}>
+                  {s.label}
+                </h2>
+                <p class="store-section__meta">
+                  {s.products.length} picks · Leaders + Trending
+                </p>
+              </div>
+            </header>
+            <div class="store-grid" data-section-grid>
+              {
+                s.products.map((p) => {
+                  const href = cardHref(p);
+                  const badge =
+                    p.badge === "hot"
+                      ? "Hot"
+                      : p.badge === "trending"
+                        ? "Trending"
+                        : null;
+                  return (
+                    <a
+                      class="store-card"
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-product-id={p.product_id}
+                      data-upc={p.upc}
+                    >
+                      <div class="store-card__media">
+                        {p.image_url ? (
+                          <img
+                            src={p.image_url}
+                            alt=""
+                            loading="eager"
+                            decoding="async"
+                            class="store-card__img"
+                            data-store-img
+                          />
+                        ) : (
+                          <div class="store-card__ph" aria-hidden="true">
+                            🎯
+                          </div>
+                        )}
+                        {badge === "Hot" ? (
+                          <span class="store-badge store-badge--hot">Hot</span>
+                        ) : null}
+                        {badge === "Trending" ? (
+                          <span class="store-badge store-badge--trend">
+                            Trending
+                          </span>
+                        ) : null}
+                      </div>
+                      <div class="store-card__body">
+                        {p.brand ? (
+                          <p class="store-card__brand">{p.brand}</p>
+                        ) : null}
+                        <h3 class="store-card__title">{p.title}</h3>
+                        {p.caliber || p.type ? (
+                          <p class="store-card__meta">
+                            {[p.caliber, p.type].filter(Boolean).join(" · ")}
+                          </p>
+                        ) : null}
+                        <div class="store-card__foot">
+                          <div class="store-card__price-block">
+                            <span class="store-card__from">from</span>
+                            <span class="store-card__price">
+                              {formatStorePrice(p.price)}
+                            </span>
+                          </div>
+                          <span class="store-card__cta">Search GSE →</span>
+                        </div>
+                      </div>
+                    </a>
+                  );
+                })
+              }
+            </div>
+          </section>
+        ))
+      }
+    </div>
+    <p
+      class="store-empty"
+      data-store-empty
+      hidden={totalPicks > 0}
+    >
+      {
+        totalPicks > 0
+          ? ""
+          : "Loading nightly demand shelf…"
+      }
+    </p>
 
     <p class="store-disclaimer">
       Not a licensed FFL and not a cart. Cards open GunSearchEngine search by

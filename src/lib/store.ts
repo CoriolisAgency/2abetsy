@@ -75,3 +75,74 @@ export type DemandStorePayload = {
   };
   error?: string;
 };
+
+/** localStorage key for instant return visits */
+export const DEMAND_STORE_LS_KEY = "2abetsy-demand-store-v1";
+
+export function formatStorePrice(p: string | null | undefined): string {
+  if (p == null || p === "") return "See price";
+  const n = Number(p);
+  if (!Number.isFinite(n)) return String(p);
+  return `$${n.toFixed(2)}`;
+}
+
+function productOpenable(p: DemandStoreProduct): boolean {
+  if (gseUpcSearchUrl(p.upc)) return true;
+  return typeof p.url === "string" && /^https?:\/\//i.test(p.url);
+}
+
+/** Normalize API payload into sections for SSR + client (max 8 per section). */
+export function normalizeDemandStoreSections(
+  data: DemandStorePayload | null | undefined,
+  cap = SECTION_ROW_CAPACITY
+): DemandStoreSection[] {
+  if (!data) return [];
+  const limit =
+    typeof data.meta?.sectionCapacity === "number" &&
+    data.meta.sectionCapacity > 0
+      ? Math.min(data.meta.sectionCapacity, cap)
+      : cap;
+
+  if (Array.isArray(data.sections) && data.sections.length) {
+    return data.sections
+      .map((s) => {
+        let products = (s.products?.length ? s.products : s.leaders) || [];
+        if (!products.length && s.trending?.length) {
+          products = s.trending;
+        }
+        // Merge legacy dual boards if both present and products empty
+        if (!products.length && (s.leaders?.length || s.trending?.length)) {
+          const byUpc = new Map<string, DemandStoreProduct>();
+          for (const p of s.leaders || []) byUpc.set(p.upc, p);
+          for (const p of s.trending || []) {
+            if (!byUpc.has(p.upc)) byUpc.set(p.upc, p);
+          }
+          products = [...byUpc.values()];
+        }
+        products = products.filter(productOpenable).slice(0, limit);
+        if (!products.length) return null;
+        return { id: s.id, label: s.label, products };
+      })
+      .filter((s): s is DemandStoreSection => s != null);
+  }
+
+  const products = (data.products || [])
+    .filter(productOpenable)
+    .slice(0, limit);
+  if (!products.length) return [];
+  return [{ id: "all", label: "Demand picks", products }];
+}
+
+/** Build-time / SSR fetch of nightly snapshot (fast edge cache). */
+export async function fetchDemandStoreBootstrap(): Promise<DemandStorePayload | null> {
+  try {
+    const res = await fetch(DEMAND_STORE_API, {
+      headers: { Accept: "application/json" },
+      // Astro static build: always hit origin/CDN at build time
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as DemandStorePayload;
+  } catch {
+    return null;
+  }
+}

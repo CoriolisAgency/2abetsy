@@ -1,12 +1,16 @@
 /**
  * Client runtime — nightly demand store.
- * Combined Leaders+Trending per type section · two rows · Hot/Trending pills.
+ * Instant paint from build-time HTML + #demand-store-bootstrap / localStorage;
+ * silent revalidate in background.
  */
 import {
   DEMAND_STORE_API,
+  DEMAND_STORE_LS_KEY,
   DEMAND_STORE_POLL_MS,
   SECTION_ROW_CAPACITY,
+  formatStorePrice,
   gseUpcSearchUrl,
+  normalizeDemandStoreSections,
   type DemandStorePayload,
   type DemandStoreProduct,
   type DemandStoreSection,
@@ -42,13 +46,6 @@ if (root) {
       .replace(/"/g, "&quot;");
   }
 
-  function formatPrice(p: string | null): string {
-    if (p == null || p === "") return "See price";
-    const n = Number(p);
-    if (!Number.isFinite(n)) return escapeHtml(String(p));
-    return `$${n.toFixed(2)}`;
-  }
-
   function relativeTime(iso: string | null): string {
     if (!iso) return "today";
     const t = Date.parse(iso);
@@ -64,7 +61,6 @@ if (root) {
   }
 
   function cardHtml(p: DemandStoreProduct): string {
-    // Keep Hot / Trending pills — tabs are gone; badges stay cool.
     const badge =
       p.badge === "hot"
         ? `<span class="store-badge store-badge--hot">Hot</span>`
@@ -103,7 +99,7 @@ if (root) {
           <div class="store-card__foot">
             <div class="store-card__price-block">
               <span class="store-card__from">from</span>
-              <span class="store-card__price">${formatPrice(p.price)}</span>
+              <span class="store-card__price">${escapeHtml(formatStorePrice(p.price))}</span>
             </div>
             <span class="store-card__cta">${cta}</span>
           </div>
@@ -113,11 +109,12 @@ if (root) {
   }
 
   function renderChips() {
-    const bits = sections.map(
-      (s) =>
-        `<a class="store-chip" href="#section-${escapeHtml(s.id)}">${escapeHtml(s.label)} <span class="store-chip__n">${s.products.length}</span></a>`
-    );
-    chipsEl.innerHTML = bits.join("");
+    chipsEl.innerHTML = sections
+      .map(
+        (s) =>
+          `<a class="store-chip" href="#section-${escapeHtml(s.id)}">${escapeHtml(s.label)} <span class="store-chip__n">${s.products.length}</span></a>`
+      )
+      .join("");
   }
 
   function renderSheetList() {
@@ -148,7 +145,6 @@ if (root) {
 
   function renderSection(s: DemandStoreSection): string {
     const list = s.products;
-    const cards = list.map(cardHtml).join("");
     return `
       <section class="store-section" id="section-${escapeHtml(s.id)}" aria-labelledby="heading-${escapeHtml(s.id)}" data-section-id="${escapeHtml(s.id)}">
         <header class="store-section__head">
@@ -157,23 +153,57 @@ if (root) {
             <p class="store-section__meta">${list.length} picks · Leaders + Trending</p>
           </div>
         </header>
-        <div class="store-grid" data-section-grid>${cards || `<p class="store-section__empty">No picks yet.</p>`}</div>
+        <div class="store-grid" data-section-grid>${list.map(cardHtml).join("") || `<p class="store-section__empty">No picks yet.</p>`}</div>
       </section>
     `;
   }
 
-  function renderFeed() {
-    if (!sections.length) {
-      feed.innerHTML = "";
+  function applyPayload(data: DemandStorePayload, opts?: { silent?: boolean }) {
+    sections = normalizeDemandStoreSections(data, SECTION_ROW_CAPACITY);
+    generatedAt = data.generatedAt || null;
+    windowLabel = data.windowLabel || "Previous 24 hours";
+    const n = sections.reduce((a, s) => a + s.products.length, 0);
+    if (n > 0) {
+      setStatus(
+        `${n} picks · ${windowLabel} · two rows per type · cards open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
+      );
+      emptyEl.hidden = true;
+      renderChips();
+      renderSheetList();
+      // Only rewrite DOM if feed empty or explicit refresh (avoid flicker on silent revalidate when HTML already good)
+      const hasCards = feed.querySelector(".store-card");
+      if (!opts?.silent || !hasCards) {
+        feed.innerHTML = sections.map(renderSection).join("");
+        wireImages(feed);
+      }
+      try {
+        localStorage.setItem(DEMAND_STORE_LS_KEY, JSON.stringify(data));
+      } catch {
+        /* private mode */
+      }
+    } else if (!opts?.silent) {
       emptyEl.hidden = false;
-      emptyEl.textContent = loading
-        ? "Loading nightly demand shelf…"
-        : "No shoppable demand picks yet. Check back after the next midnight refresh.";
-      return;
+      emptyEl.textContent =
+        "No shoppable demand picks yet. Check back after the next midnight refresh.";
     }
-    emptyEl.hidden = true;
-    feed.innerHTML = sections.map(renderSection).join("");
-    wireImages(feed);
+  }
+
+  function readBootstrap(): DemandStorePayload | null {
+    try {
+      const el = document.getElementById("demand-store-bootstrap");
+      if (el?.textContent?.trim()) {
+        return JSON.parse(el.textContent) as DemandStorePayload;
+      }
+    } catch {
+      /* ignore */
+    }
+    try {
+      const raw = localStorage.getItem(DEMAND_STORE_LS_KEY);
+      if (raw) return JSON.parse(raw) as DemandStorePayload;
+    } catch {
+      /* ignore */
+    }
+    return null;
   }
 
   function openSheet() {
@@ -188,135 +218,56 @@ if (root) {
     document.body.style.overflow = "";
   }
 
-  function filterProducts(list: DemandStoreProduct[] | undefined, cap: number) {
-    return (list || [])
-      .filter((p) => {
-        if (gseUpcSearchUrl(p.upc)) return true;
-        return typeof p.url === "string" && /^https?:\/\//i.test(p.url);
-      })
-      .slice(0, cap);
-  }
-
-  /** Merge legacy leaders+trending payloads into one list (API v8 sends products). */
-  function mergeBoards(
-    products: DemandStoreProduct[] | undefined,
-    leaders: DemandStoreProduct[] | undefined,
-    trending: DemandStoreProduct[] | undefined,
-    cap: number
-  ): DemandStoreProduct[] {
-    if (products?.length) return filterProducts(products, cap);
-
-    const byUpc = new Map<string, DemandStoreProduct>();
-    for (const p of filterProducts(leaders, cap * 2)) {
-      byUpc.set(p.upc, p);
-    }
-    for (const p of filterProducts(trending, cap * 2)) {
-      const prev = byUpc.get(p.upc);
-      if (!prev) {
-        byUpc.set(p.upc, p);
-        continue;
-      }
-      byUpc.set(p.upc, {
-        ...prev,
-        badge:
-          p.badge === "trending" || prev.badge === "trending"
-            ? "trending"
-            : prev.badge,
-        demand_score: Math.max(prev.demand_score || 0, p.demand_score || 0),
-        image_url: prev.image_url || p.image_url,
-      });
-    }
-    return [...byUpc.values()].slice(0, cap);
-  }
-
-  function normalizeSections(data: DemandStorePayload): DemandStoreSection[] {
-    const cap =
-      typeof data.meta?.sectionCapacity === "number" &&
-      data.meta.sectionCapacity > 0
-        ? Math.min(data.meta.sectionCapacity, SECTION_ROW_CAPACITY)
-        : SECTION_ROW_CAPACITY;
-
-    if (Array.isArray(data.sections) && data.sections.length) {
-      return data.sections
-        .map((s) => {
-          const products = mergeBoards(
-            s.products,
-            s.leaders,
-            s.trending,
-            cap
-          );
-          if (!products.length) return null;
-          return {
-            id: s.id,
-            label: s.label,
-            products,
-          } satisfies DemandStoreSection;
-        })
-        .filter((s): s is DemandStoreSection => s != null);
-    }
-
-    const products = filterProducts(data.products, cap);
-    if (!products.length) return [];
-    return [
-      {
-        id: "all",
-        label: "Demand picks",
-        products,
-      },
-    ];
-  }
-
   async function load(silent = false) {
     if (loading) return;
     loading = true;
     if (!silent) {
       refreshBtn.disabled = true;
       refreshBtn.setAttribute("aria-busy", "true");
-      if (!sections.length) {
-        feed.innerHTML = `
-          <section class="store-section">
-            <div class="store-grid">
-              ${Array.from({ length: SECTION_ROW_CAPACITY })
-                .map(
-                  () =>
-                    `<div class="store-card store-card--skeleton" aria-hidden="true"></div>`
-                )
-                .join("")}
-            </div>
-          </section>
-        `;
-        emptyEl.hidden = true;
-      }
     }
     try {
-      // Respect CDN Cache-Control from nightly snapshot (fast loads).
       const res = await fetch(DEMAND_STORE_API, {
         headers: { Accept: "application/json" },
       });
       const data = (await res.json()) as DemandStorePayload;
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-      sections = normalizeSections(data);
-      generatedAt = data.generatedAt || null;
-      windowLabel = data.windowLabel || "Previous 24 hours";
-      const n = sections.reduce((a, s) => a + s.products.length, 0);
-      setStatus(
-        `${n} picks · ${windowLabel} · two rows per type · cards open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
-      );
-      renderChips();
-      renderSheetList();
-      renderFeed();
+      applyPayload(data, { silent });
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to load";
-      setStatus(`Shelf offline · ${msg}`);
-      if (!sections.length) {
+      if (!silent && !sections.length && !feed.querySelector(".store-card")) {
+        const msg = e instanceof Error ? e.message : "Failed to load";
+        setStatus(`Shelf offline · ${msg}`);
         emptyEl.hidden = false;
         emptyEl.textContent = "Could not load demand shelf. Tap refresh.";
-        feed.innerHTML = "";
       }
     } finally {
       loading = false;
       refreshBtn.disabled = false;
       refreshBtn.removeAttribute("aria-busy");
+    }
+  }
+
+  // Instant: bootstrap already in HTML from build; sync client state + LS.
+  const boot = readBootstrap();
+  if (boot) {
+    sections = normalizeDemandStoreSections(boot);
+    generatedAt = boot.generatedAt || null;
+    windowLabel = boot.windowLabel || null;
+    const n = sections.reduce((a, s) => a + s.products.length, 0);
+    if (n > 0) {
+      setStatus(
+        `${n} picks · ${windowLabel || "demand"} · two rows per type · cards open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
+      );
+      try {
+        localStorage.setItem(DEMAND_STORE_LS_KEY, JSON.stringify(boot));
+      } catch {
+        /* ignore */
+      }
+    }
+    wireImages(feed);
+    // Refresh chips/sheet from data (SSR chips already present)
+    if (sections.length) {
+      renderChips();
+      renderSheetList();
     }
   }
 
@@ -330,7 +281,8 @@ if (root) {
     .querySelector("[data-store-sheet-scrim]")
     ?.addEventListener("click", () => closeSheet());
 
-  void load(false);
+  // Background revalidate (does not block first paint)
+  void load(true);
   window.setInterval(() => {
     if (document.visibilityState === "hidden") return;
     void load(true);
