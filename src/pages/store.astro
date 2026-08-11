@@ -21,7 +21,7 @@ const windowLabel =
     : "Last 24 hours";
 const statusLine =
   totalPicks > 0
-    ? `${totalPicks} picks · ${windowLabel} · two rows per type · cards open GSE by UPC`
+    ? `${totalPicks} live picks · ${windowLabel} · open GSE by UPC`
     : "Loading live shelf…";
 
 const bootstrapJson = JSON.stringify(bootstrap ?? null).replace(
@@ -48,43 +48,47 @@ function cardHref(p: DemandStoreProduct): string {
     set:html={bootstrapJson}
   />
   <div id="betsy-demand-store" class="store">
-    <section class="store-hero">
-      <div class="store-hero__inner">
-        <img
-          src={withBase(CANON_PATHS.headshot)}
-          alt=""
-          width="56"
-          height="56"
-          class="store-hero__avatar"
-        />
-        <div class="store-hero__copy min-w-0">
-          <p class="store-hero__kicker">Betsy AI · nightly · 100% automated</p>
-          <h1 class="store-hero__title">Demand Store</h1>
-          <p class="store-hero__sub">
-            Live demand ranks the shelf. <strong>Leaders</strong> and
-            <strong>Trending</strong> are one collection per product type —
-            two rows each. Hot / Trending pills stay on the cards. Tap a card →
-            GunSearchEngine search by UPC. Not an FFL.
-          </p>
-          <p class="store-hero__status" data-store-status>
-            {statusLine}
-          </p>
+    <header class="store-header">
+      <div class="store-header__panel">
+        <div class="store-hero">
+          <div class="store-hero__inner">
+            <img
+              src={withBase(CANON_PATHS.headshot)}
+              alt=""
+              width="48"
+              height="48"
+              class="store-hero__avatar"
+            />
+            <div class="store-hero__copy min-w-0">
+              <p class="store-hero__kicker">
+                Betsy AI · live demand · automated
+              </p>
+              <h1 class="store-hero__title">Demand Store</h1>
+              <p class="store-hero__sub">
+                Last 24 hours of network demand, ranked by Betsy. Tap a card →
+                search GunSearchEngine by UPC. Not an FFL.
+              </p>
+              <p class="store-hero__status" data-store-status>
+                {statusLine}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="store-chips-wrap" aria-label="Jump to product type">
+          <div class="store-chips" data-store-chips>
+            {
+              sections.map((s) => (
+                <a class="store-chip" href={`#section-${s.id}`}>
+                  {s.label}
+                  <span class="store-chip__n">{s.products.length}</span>
+                </a>
+              ))
+            }
+          </div>
         </div>
       </div>
-    </section>
-
-    <div class="store-chips-wrap" aria-label="Jump to ATF type">
-      <div class="store-chips" data-store-chips>
-        {
-          sections.map((s) => (
-            <a class="store-chip" href={`#section-${s.id}`}>
-              {s.label}{" "}
-              <span class="store-chip__n">{s.products.length}</span>
-            </a>
-          ))
-        }
-      </div>
-    </div>
+    </header>
 
     <div class="store-feed" data-store-feed aria-label="Demand by ATF type">
       {
@@ -274,61 +278,89 @@ function cardHref(p: DemandStoreProduct): string {
 
 <style is:global>
   .store {
+    --store-pad-x: 0.75rem;
+    --store-max: 72rem;
     position: relative;
-    max-width: 72rem;
+    max-width: var(--store-max);
     margin: 0 auto;
     padding: 0 0 calc(5.5rem + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
   }
 
-  .store-hero {
-    padding: 1rem 1rem 0.75rem;
-    border-bottom: 1px solid rgb(39 39 42 / 0.8);
+  /* Full header band — same width as product grid below */
+  .store-header {
+    padding:
+      calc(1.25rem + env(safe-area-inset-top, 0px)) var(--store-pad-x) 0;
+  }
+
+  .store-header__panel {
+    border-radius: 1.15rem;
+    border: 1px solid rgb(63 63 70 / 0.85);
     background:
       radial-gradient(
-        ellipse 80% 70% at 100% 0%,
-        rgba(16, 185, 129, 0.12),
+        ellipse 90% 80% at 100% 0%,
+        rgba(16, 185, 129, 0.1),
         transparent 55%
       ),
       radial-gradient(
-        ellipse 60% 50% at 0% 0%,
-        rgba(14, 165, 233, 0.1),
+        ellipse 70% 60% at 0% 0%,
+        rgba(14, 165, 233, 0.08),
         transparent 50%
+      ),
+      linear-gradient(
+        165deg,
+        rgb(24 32 48 / 0.98),
+        rgb(12 18 32 / 0.98)
       );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 10px 28px rgba(0, 0, 0, 0.28);
+    overflow: hidden;
+  }
+
+  .store-hero {
+    padding: 1.1rem 1.1rem 0.85rem;
   }
 
   .store-hero__inner {
     display: flex;
     align-items: flex-start;
-    gap: 0.875rem;
+    gap: 0.9rem;
   }
 
   .store-hero__avatar {
-    width: 3.25rem;
-    height: 3.25rem;
-    border-radius: 0.875rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.85rem;
     object-fit: cover;
     flex-shrink: 0;
     box-shadow:
-      0 0 0 1px rgba(16, 185, 129, 0.35),
-      0 8px 24px rgba(14, 165, 233, 0.15);
+      0 0 0 1px rgba(16, 185, 129, 0.4),
+      0 6px 18px rgba(14, 165, 233, 0.18);
   }
 
   .store-hero__kicker {
     margin: 0;
     font-size: 0.625rem;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: rgb(52 211 153);
   }
 
   .store-hero__title {
-    margin: 0.2rem 0 0;
-    font-size: 1.5rem;
-    font-weight: 650;
-    letter-spacing: -0.02em;
+    margin: 0.25rem 0 0;
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
     color: #fff;
     line-height: 1.15;
+  }
+
+  @media (min-width: 640px) {
+    .store-hero__title {
+      font-size: 1.5rem;
+    }
   }
 
   .store-hero__sub {
@@ -336,35 +368,42 @@ function cardHref(p: DemandStoreProduct): string {
     font-size: 0.8125rem;
     line-height: 1.45;
     color: rgb(161 161 170);
-    max-width: 40rem;
+    max-width: 36rem;
   }
 
   .store-hero__status {
-    margin: 0.5rem 0 0;
+    display: inline-flex;
+    margin: 0.65rem 0 0;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid rgb(56 189 248 / 0.28);
+    background: rgb(12 74 110 / 0.28);
     font-size: 0.6875rem;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
-    color: rgb(125 211 252);
+    color: rgb(186 230 253);
+    line-height: 1.3;
   }
 
   .store-chips-wrap {
     position: sticky;
     top: 0;
     z-index: 20;
-    padding: 0.5rem 0 0.5rem 0.75rem;
-    background: color-mix(in srgb, #0a1220 92%, transparent);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgb(39 39 42 / 0.7);
+    padding: 0 0.65rem 0.75rem;
+    border-top: 1px solid rgb(63 63 70 / 0.55);
+    background: color-mix(in srgb, #0c1220 88%, transparent);
+    backdrop-filter: blur(12px);
   }
 
   .store-chips {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
     justify-content: flex-start;
     gap: 0.4rem;
     overflow-x: auto;
-    padding-right: 0.75rem;
+    padding: 0.75rem 0.15rem 0.15rem;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
   .store-chips::-webkit-scrollbar {
@@ -373,18 +412,26 @@ function cardHref(p: DemandStoreProduct): string {
 
   .store-chip {
     flex: 0 0 auto;
-    min-height: 2.25rem;
-    padding: 0.4rem 0.85rem;
+    min-height: 2.15rem;
+    padding: 0.35rem 0.8rem;
     border-radius: 999px;
-    border: 1px solid rgb(63 63 70);
-    background: rgb(24 24 27 / 0.9);
+    border: 1px solid rgb(63 63 70 / 0.95);
+    background: rgb(24 24 27 / 0.92);
     color: rgb(228 228 231);
     font-size: 0.75rem;
     font-weight: 600;
     white-space: nowrap;
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.4rem;
+    transition:
+      border-color 0.12s ease,
+      background 0.12s ease;
+  }
+
+  .store-chip:hover {
+    border-color: rgba(16, 185, 129, 0.45);
+    background: rgba(16, 185, 129, 0.1);
   }
 
   .store-chip__n {
@@ -392,10 +439,11 @@ function cardHref(p: DemandStoreProduct): string {
     font-weight: 700;
     color: rgb(52 211 153);
     font-variant-numeric: tabular-nums;
+    min-width: 1ch;
   }
 
   .store-feed {
-    padding: 0.5rem 0.75rem 1rem;
+    padding: 1rem var(--store-pad-x) 1rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -667,7 +715,7 @@ function cardHref(p: DemandStoreProduct): string {
   }
 
   .store-disclaimer {
-    margin: 0.5rem 1rem 1rem;
+    margin: 0.25rem var(--store-pad-x) 1rem;
     font-size: 0.6875rem;
     line-height: 1.45;
     color: rgb(82 82 91);

@@ -168,7 +168,7 @@ if (root) {
     const n = sections.reduce((a, s) => a + s.products.length, 0);
     if (n > 0) {
       setStatus(
-        `${n} picks · ${windowLabel} · two rows per type · cards open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
+        `${n} live picks · ${windowLabel} · open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
       );
       emptyEl.hidden = true;
       renderChips();
@@ -261,7 +261,7 @@ if (root) {
     const n = sections.reduce((a, s) => a + s.products.length, 0);
     if (n > 0) {
       setStatus(
-        `${n} picks · ${windowLabel} · two rows per type · cards open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
+        `${n} live picks · ${windowLabel} · open GSE by UPC · refreshed ${relativeTime(generatedAt)}`
       );
       try {
         localStorage.setItem(DEMAND_STORE_LS_KEY, JSON.stringify(boot));
