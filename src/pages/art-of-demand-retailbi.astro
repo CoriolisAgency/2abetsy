@@ -1,0 +1,174 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { CANON_PATHS, LINKS, linkClass } from "../lib/links";
+import { withBase } from "../lib/base";
+
+const ext = { target: "_blank", rel: "noopener noreferrer" };
+
+const faqs = [
+  {
+    q: "Is this a product review?",
+    a: "No. It is doctrine — how to read the field. Definitions and the two intelligence models live on GunSearchEngine. The three-number desk is FFLIntel.",
+  },
+  {
+    q: "What is the fog of sell-through?",
+    a: "Treating last month’s closed units as if they were the map of what people are trying to find now. A register series is an after-action report. The scout is the ask.",
+  },
+  {
+    q: "Where should I go next?",
+    a: "Fortress for the models. Brand Intelligence if you buy demand. GunSearchAgent if you run a site. FFLIntel issue 01 if you need the three numbers kept apart.",
+  },
+] as const;
+---
+
+<BaseLayout
+  title="The Fog of Sell-Through — Art of Demand | Betsy Tzu"
+  description="Know the terrain before the register rings. Last month’s sell-through is last season’s map. Betsy Tzu on the fog of closed units and the scout of shopper ask."
+  path="/art-of-demand-retailbi"
+  ogImagePath={CANON_PATHS.tzu}
+>
+  <article class="mx-auto max-w-2xl px-4 py-12 sm:py-14">
+    <p
+      class="text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-400 mb-3"
+    >
+      Betsy Tzu · Art of Demand
+    </p>
+    <h1 class="text-3xl font-semibold tracking-tight text-white mb-4">
+      Know the terrain before the register rings
+    </h1>
+    <p class="text-sm leading-relaxed text-zinc-400 mb-6">
+      Last month’s sell-through is last season’s map. The wise operator still
+      reads it — and does not march as if the river has not moved.
+    </p>
+    <figure class="mb-8">
+      <img
+        src={withBase(CANON_PATHS.tzu)}
+        alt="Betsy Tzu — The Art of Demand"
+        width="1280"
+        height="720"
+        class="w-full rounded-2xl object-cover ring-1 ring-zinc-700/80"
+      />
+      <figcaption class="mt-2 text-center text-xs text-zinc-600">
+        Betsy Tzu — preparation over theater
+      </figcaption>
+    </figure>
+
+    <blockquote
+      class="mb-8 rounded-2xl border border-sky-500/25 bg-sky-950/20 px-4 py-3 text-sm leading-relaxed text-zinc-300 italic"
+    >
+      RetailBI’s intelligence is a byproduct of retail operations software.
+      Betsy’s intelligence is a byproduct of product discovery.
+      <footer class="mt-2 text-xs not-italic text-zinc-500">
+        — frozen doctrine · Coriolis
+      </footer>
+    </blockquote>
+
+    <div class="space-y-4 text-sm leading-relaxed text-zinc-400">
+      <p>
+        Classical strategy is obsessed with the map you hold when you still have
+        a choice. In 2A retail the choice is the order, the floor set, the page
+        you merchandize before Saturday. Closed units from a prior window are
+        true. They are also late. They tell you where the army already camped —
+        not where the next column is walking.
+      </p>
+      <p>
+        Call that delay the <strong class="text-zinc-200">fog of sell-through</strong
+        >. A register series is an after-action report: same-store new units,
+        a monthly print, a honest count of what rang. Useful. Incomplete. The
+        scout is the ask — the caliber, the load, the model someone typed when
+        nothing on the shelf answered back. Zero-hit demand never becomes a
+        unit. It still happened.
+      </p>
+      <p>
+        Three numbers keep getting folded into one headline. Background checks
+        are weather: public, lagged, not sales. The Index is the after-action:
+        what a reporting panel actually sold. The ask is the terrain underfoot
+        — including ground nobody rang up. Collapse them and you plan from a
+        myth. Keep them apart and you can still use each one.
+      </p>
+      <p>
+        Supreme excellence is not shouting at last month’s percent-change. It is
+        knowing the field while the shopper is still hunting. The dealer who
+        reads the ask on their own site is not guessing the next case. The brand
+        that buys anonymized search intent is not waiting for a closed period to
+        learn the river moved. Doctrine without a sensor is theater. The sensor
+        on the dealer site is{" "}
+        <a href={LINKS.gsa} class={linkClass} {...ext}>GunSearchAgent</a>. The
+        OEM door is{" "}
+        <a href={LINKS.brandIntel} class={linkClass} {...ext}
+          >Brand Intelligence</a
+        >.
+      </p>
+      <p>
+        This page is culture, not a definition dump and not a comparison grid.
+        The models live at the fortress. The desk that refuses to let three
+        numbers become one is FFLIntel. Walk there when you want the field
+        report — not a poem.
+      </p>
+    </div>
+
+    <div class="mt-10 grid gap-3 sm:grid-cols-2">
+      <a
+        href={LINKS.fortress}
+        {...ext}
+        class="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5 hover:border-sky-500/40"
+      >
+        <p class="text-sm font-semibold text-white">Fortress · the models</p>
+        <p class="mt-1 text-xs text-zinc-500">
+          Sell-through vs search intent — GunSearchEngine
+        </p>
+      </a>
+      <a
+        href={LINKS.brandIntel}
+        {...ext}
+        class="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5 hover:border-sky-500/40"
+      >
+        <p class="text-sm font-semibold text-white">Enterprise</p>
+        <p class="mt-1 text-xs text-zinc-500">Brand Intelligence for OEMs</p>
+      </a>
+      <a
+        href={LINKS.gsa}
+        {...ext}
+        class="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5 hover:border-sky-500/40"
+      >
+        <p class="text-sm font-semibold text-white">GunSearchAgent</p>
+        <p class="mt-1 text-xs text-zinc-500">
+          Free demand sensor on the dealer site
+        </p>
+      </a>
+      <a
+        href={LINKS.fflintelIssue01}
+        {...ext}
+        class="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5 hover:border-sky-500/40"
+      >
+        <p class="text-sm font-semibold text-white">FFLIntel · issue 01</p>
+        <p class="mt-1 text-xs text-zinc-500">
+          Three numbers. Do not make them one.
+        </p>
+      </a>
+    </div>
+
+    <section class="mt-12">
+      <h2 class="text-lg font-semibold text-white mb-4">Short FAQ</h2>
+      <dl class="space-y-5">
+        {
+          faqs.map((item) => (
+            <div>
+              <dt class="text-sm font-semibold text-zinc-100">{item.q}</dt>
+              <dd class="mt-1 text-sm leading-relaxed text-zinc-400">{item.a}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <p class="mt-10 text-xs leading-relaxed text-zinc-600">
+      Not affiliated with Gearfire or RetailBI. Marks belong to their owners.
+      Not 4473 / ATF software. Not a POS. Not a NICS system. Culture essay —
+      ranking definitions stay on{" "}
+      <a href={LINKS.fortress} class="text-sky-600 hover:underline" {...ext}
+        >gunsearchengine.com/betsy-vs-retailbi</a
+      >.
+    </p>
+  </article>
+</BaseLayout>

@@ -25,6 +25,11 @@ export const LINKS = {
   /** Brand Intelligence Enterprise Co-Pilot (MCP) */
   enterpriseCopilot:
     "https://www.gunsearchengine.com/betsy/enterprise-copilot",
+  /** RetailBI vs Betsy — GSE ranking owner (definition / fortress) */
+  fortress: "https://www.gunsearchengine.com/betsy-vs-retailbi",
+  fflintel: "https://fflintel.com",
+  fflintelIssue01: "https://fflintel.com/issues/2026-08-three-numbers",
+  fflaccelerator: "https://fflaccelerator.com",
   gseBetsy: "https://www.gunsearchengine.com/betsy",
   superIntel:
     "https://www.gunsearchengine.com/betsy/super-intelligence-for-ffls",

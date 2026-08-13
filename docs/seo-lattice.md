@@ -14,6 +14,10 @@ Source of truth for **character / media** ownership. Commercial operator SERPs s
 | **Betsy Alerts** (shopper watches) | **GSE** `/mybetsy` | Link — not My Betsy hardware |
 | Super Intelligence / How Betsy trains / Ontology | **GSE** | Outbound essays |
 | Brand Intelligence OEM | **GSE** `/betsy/enterprise` | Link |
+| **What is RetailBI** / Firearm Sales Index / NICS vs sales | **GSE** `/betsy-vs-retailbi` (fortress) | Culture only — do not rank the definition here |
+| Art of Demand / fog of sell-through (Tzu essay) | **2aBetsy** `/art-of-demand-retailbi` | Character essay. Frozen doctrine once, then paraphrase. Soft CTA to fortress, Enterprise, GSA, FFLIntel issue 01 |
+| Three-number desk | **FFLIntel** | Link issue 01 — not a 2aBetsy SERP |
+| FFL Accelerator / retailer program | **FFLAccelerator** | Soft link if needed |
 
 ## Brand glossary (locked)
 
@@ -30,5 +34,6 @@ Source of truth for **character / media** ownership. Commercial operator SERPs s
 1. One commercial ranking URL per operator intent — always **GSA**.
 2. Live demand is **not** reimplemented here — CTA to Betsy Live on GSE.
 3. No 4473 / ATF automation claims.
-4. `sameAs`: X @2ABetsy, YouTube @BetsyAI, GSE `/betsy`, GSA, Coriolis.
+4. `sameAs`: X @2ABetsy, YouTube @BetsyAI, GSE `/betsy`, GSA, Coriolis, FFLIntel, FFLAccelerator.
 5. Prefer soft CTAs; deep install SERPs stay on gunsearchagent.com.
+6. **RetailBI definition is GSE.** `/art-of-demand-retailbi` is culture (Art of Demand / fog of sell-through). Never H1 “RetailBI alternative.” Never a comparison-table dump.

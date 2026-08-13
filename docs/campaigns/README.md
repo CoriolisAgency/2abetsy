@@ -8,6 +8,7 @@ Strategy: ownable **Betsy Demand Store** attention (daily shelf ritual + multi-s
 | [demand-store-copy-pack.md](./demand-store-copy-pack.md) | Site hero/disclaimer/about + sponsor one-pager |
 | [daily-shelf-card.html](./daily-shelf-card.html) | Screenshot template for #BettysShelf posts |
 | [sponsor-strip.html](./sponsor-strip.html) | Category sponsor mock for sales |
+| [retailbi-bang.md](./retailbi-bang.md) | 5 Shorts + 5 X — NICS / Index / Ask. Land fortress or FFLIntel issue 01. No unboxing |
 
 **Brand images:** `public/brand/demand-store/`
 
