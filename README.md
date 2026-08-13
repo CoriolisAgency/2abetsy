@@ -1,7 +1,7 @@
 # 2aBetsy.com
 
 Official **Betsy AI** brand home — content and culture.  
-Dealers → [GunSearchAgent](https://gunsearchagent.com) · Floor → [My Betsy](https://gunsearchagent.com/my-betsy) · Live demand → [Betsy Live](https://www.gunsearchengine.com/insights) · Shoppers → [GunSearchEngine](https://www.gunsearchengine.com).
+Dealers → [GunSearchAgent](https://gunsearchagent.com) · Floor → [My Betsy](https://gunsearchagent.com/my-betsy) · Live demand → [Betsy Live](https://www.gunsearchengine.com/betsy-live) · Shoppers → [GunSearchEngine](https://www.gunsearchengine.com).
 
 ## Stack
 

@@ -117,6 +117,35 @@ const jobs: Job[] = [
       "Honest scope: demand first; inventory only with Platform + feed",
     ],
   },
+  {
+    employer: "Demand Store",
+    title: "Shelf Merchandiser",
+    blurb:
+      "Public AI-ranked gun shelf from prior-24h network demand. Not an FFL. Cards open participating dealers.",
+    href: LINKS.store,
+    hrefLabel: "2abetsy.com/store",
+    accent: "emerald",
+    skills: [
+      "Nightly refresh at midnight ET by ATF product type",
+      "Leader + trending cards per section",
+      "Dealer link-outs — no cart, no warehouse theater",
+      "Category sponsorships and creator shelf weeks",
+    ],
+  },
+  {
+    employer: "Betsy Showroom",
+    title: "Store TV Host",
+    blurb:
+      "In-store TV surface on GunSearchAgent Pro: live demand and featured stock on a display. Not POS or 4473.",
+    href: LINKS.gsa,
+    hrefLabel: "GunSearchAgent Showroom",
+    accent: "sky",
+    skills: [
+      "TV-scale demand and featured SKUs",
+      "Included with GunSearchAgent Pro",
+      "Pairs website demand with the sales floor",
+    ],
+  },
 ];
 
 const coreSkills = [
@@ -128,6 +157,8 @@ const coreSkills = [
   "Shopper multi-dealer search (GSE)",
   "In-store hardware (My Betsy)",
   "Public demand viz (Betsy Live)",
+  "Demand Store merchandising",
+  "Showroom TV",
   "OEM Brand Intelligence",
   "Enterprise Co-Pilot (MCP)",
   "Ontology-aware product language",
@@ -153,7 +184,7 @@ const accentDot: Record<NonNullable<Job["accent"]>, string> = {
 
 <BaseLayout
   title="Resume — Betsy AI | 2aBetsy"
-  description="Betsy AI’s resume: every job she holds across GunSearchAgent, My Betsy, GunSearchEngine, Betsy Live (24 Hour Demand DJ), Enterprise Co-Pilot, and Brand Intelligence — platform skills, one persona."
+  description="Betsy AI’s resume: every job she holds across GunSearchAgent, My Betsy, GunSearchEngine, Betsy Live, Demand Store, Showroom, Enterprise Co-Pilot, and Brand Intelligence — platform skills, one persona."
   path="/resume"
   ogImagePath={CANON_PATHS.headshot}
 >

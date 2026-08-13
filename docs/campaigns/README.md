@@ -9,6 +9,10 @@ Strategy: ownable **Betsy Demand Store** attention (daily shelf ritual + multi-s
 | [daily-shelf-card.html](./daily-shelf-card.html) | Screenshot template for #BettysShelf posts |
 | [sponsor-strip.html](./sponsor-strip.html) | Category sponsor mock for sales |
 | [retailbi-bang.md](./retailbi-bang.md) | 5 Shorts + 5 X — NICS / Index / Ask. Land fortress or FFLIntel issue 01. No unboxing |
+| [shot-2027-kit.md](./shot-2027-kit.md) | Booth, talk tracks, QR doors |
+| [human-ops.md](./human-ops.md) | Account / YouTube / SHOT tasks the repo cannot finish |
+
+Brand book (registers + visual lock): `gunsearchengine/docs/betsy-brand-book.md`.
 
 **Brand images:** `public/brand/demand-store/`
 

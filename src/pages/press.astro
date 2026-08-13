@@ -82,17 +82,53 @@ import { withBase } from "../lib/base";
         </ul>
       </section>
       <section>
-        <h2 class="text-base font-semibold text-white mb-3">Headshot</h2>
-        <img
-          src={withBase(CANON_PATHS.headshot)}
-          alt="Betsy AI headshot"
-          width="320"
-          height="320"
-          class="w-40 rounded-2xl ring-1 ring-zinc-700"
-        />
-        <p class="mt-2 text-xs text-zinc-600">
-          Canon stills for editorial use with credit “Betsy AI / Coriolis
-          Agency.”
+        <h2 class="text-base font-semibold text-white mb-3">Assets</h2>
+        <div class="flex flex-wrap gap-4 mb-3">
+          <img
+            src={withBase(CANON_PATHS.headshot)}
+            alt="Betsy AI work headshot"
+            width="320"
+            height="400"
+            class="w-36 rounded-2xl ring-1 ring-zinc-700"
+          />
+          <img
+            src={withBase(CANON_PATHS.wordmark)}
+            alt="Betsy wordmark"
+            width="184"
+            height="36"
+            class="h-9 w-auto self-end"
+          />
+        </div>
+        <p class="text-xs text-zinc-500 mb-3">
+          Credit stills “Betsy AI / Coriolis Agency.” Header lockup: 36px work
+          headshot + wordmark + one-line job.
+        </p>
+        <ul class="list-disc pl-5 space-y-1 text-xs text-zinc-500">
+          <li>Work headshot — platform face, press, X avatar</li>
+          <li>Wordmark — <code class="text-zinc-400">/brand/betsy-wordmark.svg</code></li>
+          <li>Ink <code class="text-zinc-400">#0a1220</code> · panel <code class="text-zinc-400">#121a2b</code> · sky <code class="text-zinc-400">#0ea5e9</code></li>
+        </ul>
+      </section>
+      <section>
+        <h2 class="text-base font-semibold text-white mb-2">Do not use</h2>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>Bikini / heat / feet stills or video</li>
+          <li>Betsy Tzu (beard) as a press or OEM hero</li>
+          <li>Demand Store “B” mark as her face</li>
+          <li>“RetailBI alternative” as a headline</li>
+          <li>Any claim that she files 4473s or runs NICS</li>
+        </ul>
+      </section>
+      <section>
+        <h2 class="text-base font-semibold text-white mb-2">Social</h2>
+        <p>
+          X <a href={LINKS.x} class="text-sky-400 hover:underline">@2ABetsy</a>
+          {" "}
+          is the Glance register (demand + shelf). YouTube{" "}
+          <a href={LINKS.youtube} class="text-sky-400 hover:underline"
+            >@BetsyAI</a
+          >{" "}
+          is Camera. Founder personal replies do not belong on her handle.
         </p>
       </section>
     </div>

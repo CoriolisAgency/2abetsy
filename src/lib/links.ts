@@ -57,6 +57,8 @@ export const CANON_PATHS = {
   cutout: "betsy/images/betsy-outside-cutout.png",
   gaHero: "betsy/images/betsy-ga-alternative-hero.jpg",
   tzu: "betsy/images/betsy-tzu-art-of-war.jpg",
+  rangeWork: "betsy/images/betsy-at-the-range-work.jpg",
+  wordmark: "brand/betsy-wordmark.svg",
   /** Demand Store brand kit */
   demandMark: "brand/demand-store/logo-mark.jpg",
   demandAvatar: "brand/demand-store/logo-avatar.jpg",
