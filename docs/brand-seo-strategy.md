@@ -8,7 +8,7 @@
 |------|-----|
 | **2aBetsy.com** | Meet Betsy, trust, media, brand search |
 | **GunSearchAgent.com** | Free forever **core** dealer product — Google Analytics **replacement** for FFLs + inventory sync |
-| **GunSearchEngine.com** | Shopper search, **Betsy Live**, **Betsy Alerts**, ontology, Brand Intelligence |
+| **GunSearchEngine.com** | Shopper search, **Betsy Live**, **Betsy Alerts**, ontology, Demand Intelligence |
 
 ## Positioning
 
@@ -21,7 +21,7 @@
 - **My Betsy** = in-store hardware (GSA) only  
 - **Betsy Alerts** = shopper watches on GSE  
 - **Betsy Live** = public demand map (`/betsy-live`)  
-- **Brand Intelligence** = OEM product on GSE  
+- **Demand Intelligence** = OEM product on GSE  
 
 ## SEO rules
 

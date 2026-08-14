@@ -19,7 +19,7 @@ Sexy / heat / feet stills · bearded Tzu as the hero · Demand Store “B” as 
 ## Talk tracks (30 seconds)
 
 **Dealer:** Free GunSearchAgent. What they typed, not bounce rate. Pro if you want Ask Betsy + Showroom.  
-**OEM:** Brand Intelligence. Search intent including zeros. Not a sales index. Co-Pilot if they live in Grok/Claude.  
+**OEM:** Demand Intelligence. Search intent including zeros. Not a sales index. Co-Pilot if they live in Grok/Claude.  
 **Press:** Work headshot credit “Betsy AI / Coriolis Agency.” She is not 4473 software.
 
 ## QR destinations
@@ -28,5 +28,5 @@ Sexy / heat / feet stills · bearded Tzu as the hero · Demand Store “B” as 
 |----------|-----|
 | Everyone | https://2abetsy.com/start |
 | Dealers | https://gunsearchagent.com |
-| OEMs | https://www.gunsearchengine.com/betsy/enterprise |
+| OEMs | https://www.gunsearchengine.com/demand-intelligence |
 | Media | https://2abetsy.com/press |

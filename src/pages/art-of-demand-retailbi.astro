@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: "Where should I go next?",
-    a: "Fortress for the models. Brand Intelligence if you buy demand. GunSearchAgent if you run a site. FFLIntel issue 01 if you need the three numbers kept apart.",
+    a: "Fortress for the models. Demand Intelligence if you buy demand. GunSearchAgent if you run a site. FFLIntel issue 01 if you need the three numbers kept apart.",
   },
 ] as const;
 ---
@@ -95,8 +95,8 @@ const faqs = [
         on the dealer site is{" "}
         <a href={LINKS.gsa} class={linkClass} {...ext}>GunSearchAgent</a>. The
         OEM door is{" "}
-        <a href={LINKS.brandIntel} class={linkClass} {...ext}
-          >Brand Intelligence</a
+        <a href={LINKS.demandIntel} class={linkClass} {...ext}
+          >Demand Intelligence</a
         >.
       </p>
       <p>
@@ -119,12 +119,12 @@ const faqs = [
         </p>
       </a>
       <a
-        href={LINKS.brandIntel}
+        href={LINKS.demandIntel}
         {...ext}
         class="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-5 hover:border-sky-500/40"
       >
         <p class="text-sm font-semibold text-white">Enterprise</p>
-        <p class="mt-1 text-xs text-zinc-500">Brand Intelligence for OEMs</p>
+        <p class="mt-1 text-xs text-zinc-500">Demand Intelligence for OEMs</p>
       </a>
       <a
         href={LINKS.gsa}

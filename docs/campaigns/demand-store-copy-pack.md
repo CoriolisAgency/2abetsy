@@ -42,7 +42,7 @@ Every night, Betsy takes the prior 24 hours of network demand, ranks products in
 
 The point is not to play gun store. The point is to show what happens when **search heat and demand signals** — not a human buyer’s ego — stock the endcap.
 
-Demand Store is part of the Betsy stack: GunSearchEngine for shoppers and demand, GunSearchAgent for dealers, Brand Intelligence for OEMs, and My Betsy on the sales floor. Built by Coriolis Agency for lawful 2A commerce.
+Demand Store is part of the Betsy stack: GunSearchEngine for shoppers and demand, GunSearchAgent for dealers, Demand Intelligence for OEMs, and My Betsy on the sales floor. Built by Coriolis Agency for lawful 2A commerce.
 
 **Partnerships:** category sponsors, dealer spotlights, creator shelf weeks — betsy@coriolisagency.com  
 

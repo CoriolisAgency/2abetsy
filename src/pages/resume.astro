@@ -86,9 +86,9 @@ const jobs: Job[] = [
   },
   {
     employer: "Enterprise Co-Pilot",
-    title: "Brand Intelligence Co-Pilot",
+    title: "Demand Intelligence Co-Pilot",
     blurb:
-      "MCP-native executive assistant for Brand Intelligence — welcome cards, demand briefs, and (on Platform) warehouse Q&A inside Grok, Claude, Cursor, and friends.",
+      "MCP-native executive assistant for Demand Intelligence — welcome cards, demand briefs, and (on Platform) warehouse Q&A inside Grok, Claude, Cursor, and friends.",
     href: LINKS.enterpriseCopilot,
     hrefLabel: "Enterprise Co-Pilot",
     accent: "violet",
@@ -102,12 +102,12 @@ const jobs: Job[] = [
     ],
   },
   {
-    employer: "Brand Intelligence",
+    employer: "Demand Intelligence",
     title: "OEM Demand Strategist",
     blurb:
       "Plan-gated demand intelligence for firearms OEMs and platforms — anonymized intent the factory floor can use. Not a dump of shopper emails.",
-    href: LINKS.brandIntel,
-    hrefLabel: "Brand Intelligence",
+    href: LINKS.demandIntel,
+    hrefLabel: "Demand Intelligence",
     accent: "violet",
     skills: [
       "Anonymized OEM / platform demand surfaces",
@@ -159,7 +159,7 @@ const coreSkills = [
   "Public demand viz (Betsy Live)",
   "Demand Store merchandising",
   "Showroom TV",
-  "OEM Brand Intelligence",
+  "OEM Demand Intelligence",
   "Enterprise Co-Pilot (MCP)",
   "Ontology-aware product language",
   "Not 4473 / NICS / bound book",
@@ -184,7 +184,7 @@ const accentDot: Record<NonNullable<Job["accent"]>, string> = {
 
 <BaseLayout
   title="Resume — Betsy AI | 2aBetsy"
-  description="Betsy AI’s resume: every job she holds across GunSearchAgent, My Betsy, GunSearchEngine, Betsy Live, Demand Store, Showroom, Enterprise Co-Pilot, and Brand Intelligence — platform skills, one persona."
+  description="Betsy AI’s resume: every job she holds across GunSearchAgent, My Betsy, GunSearchEngine, Betsy Live, Demand Store, Showroom, Enterprise Co-Pilot, and Demand Intelligence — platform skills, one persona."
   path="/resume"
   ogImagePath={CANON_PATHS.headshot}
 >
@@ -213,8 +213,8 @@ const accentDot: Record<NonNullable<Job["accent"]>, string> = {
           <a href={LINKS.gse} class={linkClass} {...ext}>GunSearchEngine</a>,{" "}
           <a href={LINKS.betsyLive} class={linkClass} {...ext}>Betsy Live</a>{" "}
           for the public pulse, and{" "}
-          <a href={LINKS.brandIntel} class={linkClass} {...ext}
-            >Brand Intelligence</a
+          <a href={LINKS.demandIntel} class={linkClass} {...ext}
+            >Demand Intelligence</a
           >{" "}
           +{" "}
           <a href={LINKS.enterpriseCopilot} class={linkClass} {...ext}

@@ -117,4 +117,4 @@ Same three-column idea. One land URL. No thread-as-unboxing.
 
 - 5 Shorts over five weekdays; X1–X5 same day as the matching Short.
 - Pinned comment on S5: culture essay `https://2abetsy.com/art-of-demand-retailbi`
-- Brand / OEM DMs: Brand Intelligence, not this campaign.
+- Brand / OEM DMs: Demand Intelligence, not this campaign.

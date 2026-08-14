@@ -21,8 +21,8 @@ export const LINKS = {
   betsyLive: "https://www.gunsearchengine.com/betsy-live",
   /** Shopper restock / search watches on GSE (not in-store My Betsy hardware) */
   betsyAlerts: "https://www.gunsearchengine.com/mybetsy",
-  brandIntel: "https://www.gunsearchengine.com/betsy/enterprise",
-  /** Brand Intelligence Enterprise Co-Pilot (MCP) */
+  demandIntel: "https://www.gunsearchengine.com/demand-intelligence",
+  /** Demand Intelligence Enterprise Co-Pilot (MCP) */
   enterpriseCopilot:
     "https://www.gunsearchengine.com/betsy/enterprise-copilot",
   /** RetailBI vs Betsy — GSE ranking owner (definition / fortress) */
