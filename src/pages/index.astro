@@ -25,7 +25,14 @@ import { SITE } from "../lib/site";
         <p
           class="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-400"
         >
-          Coriolis Agency · {SITE.role}
+          <a
+            href={LINKS.coriolis}
+            class="text-sky-400 hover:underline"
+            target="_blank"
+            rel="noopener noreferrer">Coriolis Agency</a
+          >
+          {" · "}
+          {SITE.role}
         </p>
         <h1
           class="text-3xl font-semibold tracking-tight text-white sm:text-4xl leading-[1.15]"
