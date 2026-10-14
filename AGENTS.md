@@ -54,3 +54,7 @@ GitHub Actions → Pages (`deploy.yml`). Domain: `public/CNAME` = `2abetsy.com`.
 2. stage relevant  
 3. commit  
 4. push `origin` current branch  
+
+## Studio reporting
+
+Studio reporting: `.github/workflows/studio.yml` reports status to Botopticon via the shared reporter in CoriolisAgency/botopticon. It is status only. GitHub Actions never merge; merging stays with the agents/Paul. See the reporting rule in CoriolisAgency/botopticon AGENTS.md.

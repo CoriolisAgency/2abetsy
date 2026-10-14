@@ -1,0 +1,19 @@
+# Reporting only. Never merge. Posts CodeFab/process tile status to Botopticon.
+name: Studio
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  report:
+    uses: CoriolisAgency/botopticon/.github/workflows/studio-report.yml@main
+    with:
+      source: coriolis
+      # on workflow_run, pass checks result:
+      checks_ok: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+      event: ${{ github.event_name == 'workflow_run' && 'checks' || '' }}
+    secrets:
+      BOTOPTICON_TOKEN: ${{ secrets.BOTOPTICON_TOKEN }}
