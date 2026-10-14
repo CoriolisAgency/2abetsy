@@ -1,19 +1,18 @@
-# Reporting only. Never merge. Posts CodeFab/process tile status to Botopticon.
+# Reporting only. Never merge. Never write to repos.
+# Posts a CodeFab sprint-row event only (Coding / Verification / Shipped).
+# The reusable workflow inlines the reporter; no private botopticon checkout.
 name: Studio
 on:
   pull_request:
-    types: [opened, reopened, synchronize, closed]
+    types: [opened, ready_for_review, reopened, closed]
   push:
-    branches: [main]
 permissions:
   contents: read
+  pull-requests: read
 jobs:
   report:
     uses: CoriolisAgency/botopticon/.github/workflows/studio-report.yml@main
     with:
       source: coriolis
-      # on workflow_run, pass checks result:
-      checks_ok: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
-      event: ${{ github.event_name == 'workflow_run' && 'checks' || '' }}
     secrets:
       BOTOPTICON_TOKEN: ${{ secrets.BOTOPTICON_TOKEN }}

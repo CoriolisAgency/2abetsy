@@ -57,4 +57,4 @@ GitHub Actions → Pages (`deploy.yml`). Domain: `public/CNAME` = `2abetsy.com`.
 
 ## Studio reporting
 
-Studio reporting: `.github/workflows/studio.yml` reports status to Botopticon via the shared reporter in CoriolisAgency/botopticon. It is status only. GitHub Actions never merge; merging stays with the agents/Paul. See the reporting rule in CoriolisAgency/botopticon AGENTS.md.
+Studio reporting: `.github/workflows/studio.yml` posts CodeFab sprint-row events only (Coding / Verification / Shipped) via `CoriolisAgency/botopticon/.github/workflows/studio-report.yml` (reporter inlined in that workflow; no private checkout). GitHub Actions never merge and never write to repos (`contents: read`, `pull-requests: read`). Merging stays with the agents/Paul. See the reporting rule in CoriolisAgency/botopticon AGENTS.md.
