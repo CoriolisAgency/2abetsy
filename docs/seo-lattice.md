@@ -1,6 +1,6 @@
 # Three-site SEO lattice (2aBetsy)
 
-> **Governed by `CoriolisAgency/coriolis` `docs/seo/`** (ARCHITECTURE.md, PAGE-MAP.md, LINK-PLAN.md). This file is 2aBetsy's own page table. When this file and `docs/seo/` disagree, `docs/seo/` wins. Pointer header added Wed Oct 21, 2026 (Sprint 0, DC-5). Doc only. One row corrected per Paul's 10/21 no-@2ABetsy rule (rule 4 `sameAs`).
+> **Governed by `CoriolisAgency/coriolis` `docs/seo/`** (ARCHITECTURE.md, PAGE-MAP.md, LINK-PLAN.md). This file is 2aBetsy's own page table. When this file and `docs/seo/` disagree, `docs/seo/` wins. Pointer header added Wed Oct 21, 2026 (Sprint 0, DC-5). Doc only. Two rows corrected (rule 4 sameAs per Paul's 10/21 no-@2ABetsy rule; Demand Intelligence moved to the agency per D-N16).
 
 Source of truth for **character / media** ownership. Commercial operator SERPs stay on GSA; platform / shopper / OEM on GSE.
 
@@ -15,7 +15,7 @@ Source of truth for **character / media** ownership. Commercial operator SERPs s
 | **Betsy Live** (public demand map) | **GSE** `/betsy-live` | Link (label: Betsy Live) |
 | **Betsy Alerts** (shopper watches) | **GSE** `/mybetsy` | Link — not My Betsy hardware |
 | Super Intelligence / How Betsy trains / Ontology | **GSE** | Outbound essays |
-| Demand Intelligence OEM | **GSE** `/demand-intelligence` | Link |
+| Demand Intelligence OEM | **CoriolisAgency.com** `https://www.coriolisagency.com/demand-intelligence` (moved to the agency, D-N16) | Soft CTA only |
 | **What is RetailBI** / Firearm Sales Index / NICS vs sales | **GSE** `/betsy-vs-retailbi` (fortress) | Culture only — do not rank the definition here |
 | Art of Demand / fog of sell-through (Tzu essay) | **2aBetsy** `/art-of-demand-retailbi` | Character essay. Frozen doctrine once, then paraphrase. Soft CTA to fortress, Enterprise, GSA, FFLIntel issue 01 |
 | Three-number desk | **FFLIntel** | Link issue 01 — not a 2aBetsy SERP |
