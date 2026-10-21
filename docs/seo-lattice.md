@@ -1,5 +1,7 @@
 # Three-site SEO lattice (2aBetsy)
 
+> **Governed by `CoriolisAgency/coriolis` `docs/seo/`** (ARCHITECTURE.md, PAGE-MAP.md, LINK-PLAN.md). This file is 2aBetsy's own page table. When this file and `docs/seo/` disagree, `docs/seo/` wins. Pointer header added Wed Oct 21, 2026 (Sprint 0, DC-5); no content change.
+
 Source of truth for **character / media** ownership. Commercial operator SERPs stay on GSA; platform / shopper / OEM on GSE.
 
 | Intent | Ranking owner | 2aBetsy role |
@@ -34,6 +36,6 @@ Source of truth for **character / media** ownership. Commercial operator SERPs s
 1. One commercial ranking URL per operator intent — always **GSA**.
 2. Live demand is **not** reimplemented here — CTA to Betsy Live on GSE.
 3. No 4473 / ATF automation claims.
-4. `sameAs`: X @2ABetsy, YouTube @BetsyAI, GSE `/betsy`, GSA, Coriolis, FFLIntel, FFLAccelerator.
+4. `sameAs`: YouTube @BetsyAI, GSE `/betsy`, GSA, Coriolis, FFLIntel, FFLAccelerator. No X @2ABetsy (Paul, 10/21 1:33 PM ET: X posts as @GunSearchEngine now).
 5. Prefer soft CTAs; deep install SERPs stay on gunsearchagent.com.
 6. **RetailBI definition is GSE.** `/art-of-demand-retailbi` is culture (Art of Demand / fog of sell-through). Never H1 “RetailBI alternative.” Never a comparison-table dump.
