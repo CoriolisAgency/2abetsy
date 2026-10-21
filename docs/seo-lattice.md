@@ -1,6 +1,6 @@
 # Three-site SEO lattice (2aBetsy)
 
-> **Governed by `CoriolisAgency/coriolis` `docs/seo/`** (ARCHITECTURE.md, PAGE-MAP.md, LINK-PLAN.md). This file is 2aBetsy's own page table. When this file and `docs/seo/` disagree, `docs/seo/` wins. Pointer header added Wed Oct 21, 2026 (Sprint 0, DC-5); no content change.
+> **Governed by `CoriolisAgency/coriolis` `docs/seo/`** (ARCHITECTURE.md, PAGE-MAP.md, LINK-PLAN.md). This file is 2aBetsy's own page table. When this file and `docs/seo/` disagree, `docs/seo/` wins. Pointer header added Wed Oct 21, 2026 (Sprint 0, DC-5). Doc only. One row corrected per Paul's 10/21 no-@2ABetsy rule (rule 4 `sameAs`).
 
 Source of truth for **character / media** ownership. Commercial operator SERPs stay on GSA; platform / shopper / OEM on GSE.
 
